@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.ijs.core.util.SMSTemplate",
+      "name": "smstpl",
+      "type": "com.ijs.core.util.SMSTemplate"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.ijs.core.util.SMSTemplate",
+      "name": "smstpl.content",
+      "type": "java.lang.String"
+    }
+  ]
+}

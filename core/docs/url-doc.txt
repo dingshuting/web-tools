@@ -1,0 +1,24 @@
+
+-----------说明-------------------
+所有的查询提交方式均为form的get提交方式，所有的数据库保存动作带参数的均为json提交格式,具体的格式参看model-json，
+上述2种方式对应的content-type不一样
+json-->application/json  
+form-->application/x-www-form-urlencoded
+-----------
+URL 调用说明
+
+-----------com.ijs.core.system------------------
+UserControl("/user")
+	/region
+	 * 异步查询区域信息,当pid为0并且cid为空时，则默认取中国下的一级省份信息<br/>
+	 * 初始化默认情况下，为避免重复读取数据库造成的效率低下，区域查询后默认缓存在本control中。
+	 * @param pid 父区域信息 ,当pid为0时取国家cid为pid
+	 * @param rname 根据关键字查询区域
+	 * @param cid 国家id
+	 * @return 返回区域信息的JSON字符串
+
+------------com.ijs.core.common------------------
+CommonControl("/common")
+	
+FileControl
+	
