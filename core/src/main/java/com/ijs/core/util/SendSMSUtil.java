@@ -40,9 +40,9 @@ public class SendSMSUtil {
 
         //替换成你的AK
         //你的accessKeyId,参考本文档步骤2
-        final String accessKeyId = "LTAIFxyXERk5e0az";
+        final String accessKeyId = "xxxx";
         //你的accessKeySecret，参考本文档步骤2
-        final String accessKeySecret = "vQ6WGtA7fRbnSk9Q0QITM3pvVshvZ3";
+        final String accessKeySecret = "xxxx";
 
         // 短信签名
         final String signName = "亿达企服";
@@ -148,11 +148,10 @@ public class SendSMSUtil {
         //String encode = "GBK"; //页面编码和短信内容编码为GBK。重要说明：如提交短信后收到乱码，请将GBK改为UTF-8测试。如本程序页面为编码格式为：ASCII/GB2312/GBK则该处为GBK。如本页面编码为UTF-8或需要支持繁体，阿拉伯文等Unicode，请将此处写为：UTF-8
 
         String encode = "UTF-8";
-        //String username = "ruantong";  //用户名
-        String username = "18211178672";  //用户名
+        String username = "xxxx";  //用户名
 
         //String password_md5 = "2A542532C9BE37132D0EFE26A03BEACB";  //密码 dongli888
-        String password_md5 = "d68197098e5ffeed3f2a89d165ad60f2";  //密码 mlxs123
+        String password_md5 = "xxxx";  //密码 
 
 
         //String mobile = "18211178672";  //手机号,只发一个号码：13800000001。发多个号码：13800000001,13800000002,...N 。使用半角逗号分隔。
