@@ -1,0 +1,45 @@
+<form class="am-form am-form-horizontal" onsubmit="return false" id="role_modify">
+      <div class="add-form clearfix">
+          <h2>修改角色</h2>
+              <input type="hidden" name="funcStr"  id="funcStr"/>
+			  <input type="hidden" name="id" id="roleId"/>
+              <input type="hidden" name="funcStr"  id="funcStr"/>
+              <div class="am-form-group am-u-sm-12 am-u-md-6">
+                  <label for="doc-ipt-1" class="am-u-sm-3 am-form-label">角色名称</label>
+                  <div class="am-u-sm-8">
+                      <input type="text" id="doc-ipt-1" name="name" class="am-input-sm am-form-field">
+                  </div>
+              </div>
+              <div class="am-form-group am-u-sm-12 am-u-md-6">
+                  <label for="doc-ipt-1" class="am-u-sm-3 am-form-label">部门类型</label>
+                   <div class="am-u-sm-8">
+                   <select id="showSelect" name="orgId">
+                   </select>
+                  </div>
+              </div>
+               <div class="am-form-group am-u-sm-12 am-u-md-6">
+                  <label for="doc-ipt-1" class="am-u-sm-3 am-form-label">岗位职责</label>
+                  <div class="am-u-sm-8">
+                 <div class="content_wrap">
+					<div class="zTreeDemoBackground left">
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>
+				 </div>
+                  </div>
+              </div>
+               <div class="am-form-group am-u-sm-12 am-u-md-6">
+                  <label for="doc-ipt-1" class="am-u-sm-3 am-form-label">角色描述</label>
+                  <div class="am-u-sm-8">
+                   <textarea rows="15" cols="100" name="remark"  style="resize: none;"></textarea>
+                  </div>
+              </div>
+ 		 </div>
+          <div id="upload-container"></div>
+          <div class="am-form-group">
+              <div class="am-u-sm-10 am-u-sm-offset-2">
+                  <button class="am-btn am-btn-primary" type="submit">提交</button>
+                  <input id="cancl" class="am-btn am-btn-default" type="button" value="取消" />
+              </div>
+          </div>
+  <!-- content end -->
+</form>	

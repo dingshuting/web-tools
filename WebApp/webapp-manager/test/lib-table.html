@@ -1,0 +1,69 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>产业协同</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="../templates/default/css/amazeui.css">
+		<link rel="stylesheet" href="../templates/default/css/admin.css">
+		<style>
+			.test{
+				width: 50%;
+				margin: auto;
+			}
+			.test input{
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script type='text/javascript' src='../steal/steal.js'></script>
+		<div id="showloading"></div>
+		<div id="ul1" class="test"></div>
+		<div id="ul2" class="test"></div>
+		<div id="ul3" class="test"></div>
+		<div id="ul4" class="test"></div>
+		<button id='tt'>添加行</button>
+		<button id='tv'>获取值</button>
+	</body>
+	<script>
+		var head1={cols:[{colName: "这是列",colCode: "name",style:"width:'15%'"}, 
+					{colName: "这是列1",colCode: "name1",style:"width:'21%'"}, 
+					{colName: "这是列2",colCode: "name2",style:"width:'25%'"}, 
+				{colName: "这是列3",colCode: "name3",style:"width:'15%'"}, 
+					{colName: "这是列4",colCode: "name4",style:"width:'15%'"}],classes:"am-table am-table-bordered am-table-radius am-table-striped  am-text-center",edType:1};
+		var list1=[{_id:"123",name: "这是值1",name2: 123,canEdit:true}, 
+					{_id:"122",
+					name: "这是值2",
+					name1: 123.00,
+					canDelete:true,
+					canEdit:true
+				}];
+		steal("js-lib/lib-table.js", "js/model.js",function(Table) { 	
+			var Model=$.Model("user");
+			var ModelU=$.Model("ss");
+			var user=new Model({name:"sa"});
+			var user1=new ModelU({name:"ss"});
+			//user.save();	user1.save();
+			Model.list(1,{name:"sa"});
+			ModelU.list(1,{name:"sa"});
+			var control1=new Table("#ul1", {isShowActs:true,head: head1,list: list1});
+			$("#tt").click(function(){
+				control1.addNewData();
+				control3.addNewData();
+			});
+			$("#tv").click(function(){
+				console.log("control1:");
+				console.log(control1.getDataList());
+				console.log("control2:");
+				console.log(control2.getDataList());
+				console.log("control3:");
+				console.log(control3.getDataList());
+				console.log("control4:");
+				console.log(control4.getDataList());
+			});
+		});
+	</script>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="js-libs" content="js-lib/modules/form.js" />
+		<script src="config.js"></script>
+		<title>artYIDA-认证</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="assets/css/bootstrap-source.css" />
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+	</head>
+	<body>
+	</body>
+</html>
+<script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/config.js"></script>
+<script>
+	function initFinished(){
+		console.log({"username":$.request.para.username,"password":$.request.para.password,"type":1});
+		$.get($.request.domain+"/sso/login",{"username":$.request.para.username,"password":$.request.para.password,"type":1},function(){
+			window.location.href="index.html";
+		});
+	}
+</script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js"></script>

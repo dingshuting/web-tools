@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				font-size: 14px;
+			}
+			
+			#allmap {
+				width: 100%;
+				height: 500px;
+			}
+			
+			.search-bar input {
+				height: 40px;
+				line-height: 35;
+				margin: 5px;
+				border: 1px solid #a2a2a2;
+				font-size: 15px;
+			}
+		</style>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WlmD0nEg8DMXqqtleohR5niY2QLDokgC"></script>
+		<title>选择地址</title>
+	</head>
+
+	<body>
+		<div class="search-bar" style="width: 100%;background-color: #fff;"><input placeholder="输入地址或地图选择" style="width: 60%;" type="text" id="address" />
+			<input id="doorNo" placeholder="门牌号或其它更详情描述" style="width: 35%;" />
+		</div>
+		<div id="allmap"></div>
+		<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto;display: none; "></div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var result = {};
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(116.331398, 39.897445);
+	map.centerAndZoom(point, 12);
+	var geoc = new BMap.Geocoder();
+	var navigationControl = new BMap.NavigationControl({
+		// 靠左上角位置
+		anchor: BMAP_ANCHOR_TOP_RIGHT,
+		// LARGE类型
+		type: BMAP_NAVIGATION_CONTROL_SMALL,
+		// 启用显示定位
+		enableGeolocation: true
+	});
+	map.addControl(navigationControl);
+	var size = new BMap.Size(10, 20);
+	map.addControl(new BMap.CityListControl({
+		anchor: BMAP_ANCHOR_TOP_LEFT,
+		offset: size,
+		onChangeAfter: function(e) {
+			geoc.getLocation(map.getCenter(), function(rs) {
+				var addComp = rs.addressComponents;
+				var addr = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+				G("address").value = addr;
+				result.address = addr;
+				result.city = addComp.city;
+				result.street = addComp.street;
+				result.province = addComp.province;
+			});
+		}
+	}));
+
+	map.addEventListener("click", function(e) {
+		var pt = e.point;
+		var marker = new BMap.Marker(e.point);
+		map.clearOverlays();
+		map.addOverlay(marker);
+		result.location = {};
+		result.location.lng = e.point.lng;
+		result.location.lat = e.point.lat;
+		geoc.getLocation(pt, function(rs) {
+			var addComp = rs.addressComponents;
+			//var addr = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+            //原版，用逗号分隔
+            /*var addr = (_value.province==''?'':(_value.province + ","))
+                + (addComp.city==''?'':(addComp.city + ","))
+                + (addComp.district==''?'':(addComp.district + ","))
+                + (addComp.street==''?'':(addComp.street + ","))
+                + (addComp.business==''?'':(addComp.business));*/
+            //针对特定产品不要逗号分隔
+            var addr = (addComp.province==''?'':(addComp.province))
+                + (addComp.city==''?'':(addComp.city))
+                + (addComp.district==''?'':(addComp.district))
+                + (addComp.street==''?'':(addComp.street))
+                + (addComp.streetNumber==''?'':(addComp.streetNumber));
+			G("address").value = addr;
+			result.address = addr;
+			result.city = addComp.city;
+			result.street = addComp.street;
+			result.province = addComp.province;
+			result.district = addComp.district;
+		});
+	});
+
+	function G(id) {
+		return document.getElementById(id);
+	}
+	var ac = new BMap.Autocomplete( //建立一个自动完成的对象
+		{
+			"input": "address",
+			"location": map
+		});
+	ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+		var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if(e.fromitem.index > -1) {
+			value = _value.province + _value.city + _value.district + _value.street + _value.business;
+		}
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+		value = "";
+		if(e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province + _value.city + _value.district + _value.street + _value.business;
+		}
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	var myValue;
+	ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+        //原版，用逗号分隔
+		/*myValue = (_value.province==''?'':(_value.province + ","))
+            + (_value.city==''?'':(_value.city + ","))
+            + (_value.district==''?'':(_value.district + ","))
+            + (_value.street==''?'':(_value.street + ","))
+            + (_value.business==''?'':(_value.business));*/
+		//针对特定产品不要逗号分隔
+        myValue = (_value.province==''?'':(_value.province))
+            + (_value.city==''?'':(_value.city))
+            + (_value.district==''?'':(_value.district))
+            + (_value.street==''?'':(_value.street))
+            + (_value.business==''?'':(_value.business));
+		G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+		setPlace();
+        result.address = myValue;
+        result.city = _value.city;
+        result.street = _value.street;
+        result.province = _value.province;
+        result.district = _value.district;
+    });
+
+	function getValue() {
+		result.doorNo = G("doorNo").value;
+		result.address += result.doorNo;
+		return result;
+	}
+
+	function setPlace() {
+		map.clearOverlays(); //清除地图上所有覆盖物
+		function myFun() {
+			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+			map.centerAndZoom(pp, 18);
+			map.addOverlay(new BMap.Marker(pp)); //添加标注
+			result.location = {};
+			result.location.lng = pp.lng;
+			result.location.lat = pp.lat;
+		}
+
+		var local = new BMap.LocalSearch(map, { //智能搜索
+			onSearchComplete: myFun
+		});
+		local.search(myValue);
+	}
+    // 用经纬度设置地图中心点
+    function theLocation(lng,lat){
+        if(null!=lng&&null!=lat){
+            map.clearOverlays();
+            var new_point = new BMap.Point(lng,lat);
+            var marker = new BMap.Marker(new_point);  // 创建标注
+            map.addOverlay(marker);              // 将标注添加到地图中
+            map.panTo(new_point);
+        }
+    }
+</script>

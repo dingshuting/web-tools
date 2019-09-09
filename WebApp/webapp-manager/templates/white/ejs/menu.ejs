@@ -1,0 +1,46 @@
+<!-- Drawer scroll area -->
+<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 423px;"><div class="app-layout-drawer-scroll" style="overflow: hidden; width: auto; height: 423px;">
+    <!-- Drawer logo -->
+    <div id="logo" class="drawer-header" style="text-align: center;">
+        <img src="templates/white/assets/img/logo.png" style="height: 40px;margin-top: 20px;" title="AppUI" alt="AppUI">
+    </div>
+    <!-- Drawer navigation -->
+    <nav class="drawer-main">
+        <ul class="nav nav-drawer">
+            <li class="nav-item nav-drawer-header">Apps</li>
+            <li class="nav-item">
+                <a href="index.html"><i class="ion-ios-speedometer-outline"></i> 主页</a>
+            </li>
+            <li class="nav-item nav-drawer-header">业务菜单</li>
+			<% this.each(function(current) { %>
+				<% if(!current.attr("children")||current.attr("children").length<1){ %>
+					<li class="nav-item" <%= (el) -> el.data('menu', current) %>>
+						<a href="javascript:void(0)">
+							<i class="<%=current.attr("icon")%>"></i>
+							<%=current.attr("name") %>
+						</a>
+					</li>
+				<%}else{%>
+					<li class="nav-item nav-item-has-subnav" <%= (el) -> el.data('menu', current) %>>
+						<a  href="javascript:void(0)" ><i class="<%=current.attr("icon")%>"></i><%=current.attr("name") %></a>
+			        	<ul class="nav nav-subnav" id="collapse-<%=current.attr("id")%>">
+			        		<% current.attr("children").each(function(scurrent){%>
+			        			<% if(scurrent.attr("displayType")==1&&scurrent.attr("level")!=0){ %>
+			                        <li <%= (el) -> el.data('menu', scurrent) %>>
+			                            <a href="javascript:void(0)"><%=scurrent.attr("name")%></a>
+			                        </li>
+			                    <%}%>
+							<%})%>
+			        	</ul>
+	            	</li>
+            	<%}%>
+            <%})%>
+        </ul>
+    </nav>
+    <!-- End drawer navigation -->
+
+    <div class="drawer-footer">
+        <p class="copyright">亿达控股 © 2019</p>
+    </div>
+</div><div class="slimScrollBar" style="background: rgba(0, 20, 35, 0.38); width: 5px; position: absolute; top: 0px; opacity: 0.5; display: none; border-radius: 7px; z-index: 99; right: 2px; height: 223.103px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 1; z-index: 90; right: 2px;"></div></div>
+<!-- End drawer scroll area -->

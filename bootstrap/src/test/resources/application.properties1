@@ -1,0 +1,26 @@
+
+#spring.resources.staticLocations=E:\\mywork/hbuilder space/jsmvc/
+
+spring.datasource.url=jdbc:mysql://192.168.1.7:3306/cy1_is?useUnicode=true&amp;characterEncoding=UTF-8;autoReconnectForPools=true;autoReconnect=true
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.dbcp.initial-size=20
+spring.datasource.dbcp.max-active=15
+spring.datasource.dbcp.max-idle=10
+spring.datasource.dbcp.min-evictable-idle-time-millis=600000
+spring.datasource.dbcp.time-between-eviction-runs-millis=360000
+spring.datasource.dbcp.validation-query=SELECT 1
+spring.datasource.dbcp2.test-on-borrow=true
+spring.mvc.view.prefix=public/
+spring.mvc.view.suffix=.jsp
+server.tomcat.uri-encoding=UTF-8
+security.basic.authorize-mode=role
+security.basic.enabled=false
+spring.mvc.date-format=yyyy-MM-dd HH:mm:ss
+logging.level.com.ijs=debug
+logging.level.org.springframework.root=false
+server.port=8082
+server.session.timeout=1200
+spring.http.encoding.charset=UTF-8
+security.filter-order=2

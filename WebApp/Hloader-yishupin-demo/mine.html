@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员主页</title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<meta name="is-login" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+		<style>
+			.allback {
+				background-color: #ebe8e8;
+			}
+			.am-g {				
+				height: 150px;
+				background-color: #cca174;
+			}
+			.am-circle-div img {
+				height: 90px;
+				width: 90px;
+			}
+			.am-u-sm-4, .am-u-md-4 {
+				padding-top: 25px;
+				padding-bottom: 25px;
+				text-align: center;
+
+			}
+			.am-u-sm-8, .am-u-md-8 {
+				padding-top: 62.5px;
+				padding-bottom: 62.5px;
+				font-weight: bold;
+			}
+			
+			.my-orders {
+				background-color: #FFFFFF;
+				margin-top: 15px;
+				padding: 10px;
+			}
+			.am-thumbnail {
+				margin-bottom: 0px;
+				border: none;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+			.am-thumbnails>li {
+				padding: 0px;
+			}
+			.orders-label {
+				padding-left: 2px;
+				font-size: 14px;
+				color: #2c2c2c;
+			}
+			.allback [class*=am-avg-] {
+				padding-top: 10px;
+				padding-bottom: 15px;
+				margin-bottom: 10px;
+			}
+			.mydata {
+				margin-top: 15px;
+				background-color: #FFFFFF;
+				height: 100px;
+				padding-top: 10px;
+			}
+			.mydata a {
+				color: #000000;
+			}
+			.orders-ss img{
+				    margin: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="allback">
+			<!--
+            	作者：heiyanan19901105@163.com
+            	时间：2019-05-23
+            	描述：当前登录账号信息
+            -->
+            <div class="user-item" data-type="detail" data-data="currentUser">
+            	<div class="am-g">
+            		<div class="am-u-sm-4 am-u-md-4">
+            			<div class="am-circle-div">
+            				<img class="am-circle" src="img/墙上秋色.png" name="icon" />
+            			</div>           			
+            		</div>
+            		<div class="am-u-sm-8 am-u-md-8">
+            			<span class="" name="nickname"></span>
+            		</div>
+            	</div>
+            </div>
+            
+            <!--
+            	作者：heiyanan19901105@163.com
+            	时间：2019-05-23
+            	描述：我的订单
+            -->
+            <div class="am-gallery-bordered">
+            	<div class="my-orders">
+            		<span class="my-orders-tt" style="font-size: 18px; color: #000000; font-weight: bold;">我的订单</span>
+            		<a href="orders-list.html?status=-1">
+            			<span class="alloeders" style="float: right; font-size: 14px; color: #d5d2d2; padding-top: 5px;">查看全部订单 ></span>
+            		</a> 
+            		<hr data-am-widget="divider" style="margin-top: 5px; margin-bottom: 5px;" class="am-divider am-divider-default" />
+            	</div>
+            	<div class="orders-ss" style="text-align: center;">
+            		<ul class="am-avg-sm-4" style="background-color: #FFFFFF;padding-left: 10px;padding-right: 10px; ">
+                        <li>
+                    	    <a href="orders-list.html?status=0">
+                    		    <img class="am-thumbnail" src="img/daifukuan.png" />
+                    	        <span class="orders-label">待付款</span>
+                    	    </a>                  	
+                        </li>
+                        <li>
+                    	    <a href="orders-list.html?status=1">
+                    		    <img class="am-thumbnail" src="img/dafahuo.png" />
+                    	        <span class="orders-label">待发货</span>
+                    	    </a> 
+                        </li>
+                        <li>
+                    	    <a href="orders-list.htm?status=2">
+                    		    <img class="am-thumbnail" src="img/daishouhuo.png" />
+                    	        <span class="orders-label">待收货</span>
+                    	    </a> 
+                        </li>
+                        <li>
+                    	    <a href="orders-list.html?status=6">
+                    		    <img class="am-thumbnail" src="img/tuihuo.png" />
+                    	        <span class="orders-label">退款/售后</span>
+                    	    </a> 
+                        </li>
+                    </ul>
+            	</div>            	
+            </div>
+            
+            <!--
+            	作者：heiyanan19901105@163.com
+            	时间：2019-05-23
+            	描述：操作列表
+            -->
+            <div class="mydata">
+            	<div class="am-u-sm-12">
+            		<a href="shoppingcar.html">
+            			<div  class="am-u-sm-12 am-padding-0">
+	            			<span class="am-icon-shopping-cart am-icon-sm" style="padding-top: 10px; font-size: 14px;">&nbsp;&nbsp;购物车</span>
+	            			<span style="float: right; padding-right: 15px; padding-top: 10px; padding-bottom: 5px;">
+	            				<i class="am-icon-angle-right"></i>
+	            			</span>
+            			</div>
+            		</a>
+            		<hr data-am-widget="divider" style="margin-top: 5px; margin-bottom: 5px;" class="am-divider am-divider-default" />
+            	</div>
+            	<div class="am-u-sm-12">
+            		<a href="addresses.html">
+            			<div  class="am-u-sm-12 am-padding-0">
+	            			<span class="am-icon-map-marker  am-icon-sm" style="padding-top: 5px; font-size: 14px;">&nbsp;&nbsp;收货地址</span>
+	            			<span style="float: right; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;">
+	            				<i class="am-icon-angle-right"></i>
+	            			</span>
+            			</div>
+            		</a>
+            		<!--<hr data-am-widget="divider" style="margin-top: 5px; margin-bottom: 5px;" class="am-divider am-divider-default" />-->
+            	</div>
+            	<!--<div>
+            		<a href="">
+            			<span class="am-icon-cog" style="padding-top: 5px; font-size: 14px;">&nbsp;&nbsp;账号设置</span>
+            			<span style="float: right; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;">></span>
+            		</a>
+            		<hr data-am-widget="divider" style="margin-top: 5px; margin-bottom: 5px;" class="am-divider am-divider-default" />
+            	</div>-->
+            </div>
+
+		</div>
+		<!--
+        	底部菜单栏
+        -->
+		<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " data-include="includes/footer-nav.html">
+			
+		</div>
+	</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>

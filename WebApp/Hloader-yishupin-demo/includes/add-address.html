@@ -1,0 +1,70 @@
+<style>
+	[name='province'],[name='city'],[name='region']{
+		font-size: 12px;
+		max-width: 100%;
+		height: 30px;
+		margin-top: 10px;
+	}
+	#addAddressForm .am-u-sm-3{
+		line-height: 50px;
+	}
+</style>
+<form id="addAddressForm" onsubmit="return false" class="am-u-sm-12" data-event-finish="addAddressFormLoaded" data-event-success="editSuccess" data-type="form" data-act="memberAddressAdd">
+	<div class="am-list-news-bd">
+		<ul class="am-list">
+			<li class="am-g am-list-item-dated">
+				<div class="am-u-sm-3">
+					收货人
+				</div>
+				<div class="am-u-sm-9 am-padding-sm">
+					<input name="name" style="width: 138px;" type="text" class="form-control validate[required]" id="exampleInputName2" placeholder="收货人名字">
+				</div>
+			</li>
+			<li class="am-g am-list-item-dated">
+				<div class="am-u-sm-3 ">
+					电话
+				</div>
+				<div class="am-u-sm-9 am-padding-sm">
+					<input type="text" name="phoneNumber" class="form-control validate[required]" style="width: 100%;" placeholder="请输入手机号码"/>
+				</div>
+			</li>
+			<li class="am-g am-list-item-dated">
+				<div class="am-u-sm-3">
+					地区
+				</div>
+				<div class="am-u-sm-9 am-padding-0">
+					<div class="am-u-sm-4 am-padding-0" style="padding: 2px;"><select style="width: 100%;" class="validate[required]" name="province"><option>选择省</option></select></div>
+					<div class="am-u-sm-4 am-padding-0" style="padding: 2px;"><select style="width: 100%;" class="validate[required]" name="city"><option>选择市</option></select></div>
+					<div class="am-u-sm-4 am-padding-0" style="padding: 2px;"><select style="width: 100%;" class="validate[required]" name="region"><option>选择区</option></select></div>
+				</div>
+			</li>
+			<li class="am-g am-list-item-dated">
+				<div class="am-u-sm-3 ">
+					地址详情
+				</div>
+				<div class="am-u-sm-9 am-padding-sm">
+					<textarea name="detailAddress" placeholder="请如实输入您的详细地址" class="form-control validate[required]" draggable="false" style="width: 100%;height: 80px;border: 0px;"></textarea>
+				</div>
+			</li>
+		</ul>
+	</div>
+</form>
+<div class="am-u-sm-12">
+	<button class="am-btn am-btn-danger submitBtn" type="button" style="width: 100%;margin-bottom: 10px;height: 40px;">保存</button>
+	<button class="am-btn removeAddr" style="width: 100%;height: 40px;margin-bottom: 10px;">删除收货地址</button>
+	<button class="am-btn am-btn-warning backBtn" style="width: 100%;height: 40px;">返回</button>
+</div>
+
+<script>
+	//表单加载完毕后的回调
+	function addAddressFormLoaded(){
+		$(".submitBtn").click(function(){
+			var addressControl=$("#addAddressForm").control();
+			addressControl.toSubmit(undefined,undefined,$(".submitBtn"));
+		})
+	}
+	//加载城市选择组件默认添加加载基础数据，此方法在确认订单页面加载时就已经执行，后续通过_CityUtil_.loadCity(obj);实现回显
+	steal("js/city.js",function(){
+		_CityUtil_.loadCity();
+	});
+</script>

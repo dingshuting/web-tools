@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+		<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/jquery.kxbdMarquee.js"></script>
+	<style>
+		table th {
+			border-width: 1px;
+			padding: 8px;
+			color: #1ab394
+		}
+		
+		table {
+			padding:3px;
+			color: #fff;
+		}
+		
+		table td {
+			padding:3px;
+			text-align: center;
+		}
+		
+		.content {
+			height: 304px;
+			overflow: hidden;
+		}
+		
+		.nav {
+			width: 150px;
+			height: 40px;
+			line-height: 40px;
+		}
+		
+		.arrow {
+			margin: 100px auto;
+			width: 300px;
+			height: 150px;
+		}
+		
+		.item {
+			float: left;
+			clear: both;
+		}
+		/* 向上的箭头 */
+		
+		.arrow-top {
+			font-size: 0;
+			line-height: 0;
+			border-width: 5px;
+			border-color: #ccc;
+			border-top-width: 0;
+			border-style: dashed;
+			border-bottom-style: solid;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			float:right;
+			height:5px;
+			display:block;
+		}
+		/* 向右的箭头 */
+		
+		.arrow-right {
+			font-size: 0;
+			line-height: 0;
+			border-width: 10px;
+			border-color: red;
+			border-right-width: 0;
+			border-style: dashed;
+			border-left-style: solid;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+		}
+		/* 向下的箭头 */
+		
+		.arrow-bottom {
+			font-size: 0;
+			line-height: 0;
+			border-width: 5px;
+			border-color: #ccc;
+			border-bottom-width: 0;
+			border-style: dashed;
+			border-top-style: solid;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			float:right;
+			display:block;
+			height:5px;
+			margin-top:8px
+		}
+		
+		#aaa {
+    bottom: 6px;
+    right: 12px;
+    width: 12px;
+    height: 19px;
+    z-index: 999;
+    cursor: pointer;
+    
+}
+		 .arrow4 {
+    background-image: url(img/dobble_06.jpg);
+    display: block;
+    width: 12px;
+    height: 19px;
+}
+.arrow2 {
+    background-image: url(img/up_05.jpg);
+    display: block;
+    width: 12px;
+    height: 19px;
+    float:right;
+}
+ 
+.arrow3 {
+    background-image: url(img/bottom_07.jpg);
+    display: block;
+    width: 12px;
+    height: 19px;
+     float:right;
+}
+	</style><style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			font-size: 12px;
+			font-family: "微软雅黑"
+		}
+		
+		a {
+			color: #333;
+			text-decoration: none;
+		}
+		
+		ul {
+			list-style: none;
+		}
+		
+		#marquee1 {
+			width: 310px;
+			height: 45px;
+			overflow: hidden;
+			background: #333;
+			border: 2px solid #333;
+			margin: 20px auto 0;
+		}
+		
+		#marquee1 ul li {
+			float: left;
+			padding: 0 1px;
+		}
+		
+		#marquee1 ul li img {
+			display: block;
+		}
+		
+		#marquee2 {
+			width: 300px;
+			height: 25px;
+			overflow: hidden;
+			background: #EFEFEF;
+			margin: 20px auto 0;
+		}
+		
+		#marquee2 ul li {
+			float: left;
+			padding: 0 10px;
+			line-height: 25px;
+		}
+		
+		#marquee3 {
+			width: 60px;
+			height: 235px;
+			overflow: hidden;
+			background: #333;
+			border: 2px solid #333;
+			margin: 20px auto 0;
+		}
+		
+		#marquee3 ul li {
+			float: left;
+			padding: 1px 0;
+		}
+		
+		#marquee3 ul li img {
+			display: block;
+		}
+		
+		#marquee4 {
+			width: 100%;
+			height: 267px;
+			overflow: hidden;
+		}
+		
+		#marquee4 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee5 {
+			width: 100%;
+			height: 267px;
+			overflow: hidden;
+		}
+		
+		#marquee5 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee6 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee6 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee7 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee7 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee8 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee8 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		#marquee10 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee10 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		#marquee9 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee9 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		.shuoming {
+			text-align: center;
+			margin-top: 30px;
+		}
+		
+		.shuoming p {
+			height: 40px;
+			font-size: 18px;
+			line-height: 40px;
+		}
+				ul,
+		menu,
+		dir {
+			display: block;
+			list-style-type: none;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			margin-inline-start: 0px;
+			margin-inline-end: 0px;
+			padding-inline-start: 0;
+			-webkit-margin-before: 0;
+			-webkit-margin-after: 0;
+			-webkit-margin-start: 0px;
+			-webkit-margin-end: 0px;
+			-webkit-padding-start:0;
+		}
+	</style>
+<link rel="stylesheet" href="css/showloading.css" />
+</head>
+
+<body style="background:url(img/nybj.png) top center;background-attachment: fixed;min-width:1920px;">
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+	<div style="width:100%;height:100px;font-size:25px;color:#fff;text-align: center;">
+		管理驾驶舱
+	</div>
+	<div style="width:100%;height:400px;">
+		<div class="tab" >
+		<div class="contain" style="width:30%;float:left;">
+			
+			<div class="nav" style="float:right;color:#fff;z-index:10001;">
+				
+				<a href="##" style="color:#fff;cursor:pointer" data-legend=5 data-type=10 data-act="for-city" data-container="#main" class="chart-act">按城市</a>
+				<a href="##" style="color:#fff;cursor:pointer" data-legend=0 data-type=11 data-act="for-sc" data-container="#main" class="chart-act">按服务中心</a>
+			</div>
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					工作饱和度分析
+				</div>
+			<div class="content" style="width:99%;float:left;">
+				<div style="height:300px;width:100%;float:left">
+
+					<div id="the7" class="cont" style="width:100%;background-color:rgba(255,255,255,0.1);">
+						<div id="main" style="height:300px;width:97%;" data-option="baoheduOption" data-extend-name="bhdfx" data-val=3 data-legend=5 data-xAxis=4 data-default-type=10 class="lineChart" data-url="renyuanbaohedu"></div>
+					</div>
+					<div id="the8" class="cont" style="width:100%;background-color:rgba(255,255,255,0.1);">
+						<div id="main4" style="height:300px;width:97%;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div style="height:344px;width:30%;float:left;margin-left:30px;" id="zonghe" data-type=10>
+		<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff;margin:0 auto">
+			物流综合数据
+		</div>
+		<div style="width:95%;padding:10px 10px;height:284px;color:#1ab394;margin:0 auto;background-color:rgba(255,255,255,0.1)">
+			<div style="width:50%;float:left;height:122px;text-align: center;padding-top:40px">
+				累计收入<br>¥
+				<span style="font-size:20px;" name="amount">00,000</span>
+			</div>
+			<div style="width:50%;float:left;height:122px;text-align: center;padding-top:40px">
+				累计快件量<br>
+				<span style="font-size:20px;" name="total">00,000</span>
+			</div>
+			<div style="width:50%;float:left;height:122px;text-align: center;">
+				自提平均妥投<br>
+				<span style="font-size:20px;" name="zitiADT">0.00</span>天
+			</div>
+			<div style="width:50%;float:left;height:122px;text-align: center;">
+				派件平均妥投<br>
+				<span style="font-size:20px;" name="paijianADT">0.00</span>天
+			</div>
+		</div>
+	</div>
+	
+		<div class="tab" >
+		<div class="contain" style="width:30%;float:left;height:344px;margin-left:30px;">
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					收入增长率/目标达成率
+				</div>
+			<div class="content" style="width:100%;float:left;height:304px;background-color:rgba(255,255,255,0.1)">
+				<div style="height:300px;width:100%;float:left">
+					<div id="main1" style="height:300px;width:97%;float:left;"></div>
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	</div>
+	<!--中间列表第一个-->
+	<div style="width:100%;height:450px;">
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:60px">
+				<div class="nav" style="float:right;color:#fff">
+					<a href="#the1" style="color:#1ab394;"id="srphbycity"onclick="changeType(1,'suozaichengs',1)">按城市</a>
+					<a href="#the2" style="color:#fff;cursor:pointer"id="srphbyscid" onclick="changeType(2,'suozaichengs',1)">按服务中心</a>
+				</div>
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					收入排行
+				</div>
+
+				<div class="content" style="width:100%;float:left;height:310px" id="srphTableDiv">
+					<div style="height:305px;width:99%;float:left;border:1px solid #1ab394">
+
+						<div id="the1" class="cont" style="width:100%;border-bottom:1px solid #1ab394">
+							<table border="0" cellspacing="0" cellpadding="0"  width="100%" style="border-bottom:1px solid #1ab394">
+								<tr>
+									<th width="10%"></th>
+									<th width="30%" id="suozaichengs">所在城市</th>
+									<th width="15%">本月<span name="aaa"  id="mmmm" class="arrow2 arrow3" style="cursor: pointer;"></span></th>
+									<th width="15%">本季度
+										<span  name="aaa"  class="arrow2" id="jjjj" style="cursor: pointer;"></span>
+									</th>
+									<th width="15%">本年<span   name="aaa" id="yyyy"class="arrow2" style="cursor: pointer;"></span></th>
+									<th width="15%">累计<span   name="aaa"id="sums" class="arrow2" style="cursor: pointer;"></span></th>
+								</tr>
+							</table>
+							<div id="demo" style="overflow: hidden; height: 268px;width:99%;">
+								<div id="marquee7" style="width:100%;height: 268px;">
+									<ul><li>
+									<table border="0" id="srphTable" cellspacing="0" cellpadding="0" width="100%" style="border:0">
+
+									</table></li></ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--第二个列表-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:60px">
+				<div class="nav" style="float:right;color:#fff">
+					<a href="#the3" style="color:#1ab394;cursor:pointer"  id="kjianphangBycity" onclick="kjianphangchangeType(1)">按城市</a>
+					<a href="#the4" style="color:#fff;cursor:pointer"  id="kjianphangByscid" onclick="kjianphangchangeType(2)">按服务中心</a>
+				</div>
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					快件量排名
+				</div>
+
+				<div class="content" style="width:100%;float:left;height:310px" id="kuaijiangliangpaimingTableDiv">
+					<div style="height:305px;width:99%;float:left;border:1px solid #1ab394">
+
+						<div id="the3" class="cont" style="width:100%;">
+							<table border="0" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #1ab394" width="100%">
+								<tr>
+									<th width="10%"></th>
+									<th width="30%" id="kjlpmlable">所在城市</th>
+									<th width="15%">本月<span name="bbb"  id="mmmmkj" class="arrow2 arrow3" style="cursor: pointer;"></span></th>
+									<th width="15%">本季度
+										<span  name="bbb"  class="arrow2" id="jjjjkj" style="cursor: pointer;"></span>
+									</th>
+									<th width="15%">本年<span   name="bbb" id="yyyykj"class="arrow2" style="cursor: pointer;"></span></th>
+									<th width="15%">累计<span   name="bbb"id="sumskj" class="arrow2" style="cursor: pointer;"></span></th>
+								</tr>
+							</table>
+							<div id="demo" style="overflow: hidden; height: 264px;width:100%">
+								<div id="marquee6" style="width:100%;height: 264px;">
+									<ul><li>
+									<table border="0" id="kuaijiangliangpaimingTable"cellspacing="0" cellpadding="0" style="border:0" width="100%">
+
+
+									</table>
+									</li></ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--第三个列表-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:60px">
+				<!--<div class="nav" style="float:right;color:#fff">
+					<a href="#the5" style="color:#fff;cursor:pointer">按城市</a>
+					<a href="#the6" style="color:#fff;cursor:pointer">按服务中心</a>
+				</div>-->
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#1ab394">
+					合作快递公司快递量排名
+				</div>
+
+				<div class="content" style="width:100%;float:left;height:311px;" id="hezuokuaidigongsikuaijianliangDiv">
+					<div style="height:305px;width:99%;float:left;border:1px solid #1ab394">
+
+						<div id="the5" class="cont" style="width:100%;" data-type=10>
+							<table border="0" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #1ab394" width="100%" id="hezuokuaidigongsikuaijianliangTable">
+								<tr>
+									<th width="10%"></th>
+									<th width="30%">快递公司</th>
+									<th width="15%">本月<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('yue',this)" style="cursor: pointer;"></span></th>
+									<th width="15%">本季度
+										<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('ji',this)" style="cursor: pointer;"></span>
+									</th>
+									<th width="15%">本年<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('nian',this)" style="cursor: pointer;"></span></th>
+									<th width="15%">累计<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('leiji',this)" style="cursor: pointer;"></span></th>
+								</tr>
+							</table>
+							<div id="demo" style="overflow: hidden; height: 266px;width:100%">
+								<div id="marquee10" style="width:100%;height: 266px;">
+									<ul><li>
+									<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394" width="100%" id="hezuokuaidigongsikuaijianliang">
+
+									</table></li></ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--最下面左侧折线图-->
+	<div style="width:100%;height:450px;">
+	<div class="tab">
+		<div class="contain" style="width:30%;float:left;margin-top:60px;">
+			<div class="nav" style="float:right;color:#fff;z-index:10001;">
+                <a href="##" style="color:#fff;cursor:pointer" data-legend=1 data-type=1 data-act="for-city" data-container="#main3" class="chart-act">按城市</a>
+                <a href="##" style="color:#fff;cursor:pointer" data-legend=2 data-type=12 data-act="for-sc" data-container="#main3" class="chart-act">按服务中心</a>
+			</div>
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					本月派送件妥投率分析
+				</div>
+			<div class="content" style="width:100%;float:left;">
+				<div style="height:300px;width:100%;float:left">
+                    <div id="the7" class="cont" style="width:100%;background-color:rgba(255,255,255,0.1);">
+                        <div id="main3" style="height:300px;" data-option="benyuepaisongtuotoulvOption" data-extend-name="bypsjttlfx" data-val=5 data-legend=1 data-xAxis=0 data-default-type=1 class="lineChart" data-url="benyuepaisongtuotoulv"></div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="tab">
+        <div id="main5" style="height:344px;width:30%;float:left;margin-top:60px;margin-left:30px;"></div>
+		<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:60px;border:1px solid #1ab394">
+
+            <div class="nav" style="float:right;color:#fff;">
+				<a href="javascript:Getbenyuepaisongjishilv(1,1)" style="color:#1ab394;cursor:pointer" class="chart-act-jsl">按城市</a>
+				<a href="javascript:Getbenyuepaisongjishilv(1,2)" style="color:#fff;cursor:pointer" class="chart-act-jsl">按服务中心</a>
+			</div>
+
+			<div class="content" style="width:100%;float:left" id="benyuepaisongjishilvDiv">
+				<div style="height:276px;width:100%;float:left">
+
+					<div id="the9" class="cont" style="width:100%;height:300px">
+
+                        <table border="0" cellspacing="0" cellpadding="0"  width="100%" style="float:right;" id="benyuepaisongjishilvTable">
+                            <tr>
+                                <th width="20%">名称</th>
+                                <th width="15%">1小时内</th>
+                                <th width="15%">2小时内</th>
+                                <th width="15%">4小时内</th>
+                                <th width="15%">1天内</th>
+                                <th width="15%">>1天</th>
+
+                            </tr>
+                        </table>
+                        <div id="demo" style="overflow: hidden;width:100%">
+                            <div id="marquee4" style="width:100%;">
+                            	<ul>
+                            		<li>
+                                <table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" id="benyuepaisongjishilv">
+                                </table>
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<script src="js/echarts.min.js"></script>
+	<script src="../plugins/jquery.showLoading.js"></script>
+	<script src="../plugins/sonic.js"></script>
+    <script src="js/jquery.json.js"></script>
+    <script src="js/config.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/hezuokuaidigongsikuaijianliang.js"></script>
+    <script src="js/benyuepaisongjishilv.js"></script>
+    <script type="text/javascript" src="js/dingshuting.js" ></script>
+    <script type="text/javascript" src="js/hx.js"></script>
+    <script type="text/javascript">
+    jQuery (function ($)
+    {
+
+        //合作快递公司快件量排名
+        Gethezuokuaidigongsikuaijianliang(1,1,2);
+        //本月派送及时率分析
+        Getbenyuepaisongjishilv(1,1);
+    });
+</script>
+	
+</body>
+
+</html>
+</body>

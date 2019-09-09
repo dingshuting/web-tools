@@ -1,0 +1,30 @@
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<span class="navbar-page-title">
+					被投企业管理系统
+				</span>
+				<a href="/show/apps/beitou/jibenxinxi.html"><SPAN>展示页</SPAN></a>
+			</div>
+			<div class="collapse navbar-collapse" id="header-navbar-collapse">
+				<!-- .navbar-left -->
+				<ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
+
+					<li class="dropdown dropdown-profile">
+						<a href="javascript:void(0)" data-toggle="dropdown">
+							<span class="m-r-sm" id="current_user"><%=$.session.currentUser.name==null?$.session.currentUser.accountNo:$.session.currentUser.name%><span class="caret"></span></span>
+							<img class="img-avatar img-avatar-48" src="templates/white/assets/img/avatars/avatar3.jpg" alt="User profile pic">
+						</a>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li>
+								<a id="logout" href="javascript:void(0)">退出</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<!-- .navbar-right -->
+			</div>
+		</div>
+		<!-- .container-fluid -->
+	</nav>
+	<!-- .navbar-default -->

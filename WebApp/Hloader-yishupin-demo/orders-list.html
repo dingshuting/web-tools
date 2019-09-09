@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<meta name="js-libs" content="js-lib/modules/list.js" />
+		<meta name="is-login" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/dropload.css">
+		<style>
+			.allback {
+				background-color: #ebe8e8;
+			}
+			
+			.am-nav-bb {
+				background-color: #FFFFFF;
+				padding: 10px 5px 10px 5px;
+				text-align: center;
+			}
+			
+			.am-nav-bb a {
+				color: #000000;
+				padding: 5px;
+			}
+			
+			.my-orders-list {
+				margin: 15px 5px 15px 5px;
+				background-color: #FFFFFF;
+				padding: 10px 5px 10px 5px;
+				text-align: center;
+			}
+			
+			.orders-time {
+				float: left;
+			}
+			
+			.orders-status {
+				float: right;
+				color: #ff944a;
+			}
+			
+			.am-list>li {
+				border: none;
+			}
+			
+			.my-orders-list {
+				text-align: left;
+			}
+			
+			.am-list-item-thumbed {
+				padding: 0px;
+			}
+			[name='orderItemList'] li{
+				border-bottom: 1px dotted #E0E0E0;
+				padding: 4px;
+				margin-bottom: 2px;
+			}
+			[name='orderItemList'] li:last-child{
+					border-bottom: 0px dotted #E0E0E0;
+			}
+			.queryBar .active{
+				color: #ff944a;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<!--
+            	作者：heiyanan19901105@163.com
+            	时间：2019-05-23
+            	描述：导航栏
+            -->
+			<div class="am-nav-bb queryBar">
+				<ul class="am-avg-sm-5">
+					<li data-status="-1">
+						全部
+					</li >
+					<li data-status="0">
+						待付款
+					</li>
+					<li data-status="1">
+						待发货
+					</li >
+					<li data-status="2">
+						已发货
+					</li>
+				</ul>
+			</div>
+
+			<!--
+            	作者：heiyanan19901105@163.com
+            	时间：2019-05-23
+            	描述：订单列表
+            -->
+			<div id="ordersList" data-noclean="yes" data-type="list" data-act="orderList" data-querytype='form' data-resultkey="list" data-target="yishupin" data-query='{"status":${$.request.para.status?$.request.para.status:-1},"pageSize":10}'>
+				<div class="am-u-sm-12 box am-padding-0" data-tpl data-item>
+					<div class="box-head">
+						<span class="orders-time" name="createTime" data-event-format="dateTime">--- --</span>
+						<span data-if="obj.status==0"  class="orders-status">待付款</span>
+						<span data-if="obj.status==1"  class="orders-status">支付完成，作品核对中</span>
+						<span data-if="obj.status==2"  class="orders-status">已发货</span>
+						<span data-if="obj.status==3"  class="orders-status">已完成</span>
+						<span data-if="obj.status==4"  class="orders-status">已取消</span>
+						<span data-if="obj.status==6"  class="orders-status">申请退款中</span>
+						<span data-if="obj.status==7"  class="orders-status">已退款</span>
+					</div>
+					<a data-tag data-href="order-detail.html?id=${obj.id}">
+					<div class="box-content" class="am-list-news am-list-news-default">
+						<div class="am-list-news-bd">
+							<ul class="am-list" name="orderItemList">
+								<!--缩略图在标题左边-->
+								<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" data-tpl data-item>
+									<div class="am-u-sm-4 am-list-thumb" style="padding: 0px;">
+										<div style="width: 100%;height:70px ;overflow: hidden;">
+											<img name="productPic" style="height: 90px;" />
+										</div>
+									</div>
+									<div class="am-u-sm-8 am-list-main" style="padding-left: 10px;">
+										<div class="am-list-item-hd" style="font-size: 14px;" name="productName">徐冰：思想与方法</div>
+										<div class="am-list-item-text" style="font-size: 10px;" >布面油画 58x78cm</div>
+										<div class="am-list-item-text" style="font-size: 10px;" ><span name="sp1"></span>,<span name="sp2"></span></div>
+										<div class="am-list-item-pice" style="color: #e20f1b; font-size: 12px;"><span name="productPrice">￥000.00</span> x <span name="productQuantity"></span></div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="sumpice am-u-sm-12">
+							<span style="float: right; font-size: 14px;color: #000000;">
+	                		总计：
+	                		<span style="font-weight: bold; font-size: 16px; color: #fd4c06;" ><span name="payAmount" data-event-format="moneyWithSign"></span></span>
+							</span>
+						</div>
+					</div>
+					</a>
+					<div class="box-footer">
+						<div class="orders-button" style="clear: both; margin-bottom: 10px; margin-top: 5px; float: right;">
+								<button href="##" class="am-btn am-btn-default"  data-action="cancle" data-if="obj.status==0">取消订单</button>
+								<button href="##" class="am-btn am-btn-danger" data-action="toPay" data-if="obj.status==0">去支付</button>
+								<button href="##" class="am-btn am-btn-warning" data-action="refund" data-if="obj.status==1">申请退款</button>
+								<button href="##" class="am-btn am-btn-success" data-action="com" data-if="obj.status==2">确认签收</button>
+								<button href="##" class="am-btn am-btn-danger" data-if="obj.status==4" data-action="rm">删除</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/dropload.min.js"></script>
+<script src="js/config.js"></script>
+<script>
+	var currentPage=1;
+	var noMoreData=false;
+	//取消订单操作
+	function cancle(){
+		var el=$(this);
+		var obj=$(this).data("value");
+		$.Model("cancelOrder","yishupin").executeForm({"orderId":obj.id},function(){
+			$("#ordersList").control().refresh();
+		});
+	}
+	//支付操作
+	function toPay(){
+		var el=$(this);
+		var obj=$(this).data("value");
+		window.location.href="order-detail.html?id="+obj.id;
+	}
+	function com(){
+		var el=$(this);
+		var obj=$(this).data("value");
+		$.Modal.confirm("提示","确认已收到货物？",function(){
+			$.Model("complateOrder","yishupin").executeForm({"orderId":obj.id},function(){
+				$("#ordersList").control().refresh();
+			});
+		});
+	}
+	function rm(){
+		var el=$(this);
+		var obj=$(this).data("value");
+		$.Modal.confirm("提示","删除后将不可恢复，确认要删除改订单？",function(){
+			$.Model("deleteOrder","yishupin").executeForm({"orderId":obj.id},function(){
+				el.parents("[data-item]:first").hide(300);
+				//$("#ordersList").control().refresh();
+			});
+		})
+	}
+	function refund(){
+		var el=$(this);
+		var obj=$(this).data("value");
+		$.Modal.confirm("提示","确认要申请退款么？",function(){
+			$.Model("refundOrder","yishupin").executeForm({"orderId":obj.id},function(){
+				$("#ordersList").control().refresh();
+			});
+		})
+		
+	}
+	function pageFinished(){
+		$("#orderList").dropload({
+		    scrollArea : window,
+		    loadDownFn : function(me){
+		    	if(noMoreData==false){
+		    		$("#ordersList").control().setQuery(++currentPage,undefined,function(res){
+			    		if(res.length<1){
+			    			noMoreData=true;
+			    		}
+			    		me.resetload();
+		    		});
+		    	}
+		    	else{
+		    		me.resetload();
+		    	}
+		    }
+		});
+		$(".queryBar li").click(function(){
+			var status=$(this).attr("data-status");
+			$("#ordersList").control().restart(function(){},{"status":status});
+			$(".queryBar li").removeClass("active");
+			$(this).addClass("active");
+		});
+		$(".queryBar li").each(function(){
+			if($.request.para.status==$(this).attr("data-status")){
+				$(this).addClass("active");
+			}
+		})
+	}
+</script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js"></script>

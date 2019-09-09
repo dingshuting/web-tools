@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>产业协同</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="../templates/default/css/amazeui.css">
+		<link rel="stylesheet" href="../templates/default/css/admin.css">
+		<style>
+			.test{
+				width: 50%;
+				margin: auto;
+			}
+			.test input{
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script type='text/javascript' src='../steal/steal.js'></script>
+		<div id="contentInfo"></div>
+		
+	</body>
+	<script>
+		/*	var list = [];
+			var extraData = {};
+			extraData.id = "ui-wew-2112-e-3232";
+			extraData.nameCodeAlias = "user_outher"; //数据表别名
+			extraData.nameCode = "user";//表名
+			extraData.name = "用户表";//表中文名
+			extraData.createTime = "2012-2-2";//创建时间
+			extraData.desc = "用户表";//备注
+			extraData.status = "1";//状态
+			extraData.cols = {};//表字段集合*/
+			
+			
+		var list = [];
+		var cols = {}; 
+		cols.id = "us-23-232-dssd";
+		cols.colCode = "name";	 // 列的编码
+		cols.colValType = "s";//值的类型
+		cols.colName = "用户名称";//列的名字
+		cols.extralDataId = "1";//父表ID
+		cols.validate = "minSize[128]";//验证规则
+		cols.referenceExtralDataId = ""; //引用其他model
+		cols.status = "1"; //状态 1.启用
+		cols.isSeach = "1";//是搜索条件
+		cols.options = "";//单选，复选，
+		cols.classes = "";//类样式
+		cols.style = "";//行内样式
+		cols.length = "128"; //值的长度
+		cols.desc = "用户名";//备注
+		
+		var cols1 = {}; 
+		cols1.id = "cv-23-232-dssd";
+		cols1.colCode = "createTime";	 // 时间
+		cols1.colValType = "t";//值的类型
+		cols1.colName = "创建时间";//列的名字
+		cols1.extralDataId = "1";//父表ID
+		cols1.validate = "minSize[128]";//验证规则
+		cols1.referenceExtralDataId = ""; //引用其他model
+		cols1.status = "1"; //状态 1.启用
+		cols1.isSeach = "1";//是搜索条件
+		cols1.options = "";//单选，复选，
+		cols1.classes = "";//类样式
+		cols1.style = "";//行内样式
+		cols1.length = "128"; //值的长度
+		cols1.desc = "创建时间";//备注
+		
+		var cols2 = {}; 
+		cols2.id = "fg-23-232-dssd";
+		cols2.colCode = "price";	 // 列的编码
+		cols2.colValType = "d";//值的类型
+		cols2.colName = "用户余额";//列的名字
+		cols2.extralDataId = "1";//父表ID
+		cols2.validate = "minSize[128]";//验证规则
+		cols2.referenceExtralDataId = ""; //引用其他model
+		cols2.status = "1"; //状态 1.启用
+		cols2.isSeach = "1";//是搜索条件
+		cols2.options = "";//单选，复选，
+		cols2.classes = "";//类样式
+		cols2.style = "";//行内样式
+		cols2.length = "128"; //值的长度
+		cols2.desc = "用户余额";//备注
+		
+		var cols3 = {}; 
+		cols3.id = "rt-23-232-dssd";
+		cols3.colCode = "age";	 // 列的编码
+		cols3.colValType = "i";//值的类型
+		cols3.colName = "用户年龄";//列的名字
+		cols3.extralDataId = "1";//父表ID
+		cols3.validate = "minSize[128]";//验证规则
+		cols3.referenceExtralDataId = ""; //引用其他model
+		cols3.status = "1"; //状态 1.启用
+		cols3.isSeach = "1";//是搜索条件
+		cols3.options = "";//单选，复选，
+		cols3.classes = "";//类样式
+		cols3.style = "";//行内样式
+		cols3.length = "128"; //值的长度
+		cols3.desc = "用户年龄";//备注
+		
+		var cols4 = {}; 
+		cols4.id = "er-23-232-dssd";
+		cols4.colCode = "sex";	 // 列的编码
+		cols4.colValType = "b";//值的类型
+		cols4.colName = "性别";//列的名字
+		cols4.extralDataId = "1";//父表ID
+		cols4.validate = "minSize[128]";//验证规则
+		cols4.referenceExtralDataId = ""; //引用其他model
+		cols4.status = "1"; //状态 1.启用
+		cols4.isSeach = "1";//是搜索条件
+		cols4.options = "";//单选，复选，
+		cols4.classes = "";//类样式
+		cols4.style = "";//行内样式
+		cols4.length = "128"; //值的长度
+		cols4.desc = "性别";//备注
+		
+		var cols5 = {}; 
+		cols5.id = "xc-23-232-dssd";
+		cols5.colCode = "file";	 // 列的编码
+		cols5.colValType = "f";//值的类型
+		cols5.colName = "头像";//列的名字
+		cols5.extralDataId = "1";//父表ID
+		cols5.validate = "minSize[128]";//验证规则
+		cols5.referenceExtralDataId = ""; //引用其他model
+		cols5.status = "1"; //状态 1.启用
+		cols5.isSeach = "1";//是搜索条件
+		cols5.options = "";//单选，复选，
+		cols5.classes = "";//类样式
+		cols5.style = "";//行内样式
+		cols5.length = "128"; //值的长度
+		cols5.desc = "头像";//备注
+		
+		var cols6 = {}; 
+		cols6.id = "sd-23-232-dssd";
+		cols6.colCode = "prents";	 // 列的编码
+		cols6.colValType = "o";//值的类型
+		cols6.colName = "用户主表";//列的名字
+		cols6.extralDataId = "1";//父表ID
+		cols6.validate = "minSize[128]";//验证规则
+		reObj = [];
+			var reCols  = {};
+			reCols.id = "yu-23-232-dssd";
+			reCols.colCode = "companyName";	 // 列的编码
+			reCols.colValType = "s";//值的类型
+			reCols.colName = "企业名称";//列的名字
+			reCols.extralDataId = "1";//父表ID
+			reCols.validate = "minSize[128]";//验证规则
+			reCols.referenceExtralDataId = ""; //引用其他model
+			reCols.status = "1"; //状态 1.启用
+			reCols.isSeach = "1";//是搜索条件
+			reCols.options = "";//单选，复选，
+			reCols.classes = "";//类样式
+			reCols.style = "";//行内样式
+			reCols.length = "128"; //值的长度
+			reCols.desc = "企业名称";//备注
+			
+			var reCols1  = {};
+			reCols1.id = "yu-23-232-dssd";
+			reCols1.colCode = "companyAddress";	 // 列的编码
+			reCols1.colValType = "s";//值的类型
+			reCols1.colName = "企业地址";//列的名字
+			reCols1.extralDataId = "1";//父表ID
+			reCols1.validate = "minSize[128]";//验证规则
+			reCols1.referenceExtralDataId = ""; //引用其他model
+			reCols1.status = "1"; //状态 1.启用
+			reCols1.isSeach = "1";//是搜索条件
+			reCols1.options = "";//单选，复选，
+			reCols1.classes = "";//类样式
+			reCols1.style = "";//行内样式
+			reCols1.length = "128"; //值的长度
+			reCols1.desc = "企业地址";//备注
+			reObj.push(reCols);
+			reObj.push(reCols1);
+		cols6.referenceExtralDataId = reObj; //引用其他model
+		cols6.status = "1"; //状态 1.启用
+		cols6.isSeach = "1";//是搜索条件
+		cols6.options = "";//单选，复选，
+		cols6.classes = "";//类样式
+		cols6.style = "";//行内样式
+		cols6.length = "128"; //值的长度
+		cols6.desc = "用户主表";//备注
+		
+		var cols7 = {}; 
+		cols7.id = "we-23-232-dssd";
+		cols7.colCode = "introduce";	 // 列的编码
+		cols7.colValType = "h";//值的类型
+		cols7.colName = "用户介绍";//列的名字
+		cols7.extralDataId = "1";//父表ID
+		cols7.validate = "minSize[128]";//验证规则
+		cols7.referenceExtralDataId = ""; //引用其他model
+		cols7.status = "1"; //状态 1.启用
+		cols7.isSeach = "1";//是搜索条件
+		cols7.options = "";//单选，复选，
+		cols7.classes = "";//类样式
+		cols7.style = "";//行内样式
+		cols7.length = "128"; //值的长度
+		cols7.desc = "用户介绍";//备注
+		
+		var cols8 = {}; 
+		cols8.id = "zx-23-232-dssd";
+		cols8.colCode = "country";	 // 列的编码
+		cols8.colValType = "bl";//值的类型
+		cols8.colName = "所在国";//列的名字
+		cols8.extralDataId = "1";//父表ID
+		cols8.validate = "minSize[128]";//验证规则
+		cols8.referenceExtralDataId = ""; //引用其他model
+		cols8.status = "1"; //状态 1.启用
+		cols8.isSeach = "1";//是搜索条件
+		cols8.options = "";//单选，复选，
+		cols8.classes = "";//类样式
+		cols8.style = "";//行内样式
+		cols8.length = "128"; //值的长度
+		cols8.desc = "所在国";//备注
+		
+		var cols9 = {}; 
+		cols9.id = "as-23-232-dssd";
+		cols9.colCode = "addressList";	 // 列的编码
+		cols9.colValType = "ol";//值的类型
+		cols9.colName = "用户地址";//列的名字
+		cols9.extralDataId = "1";//父表ID
+		cols9.validate = "minSize[128]";//验证规则
+		
+		/*reObj = [];
+			var reAdCols  = {};
+			reAdCols.id = "yu-23-232-dssd";
+			reAdCols.colCode = "addressName";	 // 列的编码
+			reAdCols.colValType = "s";//值的类型
+			reAdCols.colName = "地址名称";//列的名字
+			reAdCols.extralDataId = "1";//父表ID
+			reAdCols.validate = "minSize[128]";//验证规则
+			reAdCols.referenceExtralDataId = ""; //引用其他model
+			reAdCols.status = "1"; //状态 1.启用
+			reAdCols.isSeach = "1";//是搜索条件
+			reAdCols.options = "";//单选，复选，
+			reAdCols.classes = "";//类样式
+			reAdCols.style = "";//行内样式
+			reAdCols.length = "128"; //值的长度
+			reAdCols.desc = "企业名称";//备注
+			
+			var reAdCols1  = {};
+			reAdCols1.id = "yu-23-232-dssd";
+			reAdCols1.colCode = "addressDecs";	 // 列的编码
+			reAdCols1.colValType = "s";//值的类型
+			reAdCols1.colName = "地址备注";//列的名字
+			reAdCols1.extralDataId = "1";//父表ID
+			reAdCols1.validate = "minSize[128]";//验证规则
+			reAdCols1.referenceExtralDataId = ""; //引用其他model
+			reAdCols1.status = "1"; //状态 1.启用
+			reAdCols1.isSeach = "1";//是搜索条件
+			reAdCols1.options = "";//单选，复选，
+			reAdCols1.classes = "";//类样式
+			reAdCols1.style = "";//行内样式
+			reAdCols1.length = "128"; //值的长度
+			reAdCols1.desc = "企业地址";//备注
+			reObj.push(reAdCols);
+			reObj.push(reAdCols1);*/
+			
+		cols9.referenceExtralDataId = reObj; //引用其他model	
+		cols9.status = "1"; //状态 1.启用
+		cols9.isSeach = "1";//是搜索条件
+		cols9.options = "";//单选，复选，
+		cols9.classes = "";//类样式
+		cols9.style = "";//行内样式
+		cols9.length = "128"; //值的长度
+		cols9.desc = "用户地址";//备注
+		
+		var cols10 = {}; 
+		cols10.id = "qw-23-232-dssd";
+		cols10.colCode = "marry";	 // 列的编码
+		cols10.colValType = "fv";//值的类型
+		cols10.colName = "婚配";//列的名字
+		cols10.extralDataId = "1";//父表ID
+		cols10.validate = "minSize[128]";//验证规则
+		cols10.referenceExtralDataId = ""; //引用其他model
+		cols10.status = "1"; //状态 1.启用
+		cols10.isSeach = "1";//是搜索条件
+		cols10.options = "";//单选，复选，
+		cols10.classes = "";//类样式
+		cols10.style = "";//行内样式
+		cols10.length = "128"; //值的长度
+		cols10.desc = "婚配";//备注
+		
+		list.push(cols);
+		list.push(cols1);
+		list.push(cols2);
+		list.push(cols3);
+		list.push(cols4);
+		list.push(cols5);
+		list.push(cols6);
+		list.push(cols7);
+		list.push(cols8);
+		list.push(cols9);
+		list.push(cols10);
+		
+		
+		var colsVal = {};
+		colsVal.name = "张三";
+		colsVal.createTime = "2012-1-1"
+		colsVal.price = 12.55
+		colsVal.age = 20;
+		colsVal.sex = "男";
+		colsVal.file = "http://www.baidu.com";
+		colsVal.prents = {};
+		colsVal.prents.companyName="企业集团";
+		colsVal.prents.companyAddress="北京市朝阳区";
+		colsVal.introduce = "介绍：这个用户有点多";
+		colsVal.country = "中国";
+		colsVal.addressList = [];
+		colsVal.marry = "是";
+		
+		
+		
+		steal("js-lib/lib-contentInfo.js", function(ContentInfo) {
+			var object ={};
+			object.colsVal = colsVal;
+			object.colsTitle = list;
+			var info = new ContentInfo("#contentInfo",object);
+		});
+	</script>
+
+</html>

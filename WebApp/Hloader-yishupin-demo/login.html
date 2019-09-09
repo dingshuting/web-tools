@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="js-libs" content="js-lib/modules/form.js" />
+		<title>artYIDA-登录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<style>
+			.login-container {
+				width: 350px;
+				margin: auto;
+			}
+			
+			.login-form {
+				background-color: #fff;
+				height: 400px;
+				width: 100%;
+				position: relative;
+			}
+			
+			.login-title {
+				padding-bottom: 5px;
+			}
+			
+			.login-title span {
+				cursor: pointer;
+			}
+			
+			.line {
+				height: 2px;
+				background-color: #e5e5e5;
+			}
+			
+			.login-form span {
+				padding: 2px;
+			}
+			
+			.login-form .active {
+				font-weight: bold;
+				border-bottom: 2px solid #e18730;
+			}
+			
+			.form-control {
+				margin-top: 25px;
+				border: 0px;
+				border-bottom: 1px solid #e5e5e5;
+			}
+			
+			.login-btn {
+				width: 100%;
+				background-image: url(img/login-btn-bg.jpg);
+				height: 40px;
+				color: #fff;
+				font-size: 18px;
+			}
+			
+			.login-btn :hover {
+				color: #fff;
+				background-image: url(img/login-btn-bg.jpg);
+			}
+			
+			.mobile-login {
+				display: none;
+			}
+			
+			.colse {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="row login account-login " style="margin-top: 50px;">
+			<form id="login-form" data-type="form" data-action="login" data-target="yishupin" data-method="form" data-event-failed="loginFailed" data-event-success="loginSuccess">
+				<div class="am-u-sm-12 login-title" data-target="account-login"><span class="active">账号登录</span></div>
+				<div class="am-u-sm-6 login-title" data-target="mobile-login" style="display: none;"><span>手机号登录</span></div>
+				<div class="am-u-sm-12">
+					<div class="line"></div>
+				</div>
+				<div class="am-u-sm-12">
+					<input type="text" class="form-control validate[required]" name="username" placeholder="请输入手机号或邮箱">
+					<input type="password" class="form-control validate[required]" name="password" placeholder="请输入密码">
+				</div>
+				<div class="am-u-sm-6 col-md-offset-6 text-right" style="padding: 20px;">
+					<lable style="font-size: 14px;"> </lable>
+				</div>
+				<div class="am-u-sm-12">
+					<input type="button" class="am-btn am-btn-primary login-btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
+				</div>
+				<div class="am-u-sm-12 text-center" style="padding: 20px;">
+					<span>还没有账号？</span>
+					<a id="toRegister" href="##">请注册</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
+
+
+<script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script>
+	! function($) {
+		if($.ModuleControl)
+			new $.ModuleControl("#login-form");
+		$("#toRegister").click(function() {
+			$(".login-form .container").html('<img src="img/loading.gif" style="margin-top:40%;"/>');
+			$.get("includes/register-form.html", function(data) {
+				$(".login-form .container").html(data);
+			});
+		});
+		$(".login-title").click(function() {
+			$(".login").hide();
+			$("." + $(this).attr("data-target")).show();
+		});
+		$(".login-btn").click(function() {
+			$(".login-btn").val("登录中...");
+			$("#login-form").control().toSubmit(undefined, undefined, $(".login-btn"));
+			//window.location.href="usercenter/index.html";
+		});
+		$(window).ajaxError(function(event, request, settings) {
+			loginFailed();
+		})
+	}($)
+
+	function loginFailed(event, data) {
+		alert('用户名或密码错误');
+		$(".login-btn").val("登    录");
+		$(".login-btn").click(function() {
+			$(".login-btn").val("登 录 中...");
+			$("#login-form").control().toSubmit(undefined, undefined, $(".login-btn"));
+			//window.location.href="usercenter/index.html";
+		});
+	}
+
+	function loginSuccess(event, data) {
+		console.log(data);
+		if(data.code == '200') {
+			if($.request.para.redirect) {
+				window.location.href = decodeURI($.request.para.redirect);
+			} else {
+				window.location.href = "index.html";
+			}
+		}
+	}
+</script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js"></script>

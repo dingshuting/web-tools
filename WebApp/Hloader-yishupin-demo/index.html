@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>商店</title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+		<meta name="js-libs" content="js-lib/modules/list.js" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.am-circle {
+				width: 85px;
+				height: 85px;
+				background-color: #95cac8;
+				text-align: center;
+			}
+			
+			.circletitle {
+				line-height: 85px;
+				color: #ffffff;
+				size: 30px;
+				letter-spacing: 2px;
+			}
+			
+			.texttitle {
+				font-size: 20px;
+				font-weight: 500;
+				text-align: center;
+				padding: 10px;
+				margin-bottom: 10px;
+				letter-spacing: 2px;
+			}
+			
+			.more {
+				font-size: 12px;
+				float: right;
+				padding: 10px;
+			}
+			
+			.am-gallery-bordered .am-gallery-item {
+				padding: 0px;
+			}
+			
+			.am-gallery-bordered .am-gallery-title {
+				padding-left: 5px;
+			}
+			
+			.am-gallery-bordered .am-gallery-desc {
+				padding-left: 5px;
+			}
+			
+			.am-gallery-bordered .am-gallery-item {
+				height: 135px;
+				width: 100%;
+			}
+			
+			.slider-item {
+				height: 110px;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--banner-->
+		<div class="am-slider banner-slider">
+			<ul class="am-slides">
+				<li>
+					<img src="img/banner1.png" width="100%">
+				</li>
+			</ul>
+		</div>
+		<!--
+        	圆形按钮区域       	
+        -->
+		<div data-am-widget="slider" class="container am-g box" style="padding-top: 30px; padding-bottom: 30px;margin-top: 0px;">
+			<div class="am-u-sm-12" style="padding-left: 30px; padding-right: 37px;">
+				<a href="sell-list.html?bigCategory=1">
+					<div class="am-u-sm-4">
+						<div class="am-circle">
+							<b class="circletitle">艺术品</b>
+						</div>
+					</div>
+				</a>
+				<a href="sell-list.html?bigCategory=2">
+					<div class="am-u-sm-4">
+						<div class="am-circle">
+							<b class="circletitle">衍生品</b>
+						</div>
+					</div>
+				</a>
+				<a href="artist-list.html">
+					<div class="am-u-sm-4">
+						<div class="am-circle">
+							<b class="circletitle">艺术家</b>
+						</div>
+					</div>
+				</a>
+			</div>
+
+		</div>
+
+		<!--
+        	精品推荐列表
+        -->
+		<div class="container box" style="background-color: #f0f0f0; ">
+			<div class="am-g">
+				<div class="am-u-sm-6 am-u-sm-offset-3">
+					<div class="texttitle">精品推荐</div>
+				</div>
+				<div class="am-u-sm-3" style="text-align: right;padding-top: 8px;">
+					<a href="sell-list.html" class="more">更多 &raquo;</a>
+				</div>
+			</div>
+			<div data-type="list" data-end=1 data-act="superrecommend" data-querytype="get">
+				<div data-am-widget="slider" class="am-slider am-slider-default" style="padding-left: 5px;" data-tpl data-item>
+					<ul class="am-slides" style="padding-left: 5px; background-color: #f0f0f0;" name="pmsProductResults">
+						<li data-tpl data-item class="slider-item">
+							<a data-href="product-detail.html?id=${obj.id}" data-tag>
+								<img src="img/default.png" name="pic">
+								<div class="am-slider-desc" style="font-size: 11px;padding: 5px;">
+									<span name="name"></span><br />
+									<span name="brandName"></span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
+		<!--
+        	人气作品
+        -->
+		<div class="box">
+			<div class="am-g">
+				<div class="am-u-sm-6 am-u-sm-offset-3">
+					<div class="texttitle">人气作品</div>
+				</div>
+				<div class="am-u-sm-3" style="text-align: right;padding-top: 8px;">
+					<a href="sell-list.html" class="more">更多 &raquo;</a>
+				</div>
+			</div>
+
+			<ul data-type="list" data-act="newProduct" data-querytype="get" data-end=6 data-am-widget="gallery" class="am-gallery am-avg-sm-3 am-avg-md-3 am-avg-lg-4 am-gallery-bordered" data-am-gallery="{  }">
+				<li data-tpl data-item>
+					<div class="am-gallery-item">
+						<a data-tag data-href="product-detail.html?id=${obj.id}" class="jingpin">
+							<div style="width: 100%;height: 75px;overflow: hidden;">
+								<img src="img/default.png" name="pic" width="100%" />
+							</div>
+							<h3 class="am-gallery-title" name="name">--</h3>
+							<div class="am-gallery-desc"><span name="brandName"></span><b style="float: right;" name="price" data-event-format="moneyWithSign">¥27500</b></div>
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--
+                        艺术家
+        -->
+		<div class="box" style="padding-top: 17px;">
+			<div class="am-g">
+				<div class="am-u-sm-6 am-u-sm-offset-3">
+					<div class="texttitle">艺术家</div>
+				</div>
+				<div class="am-u-sm-3" style="text-align: right;padding-top: 8px;">
+					<a href="artist-list.html" class="more">更多 &raquo;</a>
+				</div>
+			</div>
+
+			<div data-type='list' data-end=3 data-act="artistrecommend" data-querytype="get" class="am-g" style="padding-top: 30px;margin-bottom: 50px;padding-left: 30px; padding-right: 37px;">
+				<div class="am-u-sm-4" style="text-align: center;" data-tpl data-item>
+					<img class="am-circle" src="img/default.png" name="icon" />
+					<span class="am-text-middle" style="color: black;" name="username">--</span>
+				</div>
+			</div>
+		</div>
+		<!--
+                        艺术动态
+        -->
+		<div style="" class="box">
+			<div class="am-g">
+				<div class="am-u-sm-6 am-u-sm-offset-3">
+					<div class="texttitle">艺术动态</div>
+				</div>
+				<div class="am-u-sm-3" style="text-align: right;padding-top: 8px;">
+					<a href="new-list.html" class="more">更多 &raquo;</a>
+				</div>
+			</div>
+			<div class="am-container">
+				<div style="width: 100%;height:168px ;overflow: hidden;" id="firstNews" data-item>
+					<a data-tag data-href="news-item.html?id=${obj.newsid}">
+						<img src="img/default.png" style="width: 100%;padding: 0px;" name="imageurl" />
+					</a>
+				</div>
+				<div class="am-g">
+					<ul data-type="list" data-event-finish="loadFirstNews" data-start=1 data-act="artNews" data-resultkey="data" data-querytype="get" data-am-widget="gallery" class="am-gallery am-avg-sm-3 am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }">
+						<li data-tpl data-item>
+							<div class="am-gallery-item">
+								<a data-tag data-href="news-item.html?id=${obj.newsid}">
+									<div style="width: 100%;height: 66px;overflow: hidden;">
+										<img src="img/default.png" name="imageurl" />
+									</div>
+									<h3 class="am-gallery-title" name="title">-- </h3>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--
+        	底部菜单栏
+        -->
+		<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " data-include="includes/footer-nav.html">
+			
+		</div>
+
+	</body>
+
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script>
+	function pageFinished() {
+		$('.am-slider-default [data-tpl]').remove();
+		$('.am-slider-default').flexslider({
+			"animation": "slide",
+			"animationLoop": false,
+			"itemWidth": 200,
+			"itemMargin": 5,
+			"controlNav": false
+		});
+		$(".banner-slider").flexslider({});
+	}
+
+	function loadFirstNews() {
+		new $.Modules['detail']($("#firstNews"), {
+			para: {
+				data: $(this).control().data.data.list[0]
+			}
+		});
+	}
+</script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>

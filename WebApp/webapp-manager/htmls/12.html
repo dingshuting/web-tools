@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			    #dialog {
+        background-color: #fff;
+        border: 5px solid rgba(0, 0, 0, 0.4);
+        height: 250px;
+        left: 50%;
+        margin: -200px 0 0 -100px;
+        padding: 1px;
+        position: fixed !important; /* 浮动对话框 */
+        position: absolute;
+        top:60%;
+        width: 200px;
+        z-index: 5;
+        border-radius: 5px;
+        display: none;
+    }
+ 
+    #dialog p {
+        margin: 0 0 12px;
+        height: 24px;
+        line-height: 24px;
+        background: #CCCCCC;
+    }
+ 
+    #dialog p.close {
+        text-align: right;
+        padding-right: 10px;
+    }
+ 
+    #dialog p.close a {
+        color: #fff;
+        text-decoration: none;
+    }
+		</style>
+	</head>
+	<body><div id="dialog" style="display:block">
+        <a href="#" onclick="closeBg();">关闭</a>
+    </p>
+ 
+    <div>长按二维码添加客服</div>
+    <div><img style="width: 100px" src="__ROOT__/Uploads{$kefu.kefu}"></div>
+</div>
+<script type="text/javascript">    function showBg() {
+        $("#dialog").show();
+    }
+    function closeBg() {
+        $("#dialog").hide();
+    }
+</script>
+	</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/jquery.kxbdMarquee.js"></script>
+	<style>
+		table th {
+			border-width: 1px;
+			padding: 8px;
+			color: #1ab394
+		}
+		
+		table {
+			padding: 3px;
+			color: #fff;
+		}
+		
+		table td {
+			padding:3px;
+			text-align: center;
+		}
+		
+		.content {
+			height: 310px;
+			overflow: hidden;
+		}
+		
+		.nav {
+			width: 150px;
+			height: 40px;
+			line-height: 40px;
+		}
+		
+		.nav1 {
+			width: 250px;
+			height: 40px;
+			line-height: 40px;
+		}
+		
+		.arrow {
+			margin: 100px auto;
+			width: 300px;
+			height: 150px;
+		}
+		
+		.item {
+			float: left;
+			clear: both;
+		}
+		/* 向上的箭头 */
+		
+		.arrow-top {
+			font-size: 0;
+			line-height: 0;
+			border-width: 5px;
+			border-color: #ccc;
+			border-top-width: 0;
+			border-style: dashed;
+			border-bottom-style: solid;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			float: right;
+			height: 5px;
+			display: block;
+		}
+		/* 向右的箭头 */
+		
+		.arrow-right {
+			font-size: 0;
+			line-height: 0;
+			border-width: 10px;
+			border-color: red;
+			border-right-width: 0;
+			border-style: dashed;
+			border-left-style: solid;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+		}
+		/* 向下的箭头 */
+		
+		.arrow-bottom {
+			font-size: 0;
+			line-height: 0;
+			border-width: 5px;
+			border-color: #ccc;
+			border-bottom-width: 0;
+			border-style: dashed;
+			border-top-style: solid;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			float: right;
+			display: block;
+			height: 5px;
+			margin-top: 8px
+		}
+		
+		#aaa {
+			bottom: 6px;
+			right: 12px;
+			width: 12px;
+			height: 19px;
+			z-index: 999;
+			cursor: pointer;
+		}
+		
+		.arrow4 {
+			background-image: url(img/dobble_06.jpg);
+			display: block;
+			width: 12px;
+			height: 19px;
+		}
+		
+		.arrow2 {
+			background-image: url(img/up_05.jpg);
+			display: block;
+			width: 12px;
+			height: 19px;
+			float: right;
+		}
+		
+		.arrow3 {
+			background-image: url(img/bottom_07.jpg);
+			display: block;
+			width: 12px;
+			height: 19px;
+			float: right;
+		}
+	</style>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			font-size: 12px;
+			font-family: "微软雅黑"
+		}
+		
+		a {
+			color: #333;
+			text-decoration: none;
+		}
+		
+		ul {
+			list-style: none;
+		}
+		
+		#marquee1 {
+			width: 310px;
+			height: 45px;
+			overflow: hidden;
+			background: #333;
+			border: 2px solid #333;
+			margin: 20px auto 0;
+		}
+		
+		#marquee1 ul li {
+			float: left;
+			padding: 0 1px;
+		}
+		
+		#marquee1 ul li img {
+			display: block;
+		}
+		
+		#marquee2 {
+			width: 300px;
+			height: 25px;
+			overflow: hidden;
+			background: #EFEFEF;
+			margin: 20px auto 0;
+		}
+		
+		#marquee2 ul li {
+			float: left;
+			padding: 0 10px;
+			line-height: 25px;
+		}
+		
+		#marquee3 {
+			width: 60px;
+			height: 235px;
+			overflow: hidden;
+			background: #333;
+			border: 2px solid #333;
+			margin: 20px auto 0;
+		}
+		
+		#marquee3 ul li {
+			float: left;
+			padding: 1px 0;
+		}
+		
+		#marquee3 ul li img {
+			display: block;
+		}
+		
+		#marquee4 {
+			width: 100%;
+			height: 267px;
+			overflow: hidden;
+		}
+		
+		#marquee4 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee5 {
+			width: 200px;
+			height: 200px;
+			overflow: hidden;			;
+		}
+		
+		#marquee5 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee6 {
+			width: 200px;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee6 ul li {
+			float: left;
+			width: 180px;
+			line-height: 26px;
+		}
+		
+		.shuoming {
+			text-align: center;
+			margin-top: 30px;
+		}
+		
+		.shuoming p {
+			height: 40px;
+			font-size: 18px;
+			line-height: 40px;
+		}
+	</style>
+	<link rel="stylesheet" href="css/showloading.css" />
+</head>
+
+<body style="background:url(img/nybj.png) top center;background-attachment: fixed;min-width:1920px;">
+	<!-- 第一行-->
+	<div style="width:100%;height:70px;font-size:25px;color:#fff;text-align: center;">
+		<span id="sc_title"></span>管理驾驶舱<button id="fanhuiCity" style="display: none;float:left;background:#1ab394;color:#fff;border:0;border-radius: 2px;width:70px;height:30px;cursor: pointer;">返回</button>
+	</div>
+	<div style="width:100%;height:400px;">
+		<div class="contain" style="width:30%;float:left;">
+
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+				工作饱和度分析
+			</div>
+
+			<div class="content" style="height:302px;width:100%;float:left">
+				<div style="height:400px;width:97%;float:left">
+
+					<div class="cont" style="width:100%;">
+
+						<div id="main" data-option="baoheduOption" data-extend-name="bhdfx" data-val=3 data-legend=6 data-xAxis=4 data-default-type=30 class="lineChart" data-url="renyuanbaohedu" style="height:300px;width:100%;float:left;border:1px solid #1ab394;background-color:rgba(255,255,255,0.1)"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div id="zonghe" data-type=30 style="height:300px;width:30%;float:left;margin-left:30px;">
+			<div style="width:90%;padding:10px 10px;font-size:15px;color:#fff;margin:0 auto">
+				物流综合数据
+			</div>
+			<div style="width:90%;padding:10px 10px;height:280px;color:#1ab394;margin:0 auto;background-color:rgba(255,255,255,0.1)">
+				<div style="width:50%;float:left;height:120px;text-align: center;padding-top:40px">
+					累计收入<br>¥
+					<span style="font-size:20px;" name="amount">00,000</span>
+				</div>
+				<div style="width:50%;float:left;height:120px;text-align: center;padding-top:40px">
+					累计快件量<br>
+					<span style="font-size:20px;" name="total">00,000</span>
+				</div>
+				<div style="width:50%;float:left;height:120px;text-align: center;">
+					自提平均妥投<br>
+					<span style="font-size:20px;" name="zitiADT">0.00</span>天
+				</div>
+				<div style="width:50%;float:left;height:120px;text-align: center;">
+					派件平均妥投<br>
+					<span style="font-size:20px;" name="paijianADT">0.00</span>天
+				</div>
+			</div>
+		</div>
+		<!--第一行第三个图标-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;">
+				<div class="nav1" style="float:right;color:#fff;width:180px;">
+					<a onclick="mbdclfx(1);" id="mbdclbym" style="color:#1ab394;cursor:pointer">按月份</a>
+					<a onclick="mbdclfx(2);" id="mbdclbyj" style="color:#fff;cursor:pointer">按季度</a>
+					<a onclick="mbdclfx(3);" id="mbdclbyy" style="color:#fff;cursor:pointer">按年度</a>
+				</div>
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					目标达成率分析
+				</div>
+
+				<div class="content" style="height:302px;width:100%;float:left">
+					<div style="height:400px;width:95%;float:left">
+
+						<div class="cont" style="width:100%;">
+
+							<div id="mbdclfx" style="height:300px;width:97%;float:left;border:1px solid #1ab394;margin-left:30px;background-color:rgba(255,255,255,0.1)"></div>
+						</div>
+						<div id="the2" class="cont">
+
+							<div id="mbdclfx1" style="height:380px;width:97%;float:left;border:1px solid #1ab394;background-color:rgba(255,255,255,0.1)"></div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--中间列表第一个-->
+	<div style="width:100%;height:450px;">
+		<div class="tab">
+			<div class="contain" style="width:45%;float:left;margin-top:60px">
+				<div class="nav1" style="float:right;color:#fff">
+					<a onclick="fwffenx(1)" id="fwfbym" style="color:#1ab394;cursor:pointer">按月份</a>
+					<a onclick="fwffenx(2)" id="fwfbyj" style="color:#fff;cursor:pointer">按季度</a>
+					<a onclick="fwffenx(3) " id="fwfbyy" style="color:#fff;cursor:pointer">按年度</a>
+					<a onclick="beforfwffenx()" id="fwfbyd" style="color:#fff;cursor:pointer">按日期</a>
+					<div id="timeDiv" style="position:absolute;margin-right:30px;display: none;background:#fff;height:40px;width:260px;float:right;z-index:10001;padding:0px 10px;"><input name='startTime' onclick="WdatePicker({dateFmt:'yyyy-M-d'})" style="width:100px" />
+						<input name='endTime' onclick="WdatePicker({dateFmt:'yyyy-M-d'})" style="width:100px" />
+						<a onclick="fwffenx(4)" style="color:#000;cursor:pointer">确定</a>
+					</div>
+				</div>
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					服务费数据分析
+
+				</div>
+
+				<div class="content" style="height:382px;width:100%;float:left">
+					<div style="height:400px;width:98%;float:left">
+
+						<div id="the1" class="cont" style="width:100%;">
+
+							<div id="fwffenx" style="height:380px;width:100%;float:left;border:1px solid #1ab394;background-color:rgba(255,255,255,0.1)"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--中间列表第二个-->
+		<div class="tab">
+			<div class="contain" style="width:45%;float:left;margin-top:60px;margin-left:60px">
+				<div class="nav1" style="float:right;color:#fff">
+					<a onclick="kjfenx(1)" id="kjslbym" style="color:#1ab394;cursor:pointer">按月份</a>
+					<a onclick="kjfenx(2)" id="kjslbyj" style="color:#fff;cursor:pointer">按季度</a>
+					<a onclick="kjfenx(3)" id="kjslbyy" style="color:#fff;cursor:pointer">按年度</a>
+					<a onclick="beforkjfenx()" id="kjslbyd" style="color:#fff;cursor:pointer">按日期</a>
+					<div id="timeDiv1" style="position:absolute;margin-right:30px;display: none;background:#fff;height:40px;width:260px;float:right;z-index:10001;padding:0px 10px;"><input name='startTime1' onclick="WdatePicker({dateFmt:'yyyy-M-d'})" style="width:100px" />
+						<input name='endTime1' onclick="WdatePicker({dateFmt:'yyyy-M-d'})" style="width:100px" />
+						<a onclick="kjfenx(4)" style="color:#000;cursor:pointer">确定</a>
+					</div>
+				</div>
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					快件量数据分析
+				</div>
+
+				<div class="content" style="height:382px;width:100%;float:left">
+					<div style="height:400px;width:98%;float:left">
+
+						<div id="the11" class="cont" style="width:100%;">
+
+							<div id="kjfenx" style="height:380px;width:100%;float:left;border:1px solid #1ab394;background-color:rgba(255,255,255,0.1)"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--第二个列表-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:30px">
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					退回件原因分析
+				</div>
+
+				<div class="content" style="width:100%;float:left;">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the7" class="cont" style="width:100%;">
+							<div id="thyyfx" style="height:300px;width:100%;background-color:rgba(255,255,255,0.1);"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:30px">
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					未妥投/预警快件分析
+				</div>
+
+				<div class="content" style="width:100%;float:left;height:300px;">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the9" class="cont" style="width:100%;">
+							<div id="main22" style="height:300px;width:100%;background-color:rgba(255,255,255,0.1);"></div>
+						</div>
+						<div id="the10" class="cont">
+							<div id="main17" style="height:300px;width:100%;background-color:rgba(255,255,255,0.1);"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:30px">
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					本月派送件妥投率分析
+				</div>
+
+				<div class="content" style="width:100%;float:left;">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the13" class="cont" style="width:100%;">
+							<div id="main3" data-option="benyuepaisongtuotoulvOption" data-extend-name="bypsjttlfx" style="height:300px;width:100%;background-color:rgba(255,255,255,0.1);" data-val=5 data-legend=2 data-xAxis=0 data-default-type=3 class="lineChart" data-url="benyuepaisongtuotoulv"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--第三个列表-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:30px;">
+
+				<div class="content" style="width:100%;float:left;height:300px">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the15" class="cont" style="width:100%;">
+							<div id="main5" style="height:300px;width:100%;"></div>
+						</div>
+						<div id="the16" class="cont">
+							<div id="main16" style="height:300px;width:100%;"></div>
+						</div>
+						<div id="the18" class="cont">
+							<div id="main18" style="height:300px;width:100%;"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab">
+		<div class="contain" style="width:30%;float:left;margin-top:5px;height:400px;">
+
+			<div class="content" style="width:100%;float:left;height:410px;" id="benyuepaisongjishilvDiv">
+				<div style="height:300px;width:100%;float:left;overflow: hidden;padding-top:70px">
+
+					<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" style="float:right;">
+						<tr>
+							<th width="25%">名称</th>
+							<th width="15%">1小时内</th>
+							<th width="15%">2小时内</th>
+							<th width="15%">4小时内</th>
+							<th width="15%">1天内</th>
+							<th width="15%">>1天</th>
+
+						</tr>
+					</table>
+					<div id="desmo" style="overflow: hidden;width:100%">
+						<div id="marquee5" style="width:100%;height:270px;">
+							<ul>
+								<li>
+
+								<div>
+									<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" id="benyuepaisongjishilv">
+
+									</table>
+								</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<div class="tab">
+		<div class="contain" style="width:30%;float:left;margin-left:60px;margin-top:30px;margin-bottom:80px;">
+
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#1ab394">
+				合作快递公司快件量排名
+			</div>
+
+			<div class="content" style="width:100%;float:left;height:317px;" id="hezuokuaidigongsikuaijianliangDiv">
+				<div style="width:99%;float:left;border: 1px solid #1ab394;height:315px;">
+
+					<div id="the1" class="cont" style="width:100%;">
+						<table border="0" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #1ab394;" width="100%">
+							<tr>
+								<th width="10%"></th>
+								<th width="30%">快递公司</th>
+								<th width="15%">本月<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('yue',this)"></span></th>
+								<th width="15%">本季度
+									<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('ji',this)"></span>
+								</th>
+								<th width="15%">本年<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('nian',this)"></span></th>
+								<th width="15%">累计<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('leiji',this)"></span></th>
+							</tr>
+						</table>
+						<div style="overflow: hidden; height: 276px;width:100%">
+							<div id="marquee4" style="width:100%;height:276px;">
+								<ul>
+									<li>
+										<table border="0" cellspacing="0" cellpadding="0" width="100%" id="hezuokuaidigongsikuaijianliang">
+										</table>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/echarts.min.js"></script>
+	<script src="../plugins/sonic.js"></script>
+	<script src="../plugins/jquery.showLoading.js"></script>
+	<script src="js/jquery.json.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/dingshuting.js"></script>
+	<script src="js/hezuokuaidigongsikuaijianliang.js"></script>
+	<script src="js/benyuepaisongjishilv.js"></script>
+	<script src="js/weituotouyujingfenxi.js"></script>
+	<script src="../plugins/My97DatePicker/WdatePicker.js"></script>
+	<script src="js/hx-sccenter.js"></script>
+
+	<script type="text/javascript">
+		jQuery(function($) {
+
+			//未妥投/预警快件分析
+			Getweituotouyujingfenxi(2);
+			//合作快递公司快件量排名
+			Gethezuokuaidigongsikuaijianliang(3, 1, 2);
+			//本月派送及时率分析
+			Getbenyuepaisongjishilv(3, 1);
+		});
+	</script>
+	
+	
+
+</body>
+
+</html>
+</body>

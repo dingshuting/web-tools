@@ -1,0 +1,139 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<div class="row">
+						<form class="form-horizontal" method="post" onsubmit="return false" id="user_modify">
+							<input type="hidden" name="id" value="<%=this.id%>" />
+							<input type="hidden" name="roleStr" id="roleStr" />
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">账号</label>
+								<div class="col-lg-7">
+									<span><%=this.accountNo%></span>
+								</div>
+							</div>
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">姓名</label>
+								<div class="col-lg-7">
+									<input type="text" readonly="readonly" id="doc-ipt-1" name="name" value="<%=this.name%>" class="form-control">
+								</div>
+							</div>
+							
+							<!--<div class="form-group  col-md-6">-->
+								<!--<label for="doc-ipt-3" class="col-lg-4 control-label">电子邮箱</label>-->
+								<!--<div class="col-lg-7">-->
+									<!--<input type="text" id="doc-ipt-3" name="email" value="<%=this.email%>" class="form-control">-->
+								<!--</div>-->
+							<!--</div>-->
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">员工工号</label>
+								<div class="col-lg-7">
+									<input type="text" name="orgId" class="form-control" value="<%=this.orgId%>" placeholder="数字工号">
+								</div>
+							</div>
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">岗位</label>
+								<div class="col-lg-7">
+									<input type="text" name="title" class="form-control" value="<%=this.title%>" placeholder="岗位">
+								</div>
+							</div>
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-3" class="col-lg-4 control-label">手机号码</label>
+								<div class="col-lg-7">
+									<input type="text" id="doc-ipt-3" name="mobilePhone" value="<%=this.mobilePhone%>" class="form-control">
+								</div>
+							</div>
+							<!--<div class="form-group  col-md-6">-->
+								<!--<label for="doc-ipt-3" class="col-lg-4 control-label">办公电话</label>-->
+								<!--<div class="col-lg-7">-->
+									<!--<input type="text" id="doc-ipt-3" name="officePhone" value="<%=this.officePhone%>" class="form-control">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group  col-md-6" id="serviceCenterContainer" style="min-height: 50px;">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">服务中心</label>
+								<div class="col-lg-7">
+                                    <div class="input-group">
+                                        <div class="input-icon-group">
+                                            <div class="input-group" style="width:100%" id="serviceCenter">
+                                                <% if(this.identity){%>
+                                                <input type="text" name="centerId" readonly value="<%=this.identity.name%>" class="form-control" placeholder="服务中心">
+                                                <%}else{%>
+                                                <input type="text" name="centerId" readonly class="form-control" placeholder="服务中心">
+                                                <%}%>
+                                                <input type="hidden" id="" name="owner" value="<%=this.owner%>">
+                                            </div>
+                                        </div>
+                                        <span class="input-group-btn">
+                                             <button class="btn btn-primary" type="button" id="delServiceCenter">删除</button>
+                                        </span>
+                                    </div>
+								</div>
+							</div>-->
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">企业访问权限</label>
+								<div class="col-lg-7">
+									<select name="titleType" class="form-control">
+										<option value="1" >全部</option>
+										<option value="2" <%if(this.attr('titleType')==2){%>selected="selected"<%}%> >对内</option>
+										<option value="3" <%if(this.attr('titleType')==3){%>selected="selected"<%}%> >对外</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-3" class="col-lg-4 control-label">部门</label>
+								<div class="col-lg-7">
+									<select name="sysDepId" id="changeDep" class="form-control">
+										<option value="">--请选择--</option>
+										<%this.deps.each(function(current) { %>
+											<%if(current.attr('id')==sysDepId){%>
+											<option value="<%=current.attr('id')%>" selected="selected" data-status="<%=current.attr('status')%>">
+												<%=current.attr('name')%>
+											</option>
+											<%}else{%>
+											<option value="<%=current.attr('id')%>" data-status="<%=current.attr('status')%>">
+												<%=current.attr('name')%>
+											</option>
+											<%}%>
+										<%})%>
+									</select>
+								</div>
+							</div>
+							<div class="form-group  col-md-6">
+								<label for="doc-ipt-3" class="col-lg-4 control-label">状态</label>
+								<div class="col-lg-7">
+									<select name="status" class="form-control" id="status">
+										<option value="2" <%=this.status == 2%>selected>正常</option>
+										<option value="1" <%=this.status == 2%>selected>禁用</option>
+									</select>
+								</div>
+							</div>
+							<!--<div class="form-group  col-md-6">
+								<label for="doc-ipt-3" class="col-lg-4 control-label">岗位类型</label>
+								<div class="col-lg-7">
+									<select name="titleType" class="form-control" id="titleType">
+										<option value="0" <%=this.titleType == 0%>selected>全职</option>
+										<option value="1" <%=this.titleType == 0%>selected>兼职</option>
+									</select>
+								</div>
+							</div>-->
+
+							<div class="form-group col-md-6">
+								<label for="doc-ipt-1" class="col-lg-4 control-label">角色信息</label>
+								<div class="col-lg-7" id="show_Roles">
+
+								</div>
+							</div>
+							<div class="form-group col-md-6">
+								<div class="col-sm-4 col-sm-offset-2">
+									<button class="btn btn-primary" type="submit">提交</button>
+									<button class="btn btn-white" type="button" name="cancel">取消</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>艺术动态详情</title>
+		    <link rel="stylesheet" href="css/amazeui.min.css" />
+		    <link rel="stylesheet" href="css/app.css" />
+		    <meta name="viewport" content="width=device-width, initial-scale=1">
+		    
+		    <style>
+		    	.am-figure-default img {
+		    		padding: 0px;
+		    	}
+		    	.am-titlebar-default .am-titlebar-title {
+		    		color: #000000;
+		    	}
+		    	.am-titlebar-default .am-titlebar-title:before {
+		    		border-left: 3px solid #000000;
+		    	}
+		    	.am-paragraph-default img {
+		    		padding: 0px;
+		    	}
+		    	.am-paragraph p {
+		    		clear: both;
+		    		color: #959595;
+		    	}
+		    	.paragraph-default-time {
+		    		font-size: 12px;
+		    		color: #959595;
+		    		float: right;
+		    		margin-left: 5px;
+		    		margin-right: 5px;
+		    		padding-top: 0px;
+		    		margin-top: 0px;
+		    	}
+		    	.paragraph-default-tt {
+		    		text-align: center;
+		    		font-size: 16px;
+		    		color: #000000;
+		    		margin-left: 5px;
+		    		margin-right: 5px;
+		    	}
+		    </style>
+	</head>
+	<body>
+		<div class="allback"  data-resultkey="data" data-type="detail" data-act="newsdetail" data-query='{"newsid":${$.request.para.id}}' data-querytype="get">
+			<!--标题-->
+			<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+                <h2 class="am-titlebar-title" name="title">这里是一个标题</h2>
+            </div>
+            
+            <!--图片和内容-->
+            <div class="news-img">
+            	<article data-am-widget="paragraph" class="am-paragraph am-paragraph-default" data-am-paragraph="{ tableScrollable: true, pureview: true }">
+                    <img src="img/徐冰：思想与方法.png" name="imageurl">
+                    <div class="paragraph-default-tt" name="subtitle">这里是副标题</div>
+                    <span class="paragraph-default-time" name="createTime">2018-01-01</span>
+                    <p class="paragraph-default-p" name="content" >
+                    	南极洲又称第七大陆，是地球上最后一个被发现、唯一没有土著人居住的大陆。南极大陆为通常所说的南大洋（太平洋、印度洋和大西洋的南部水域）所包围，它与南美洲最近的距离为965公里，距新西兰2000公里、距澳大利亚2500公里、距南非3800公里、距中国北京的距离约有12000公里。南极大陆的总面积为1390万平方公里，相当于中国和印巴次大陆面积的总和，居世界各洲第五位。
+                    </p>                   	
+                </article>
+
+            </div>
+   		</div>
+		<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " data-include="includes/footer-nav.html">
+			
+		</div>
+	</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>

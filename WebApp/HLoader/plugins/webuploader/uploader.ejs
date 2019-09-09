@@ -1,0 +1,17 @@
+<div id="uploader">
+	<!--用来存放文件信息-->
+	<div class="row">
+		<div class="col-lg-12"> 
+			<div class="uploader-list">
+				<%this.data.each(function(current,index) { %>
+				<div class="upload-list-item">
+					<i class='fa fa-remove remove'></i>
+					<img src="<%=current %>" />
+				</div>
+				<%})%>
+				<div class="picker" style="<%=this.fileNumLimit==1&&this.data.length>0?'display: none;':''%>"><i class="icon">选择<br/>图片</i></div>
+			</div>
+			
+		</div>
+	</div>
+</div>

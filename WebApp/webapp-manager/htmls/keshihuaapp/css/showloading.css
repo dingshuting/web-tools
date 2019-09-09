@@ -1,0 +1,14 @@
+.loading-indicator {
+	height: 80px;
+	width: 180px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-align: center;
+}
+.loading-indicator lable{
+	
+}
+.loading-indicator-overlay {
+	opacity: 0.6;
+	filter: alpha(opacity = 60);
+}

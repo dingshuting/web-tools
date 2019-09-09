@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="js-libs" content="js-lib/modules/list.js" />
+		<meta name="needs-user" content="yes" />
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link href="css/app.css" rel="stylesheet" />
+		<link href="http://libs.isite8.com/HLoader/css/hloader.css" rel="stylesheet">
+		<title>详情</title>
+		<style>
+			.productAttributeValues{
+				background-color: #eeeeee;
+				padding-top: 30px;
+				padding-bottom: 30px;
+				letter-spacing: 2px;
+			}
+			.productAttributeValues .am-u-sm-12{
+				border-bottom:1px dotted #272726;
+			}
+			.productAttributeValues div{
+				line-height: 40px;
+			}
+			.aritist{
+				padding-bottom: 37px;
+			}
+			.artist-cover{
+				height: 86px;
+				width: 86px;
+				border-radius: 43px;
+				overflow: hidden;
+				margin-top: 37px;
+				float: right;
+			}
+			.aritist .aritist-info{
+				margin-top: 25px;
+				width: 100%;
+				line-height:25px;
+				font-size:14px;
+			}
+			.options-bar button{
+				height: 100%;
+				margin-left: -4px;
+				float: right;
+				width: 50%;
+			}
+			.productImg{
+				max-height:400px ;
+				overflow: hidden;
+				
+			}
+			.productImg img{
+				width: 100%;
+			}
+			.am-topbar .option{
+					text-align: center;
+					height: 100%;
+					width: 50%;
+					padding-top: 5px;
+					float: left;
+					font-size: 12px;
+				}
+				.skuChoiser{
+					height: 400px;
+					width: 100%;
+				}
+				.skuChoiser #wrap{
+					height: 90%;
+					overflow-y: auto;
+					padding-bottom: 40px;
+				}
+				.sellAttr {
+				font-size: 16px;
+				cursor: pointer;
+				border: 1px solid #BBBBBB;
+				margin: 5px;
+				float: left;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.sellAttr div {
+				line-height: 35px;
+			}
+			
+			.sellAttr:hover {
+				border: 1px solid #007AFF;
+			}
+			[data-item] .active {
+				border: 2px solid #ba5d13;
+				/*background-image: url(img/selected-icon.png);*/
+				background-size: 20px 20px;
+				background-position: top right;
+				background-repeat: no-repeat;
+			}
+			
+			[data-item] .disabled {
+				background-color: #f8f8f8;
+				border: 1px dashed #AAAAAA;
+			}
+			.skuChoiser{
+				margin-bottom:-440px ;
+				background-color: #FFFFFF;
+			}
+			[name='detailHtml'] img{
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default">
+			<div class="am-header-left am-header-nav">
+				<a href="index.html"><i class="am-header-icon am-icon-circle" style="color:#95cac8 ;"></i> 亿达时代美术馆</a>
+			</div>
+		</header>
+		<div  id="detail" data-event-finish="loadExsitSku" data-resultkey="data" data-pathPara="yes" data-type="detail" data-querytype="get" data-model="productDetail" data-target="yishupin">
+			<div >
+				<ul class="am-slides productImg">
+					<li>
+						<img src="" name="pic" />
+					</li>
+				</ul>
+			</div>
+			<div class="am-g box" style="margin-top: 0px;">
+				<div class="am-u-sm-10 am-padding-sm">
+					<h3 style="font-size: 20px;" name="name">丛林系列No11（大）</h3>
+					<h3 name="price" data-event-format="moneyWithSign" style="font-size: 20px;color: #e9534d;margin-top: 0px;">￥3,080</h3>
+					<p style="color: #737373;">装裱费：<span name="decorationPrice">0</span>&nbsp;&nbsp;&nbsp;&nbsp;运费：<span name="feightPrice">0</span></p>
+				</div>
+				<div class="am-u-sm-2 am-padding-sm" >
+					<!--<i class="am-icon-share-square-o am-icon-fw" style="font-size: 24px;float: right;font-weight: 100;"></i>-->
+				</div>
+				
+			</div>
+			<div class="box am-g" style="padding-bottom: 0px;">
+				<div class="am-u-sm-12 am-text-center am-padding">
+					<h2 style="font-weight: 500;">艺术品信息</h2>
+				</div>
+				<div class="am-u-sm-12 productAttributeValues">
+					<div name="productAttributeValues" style="font-weight:500;height:40px;border-top:1px dotted #272726;font-weight:500;height:40px">
+						<div class="am-u-sm-12">
+							<span >作品名称</span>: <span name="name">丛林系列No11（大）</span>
+						</div>
+						<div  class="am-u-sm-12">
+							<span >艺术家</span>: <span name="brandName">施晓杰</span>
+						</div>
+						<div data-item class="am-u-sm-12">
+							<span>作品类型</span>: <span name="productCategoryName">油画</span>
+						</div>
+						<div class="am-u-sm-12" data-item data-tpl>
+							<span name="productAttributeName"></span>: <span name="productAttributeValue"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="am-g aritist box"  data-resultkey="data" data-type="detail" data-inner-model="true" data-querytype="get" data-query='{"artistid":${obj.brandId}}' data-model="artistDetail">
+				<div class="am-u-sm-4 am-text-center">
+					<div class="artist-cover">
+						<img src="img/张晓刚.png" name="icon" width="100%" height="100%"/>
+					</div>
+				</div>
+				<div class="am-u-sm-8">
+					<div class="aritist-info" >
+						<span name="username" style="font-size: 18px;font-weight: bold;">施晓杰</span>
+						<br />
+						出生于<span name="borncity"></span>
+						<br> 
+						毕业于<span name="school"></span>&nbsp;&nbsp;<span name="record"></span>
+						<br> 
+						现工作生活于<span name="llivecity"></span>
+						<br>
+					</div>
+				</div>
+			</div>
+			<div class="box am-g">
+				<div class="am-u-sm-12 am-text-center am-padding">
+					<h2 style="font-weight: 500;">艺术品详情</h2>
+				</div>
+				<div class="am-u-sm-12 am-padding" style="overflow: hidden;max-width: 100%;" name="detailHtml">
+				
+				</div>
+			</div>
+			<div  class="am-topbar am-topbar-fixed-bottom options-bar" style="height: 60px;">
+				<div style="height: 100%;float: left;width: 40%;">
+					
+					<div class="option" style="border-right: 1px solid #D1D1D1;">
+						<a href="index.html">
+							<i class="am-icon-home" style="font-size: 25px;height: 25px;"></i><br />
+							<span>店铺</span>
+						</a>
+					</div>
+					<div class="option">
+						<a href="shoppingcar.html">
+							<i class="am-icon-shopping-cart" style="font-size: 25px;height: 25px;"></i><br />
+							<span>购物车</span>
+						</a>
+					</div>
+				</div>
+				<div style="height: 100%;float: right;width: 60%;">
+					<button type="button" class="am-btn addToCar" style="background:#000;color:#ffffff;">加入购物车</button>
+					<button type="button" class="am-btn am-btn-danger buyNow">立即购买</button>
+				</div>
+			</div >
+			
+			<!--
+            	描述：属性选择
+            -->
+			<div class="am-topbar-fixed-bottom am-g skuChoiser" style="border-top: 1px solid #E1E1E1;">
+				<div class="am-u-sm-12">
+					<div class="am-u-sm-11">
+						<div class="am-u-sm-3 am-padding-0">
+							<img name="pic" width="80px" height="80px" style="margin-top: -20px;border: 2px solid #FFFFFF;"/>	
+						</div>
+						<div class="am-u-sm-9">
+							<h3 name="name" style="margin-bottom: 0px;"></h3>
+							<h3 name="price" data-event-format="moneyWithSign" style="font-size: 20px;color: #e9534d;margin-top: 0px;margin-bottom: 0px;line-height: 40px;">￥ 1000</h3>	
+						</div>
+						
+					</div>
+					<div class="am-u-sm-1">
+						<i class="am-icon-close" style="line-height: 40px;"></i>
+					</div>
+					<div style="border-bottom: 1px dotted #BBBBBB;margin-top: 10px;" class="am-u-sm-12"></div>
+				</div>
+				<div id="wrap" class="am-u-sm-12" name="productAttributes" inner-list="yes" style="float: left;width: 100%;position: relative;">
+					<div class="productAttribute" data-item data-tpl style="float: left;width: 100%;padding-top: 15px;">
+						<div style="width: 100%;font-size:16px;float: left;" name="name">
+							----
+						</div>
+						<div id="top">
+							<div id='model' data-if="obj.imageType==1" style="border-bottom:1px dashed #dfdfdf;padding-bottom:15px;float: left;width: 100%;" name="inputList" inner-list="yes" data-value-type="string-list">
+								<div data-tpl data-item style="float: left;" >
+									<div class="sellAttr">
+										<div data-array-value data-action="choiseSku">--</div>
+									</div>
+								</div>
+							</div>
+							<div id='model' data-if="obj.imageType==2" style="border-bottom:1px dashed #dfdfdf;padding-bottom:15px;float: left;width: 100%;" name="inputList" inner-list="yes" data-value-type="string-list">
+								<div data-tpl data-item style="float: left;">
+									<div class="sellAttr" style="padding:0px;width: 45px;height: 45px;">
+										<img  data-alt="${obj.val}" data-tag="yes" style="width: 100%;height: 100%;font-size: 10px;" data-array-value data-action="choiseSku" data-event-format="valTransToImg"/>
+									</div>
+								</div>
+							</div>
+							<p id='color' style="border-bottom:1px solid #dfdfdf;padding-bottom:15px;float: left;">
+								
+							</p>
+						</div>
+					</div>
+				</div>
+				<button type="button" class="am-btn am-btn-danger am-u-sm-12 sureSku" style="position: absolute;bottom: 0px;z-index: 9999;left: 0px;">确认选择</button>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/detail.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>

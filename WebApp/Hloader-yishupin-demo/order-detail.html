@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>确认订单</title>
+		<meta name="js-libs" content="js-lib/modules/list.js,js-lib/modules/form.js" />
+		<meta name="is-login" content="yes">
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+		<!-- AppUI CSS stylesheets -->
+		<style>
+			.addresses{
+				border-bottom: 0px;
+			}
+			input{
+				border: 0px;
+			}
+			[name="calcAmount"] span{
+				line-height: 22px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="am-g" data-type="detail" data-query='{"orderId":"${$.request.para.id}"}' data-act="getOrderInfo" data-querytype="form" data-resultkey="data">
+			<div class="am-u-sm-12 am-padding box currentAddress" style="margin-top: 0px;">
+				<div class="am-u-sm-12 am-padding-0">
+					<div class="am-u-sm-1 am-padding-0">
+						<i class="am-icon-map-pin" style="color: #AAAAAA;font-size: 16px;"></i>
+					</div>
+					<div class="am-u-sm-11 am-padding-0">
+						<span>收货人：<span name="receiverName"></span></span>
+						<span name="receiverPhone" style="float: right;"></span><br />
+						<span style="font-size: 12px;line-height: 20px;color: #AAAAAA;">收货地址：<span name="receiverProvince" ></span><span name="receiverCity" ></span><span name="receiverDetailAddress" ></span></span>
+					</div>
+				</div>
+			</div>
+			<div class="am-u-sm-12 box am-padding-0">
+				<div class="am-u-sm-12 am-padding ">
+					<h3 class="am-margin-bottom-0">艺术品信息</h3>
+				</div>
+				<div class="am-u-sm-12">
+				 <ul class="am-list" name="orderItemList">
+			     <!--缩略图在标题左边-->
+			      <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" data-tpl data-item>
+			        <div class="am-u-sm-3 am-list-thumb">
+			        	<div style="width: 100%; height: 80px; overflow: hidden;">
+			            	<img src="img/default.png" style="width: 100%;"  name="productPic"/>
+			            </div>
+			        </div>
+			        <div class=" am-u-sm-9 am-list-main">
+			            <h3 class="am-list-item-hd am-margin-bottom-sm">
+			            	<a data-tag data-href="product-detail.html?id=${obj.productId}" class="" name="productName">--</a>
+			            </h3>
+			            <div class="am-list-item-text">
+			            	<label class="col-lg-12" name="sp1" style="margin-bottom: 2px;color: #777777;" >--</label>
+			            	<label class="col-lg-12" name="sp2" style="margin-bottom: 2px;color: #777777;" >--</label><br />
+			            	<label style="border-left: 0px;color: red;" data-jstl="obj.productPrice">--</label>
+			            	<label style="border-left: 0px; float: right;">x&nbsp;<span  name="productQuantity"></span></label>
+			            </div>
+			        </div>
+			      </li>
+			     </ul>
+			    </div>
+			</div>
+			<div class="am-u-sm-12 box am-padding">
+				<div class="am-u-sm-4">
+					买家留言
+				</div>
+				<div class="am-u-sm-8" name="note">
+				</div>
+			</div>
+			<div class="am-u-sm-12 box am-padding" style="font-size: 14px;color: #666666;line-height: 22px;padding-bottom: 0px;">
+				<span>商品金额</span>
+				<span style="float: right;" name="payAmount" data-event-format="moneyWithSign">￥0</span><br />
+				<span>装裱费用</span>
+				<span style="float: right;" name="promotionAmount" data-event-format="moneyWithSign">￥0.00</span><br />
+				<span>运费合计</span>
+				<span style="float: right;" name="freightAmount" data-event-format="moneyWithSign">￥0.00</span><br />
+				<div class="am-u-sm-12 am-text-right am-padding-0" style="border-top: 1px solid #E1E1E1;font-size: 16px;line-height: 50px;margin-top: 10px;">
+					合计：<span name="payAmount" data-event-format="moneyWithSign" style="color: red;">￥000.00</span>
+				</div>
+			</div>
+			
+			<div class="am-topbar am-topbar-fixed-bottom options-bar" style="height: 60px;">
+		   		<div style="height: 100%;float: left;width: 30%;" class="am-padding">
+		   		</div>
+				<div style="height: 100%;float: right;width: 70%;" >
+					<button  data-if="obj.status==0" data-action="toPay" type="button" id="btnToAddOrder" class="am-btn am-btn-danger subOrder" style="float: right;height: 100%;letter-spacing: 1px;">支付</button>
+					<div style="font-size: 15px;float: right;margin-right: 15px;padding: 5px;line-height: 50px;margin-right: 20px;">
+						<span style="color: red;">合计:<span class="total-price" name="payAmount" data-event-format="moneyWithSign">0</span></span><br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script>
+	//生成订单后调用或跳转支付
+	function toPay(event,data){
+		$.post($.request.domain+"/order/orderPayByJs?orderId="+$(this).data('value').id+"&payType=2",function(res){
+			var result=res.data;
+			console.log(res);
+			 WeixinJSBridge.invoke(
+		      'getBrandWCPayRequest', {
+		         "appId":result.appId,      //公众号名称，由商户传入     
+		         "timeStamp":result.timeStamp,       //时间戳，自1970年以来的秒数     
+		         "nonceStr":result.nonceStr, //随机串     
+		         "package":result.package,     
+		         "signType":"MD5",         //微信签名方式：     
+		         "paySign": result.sign //微信签名 
+		      },
+		      function(res){
+			      if(res.err_msg == "get_brand_wcpay_request:ok" ){
+			      // 使用以上方式判断前端返回,微信团队郑重提示：
+			            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+			            alert('支付完成,2苗后返回');
+			            setTimeout(function(){
+			            	window.location.href="orders-list.html?status=-1";
+			            },2000)
+			      }else{
+			      	console.log(res);
+			      	alert(res.err_msg);
+			      }
+		 	}); 
+		})
+	}
+</script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>
+

@@ -1,0 +1,48 @@
+/* Write your styles */
+body{
+	background-color: #f0f0f0;
+}
+a,a:hover,a:active,a:focus{
+	color: #555555 !important;
+}
+.am-header-default{
+	background: #FFFFFF;
+}
+.am-header-default .am-header-title{
+	color:#737373;
+}
+.am-header-default .am-header-nav{
+	color:#737373;
+}
+.am-header-default .am-header-nav{
+	color:#737373;
+}
+.box{
+	margin-top: 7px;
+	background-color: #FFFFFF;
+	padding-bottom: 20px;
+}
+.box-head{
+	line-height: 20px;
+	border-bottom: 1px solid #e0e0e0;
+	float: left;
+	width: 100%;
+	padding: 10px;
+}
+.box-content{
+	float: left;
+	width: 100%;
+	padding: 10px;
+}
+.box-footer{
+	padding: 7px;
+	float: left;
+	width: 100%;
+	border-top: 1px solid #e0e0e0;
+}
+.am-navbar-default .am-navbar-nav{
+	background-color: #ffffff;
+}
+.am-navbar-nav a{
+	color: #c8c8c8;
+}

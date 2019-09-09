@@ -1,0 +1,27 @@
+body>*{
+	display: none;
+}
+body{
+	background-image: url(../img/loading1.gif);
+	background-position: center 400px;
+	background-repeat: no-repeat;
+}
+.loading-indicator {
+	height: 80px;
+	width: 180px;
+	background: url( '../img/loading1.gif' );
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-align: center;
+}
+.loading-indicator lable{
+	
+}
+.loading-indicator-overlay {
+	background-color: #fff;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+}
+[data-tpl],[data-if]{
+	display: none !important;
+}

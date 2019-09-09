@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>产业协同</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="../templates/default/css/amazeui.css">
+		<link rel="stylesheet" href="../templates/default/css/admin.css">
+		<style>
+			.test{
+				width: 50%;
+				margin: auto;
+			}
+			.test input{
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script type='text/javascript' src='../steal/steal.js'></script>
+		<div id="div1" class="test"></div>
+		<button id='tt'>获取表单值</button>
+	</body>
+	<script>
+	
+		steal("js-lib/lib-form.js","js/model.js", function(Form) {
+			$.Model().getHead("95",function(extraData){
+				var modelObject = $.Model(extraData);
+				var form = new Form("#div1",{model:modelObject,form:{isCreate:"1",action:"www.baidu.com"}});
+				$("#tt").click(function(){
+					var val= form.getValue();
+					new modelObject(val).save();
+				});
+			
+			});
+		});
+	</script>
+
+</html>   

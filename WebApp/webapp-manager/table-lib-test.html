@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>产业协同</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="renderer" content="webkit">
+		<style>
+			.test{
+				width: 50%;
+				margin: auto;
+			}	
+			.test input{
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script type='text/javascript' src='steal/steal.js'></script>
+		<div id="showloading"></div>
+		<div id="ul1" class="test"></div>
+		<div id="ul2" class="test"></div>
+		<div id="ul3" class="test"></div>
+		<div id="ul4" class="test"></div>
+		<button id='tt'>添加行</button>
+		<button id='tv'>获取值</button>
+		
+	</body>
+	<script>
+		var head1=[{name: "这是列",code: "name",width:"15%"}, 
+					{name: "列2",code: "price",width:"20%"}, 
+					{name: "列3",code: "price1",width:"15%"},
+					{name:"列4",	code: "price2",width:"20%"}, 
+					{name: "列5",code: "price3",width:"15%"}];
+		var head2=[{name: "这是列",code: "name"}, 
+					{name: "列2",code: "price"}, 
+					{name: "列3",code: "price1"},
+					{name:"列4",	code: "price2"}, 
+					{name: "列5",code: "price3"}];
+		var head3=[{name: "这是列",code: "name"}, 
+					{name: "列2",code: "price"}, 
+					{name: "列3",code: "price1"},
+					{name:"列4",	code: "price2"}, 
+					{name: "列5",code: "price3"}];
+		var head4=[{name: "这是列",code: "name"}, 
+					{name: "列2",code: "price"}, 
+					{name: "列3",code: "price1"},
+					{name:"列4",	code: "price2"}, 
+					{name: "列5",code: "price3"}];
+		var list1=[{_id:"123",name: "这是值1",price: 123,canEdit:true}, 
+					{_id:"122",
+					name: "这是值2",
+					price3: 123.00,
+					canDelete:true,
+					canEdit:true
+				}];
+		var list2=[{_id:"123",name: "这是值1",price: 123,canEdit:true}, 
+					{_id:"122",
+					name: "这是值2",
+					price3: 123.00,
+					canDelete:true,
+					canEdit:true
+				}];
+		var list3=[{_id:"123",name: "这是值1",price: 123,canEdit:true}, 
+					{_id:"122",
+					name: "这是值2",
+					price3: 123.00,
+					canDelete:true,
+					canEdit:true
+				}];
+				
+		var list4=[{_id:"123",name: "这是值1",price: 123,canEdit:true}, 
+					{_id:"122",
+					name: "这是值2",
+					price3: 123.00,
+					canDelete:true,
+					canEdit:true
+				}];
+		steal("js-lib/lib-table.js", function(Table) {
+			var control1=new Table("#ul1", {isShowActs:true,head: head1,list: list1,classes:"am-table am-table-bordered am-table-radius am-table-striped  am-text-center"});
+			var control2=new Table("#ul2", {isShowActs:true,head: head2,list: list2,classes:"am-table am-table-bordered am-table-radius am-table-striped  am-text-center"});
+			var control3=new Table("#ul3", {isShowActs:true,head: head3,list: list3,classes:"am-table am-table-bordered am-table-radius am-table-striped  am-text-center"});
+			var control4=new Table("#ul4", {isShowActs:true,head: head4,list: list4,classes:"am-table am-table-bordered am-table-radius am-table-striped  am-text-center"});
+			$("#tt").click(function(){
+				control1.addNewData();
+				control3.addNewData();
+			});
+			$("#tv").click(function(){
+				console.log("control1:");
+				console.log(control1.getDataList());
+				console.log("control2:");
+				console.log(control2.getDataList());
+				console.log("control3:");
+				console.log(control3.getDataList());
+				console.log("control4:");
+				console.log(control4.getDataList());
+			});
+		});
+	</script>
+
+</html>

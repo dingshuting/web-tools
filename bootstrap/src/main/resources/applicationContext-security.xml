@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:b="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd 
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                         http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<context:property-placeholder location="classpath:config.properties" />
+	<http use-expressions="false" auto-config="false" entry-point-ref="casEntryPoint">
+		<csrf disabled="true" />
+		<headers>
+		    <frame-options policy="SAMEORIGIN"/>
+		</headers>
+		<intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/auth.html*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/register.html*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/company/save*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/common/*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/jsLibs/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/www/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/api/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!--此处的配置会影响到后续系统的安全，需要改进和修改 -->
+		<!-- <intercept-url pattern="/dyn/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/> -->
+		<intercept-url pattern="/ver_img" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/**" access="ROLE_SA,ROLE_USER" />
+		<custom-filter position="CAS_FILTER" ref="casFilter" />
+	</http>
+	<b:bean id="casEntryPoint"
+		class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+		<b:property name="loginUrl" value="${service.domain}/login" />
+		<b:property name="serviceProperties" ref="serviceProperties" />
+	</b:bean>
+	<b:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
+		<b:property name="service"
+			value="${client.domain}/j_spring_cas_security_check" />
+	</b:bean>
+	<b:bean id="authenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<!-- <b:property name="defaultFailureUrl" value="/error.jsp" /> -->
+
+	</b:bean>
+	<b:bean id="casFilter"
+		class="org.springframework.security.cas.web.CasAuthenticationFilter">
+		<b:property name="authenticationManager" ref="casAuthenticationManager" />
+		<!-- <b:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" 
+			/> -->
+		<b:property name="filterProcessesUrl" value="/j_spring_cas_security_check"></b:property>
+	</b:bean>
+	<authentication-manager alias="casAuthenticationManager" id="casAuthenticationManager">
+		<authentication-provider ref="casAuthenticationProvider" />
+	</authentication-manager>
+	<b:bean id="casAuthenticationProvider"
+		class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+		<!-- 客户端只验证用户名是否合法 -->
+		<b:property name="userDetailsService" ref="loginServImpl" />
+		<b:property name="serviceProperties" ref="serviceProperties" />
+		<b:property name="ticketValidator">
+			<b:bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<!-- –- 此处必须写主机名或域名，不能写IP且注意此处的地址不能加login.jsp -->
+				<b:constructor-arg index="0" value="${service.domain}" />
+			</b:bean>
+		</b:property>
+		<b:property name="key" value="an_id_for_this_auth_provider_only" />
+	</b:bean>
+
+	<b:bean id="requestSingleLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<b:constructor-arg value="/index.html" /><!-- ${service.logoutSuccess.url} -->
+		<b:constructor-arg>
+			<b:bean
+				class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+		</b:constructor-arg>
+		<b:property name="filterProcessesUrl" value="/boda_security_logout" />
+		
+	</b:bean>
+
+
+</b:beans>

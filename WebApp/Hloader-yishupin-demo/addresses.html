@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>确认订单</title>
+		<meta name="js-libs" content="js-lib/modules/list.js,js-lib/modules/form.js" />
+		<meta name="is-login" content="yes">
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+		<!-- AppUI CSS stylesheets -->
+		<style>
+			.addresses {
+				border-bottom: 0px;
+			}
+			
+			input {
+				border: 0px;
+			}
+			
+			[name="calcAmount"] span {
+				line-height: 22px;
+			}
+		</style>
+	</head>
+	<style>
+		.am-list-news-bd li:active {
+			background-color: #F0F0F0;
+		}
+	</style>
+	<body>
+	<div class=" am-g" id="addressList">
+		<div class="am-list-news-bd am-u-sm-12">
+			<ul class="am-list" data-event-finish='addressListFinished' class="list-group" style="margin-bottom: 2px;" data-resultkey="null" data-type="list" data-querytype="get" data-act="memberAddressList">
+				<li class="am-g am-list-item-dated" data-item data-tpl>
+					<div class="am-u-sm-11 am-padding-sm">
+						<span name="name"></span>, <span style="margin-left: 20px;" name="phoneNumber"></span><br />
+						<span style="color: #AAAAAA;" name="detailAddress">--</span>
+					</div>
+					<div class="am-u-sm-1 am-padding-top" data-action="toAddressEdit">
+						<i class="am-icon-edit" style="float: right;"></i>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="am-topbar am-topbar-fixed-bottom options-bar" style="height: 60px;">
+			<button class="am-btn am-btn-danger addAddressBtn" style="height: 100%;width: 100%;letter-spacing: 1px;">新增地址</button>
+		</div>
+	</div>
+	<div class="am-g module" id="addressEdit" data-include="includes/add-address.html">
+			
+	</div>
+	</body>
+</html>
+<script>
+	function addressListFinished() {
+		$('.addAddressBtn').click(function() {
+			$("#addressEdit").show();
+			$("#addressList").hide();
+			$(".removeAddr").hide();
+		});
+		$(".backBtn").click(function(){
+			$("#addAddressForm").control().reset();
+			$("#addressEdit").hide();
+			$("#addressList").show();
+		});
+		
+		$(".removeAddr").click(function(){
+			var addressControl=$("#addAddressForm").control();
+			$.Modal.confirm("确认","确认删除？",function(){
+			$.post($.request.domain+'/member/address/delete/'+addressControl.data.id,function(){
+					$.Modal.hide();
+					$("#addressList [data-type]").control().restart();
+					$("#addressList").show();
+					$("#addressEdit").hide();
+				});
+			});
+		});
+	}
+	function toAddressEdit() {
+		$("#addAddressForm").attr("data-act","memberAddressUpdate");
+		new $.ModuleControl($("#addAddressForm"),{data:$(this).data('value')});
+		$("#addressEdit").show();
+		$("#addressList").hide();
+		_CityUtil_.loadCity($(this).data('value'));
+	}
+	//保存成功后的回调函数，保存成功，
+	function editSuccess(){
+		$("#addAddressForm").control().reset();
+		$("#addressList [data-type]").control().restart();
+		$("#addressEdit").hide();
+		$("#addressList").show();
+	}
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js"></script>

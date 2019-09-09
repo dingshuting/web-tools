@@ -1,0 +1,134 @@
+debug: false
+server:
+  port: 8090
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8082/eureka/
+spring:
+  application:
+    name: service-zuul
+    
+app:
+  ui-index-url: http://wuliu-wechat.isite8.com/index.html
+  auth-server-url: http://wuliu-wechat.isite8.com/uua/
+  
+
+proxy:
+  auth:
+    routes:
+       api-wuliu: 
+          scheme: passthru
+          
+zuul:
+  routes:
+    beitou:
+      path: /beitou/**
+      service-id: beitou
+      custom-sensitive-headers: true
+    api-wuliu:
+      path: /api-wuliu/**
+      service-id: wuliu
+      custom-sensitive-headers: true
+    wuliu:
+      path: /wuliu/**
+      service-id:  wuliu
+      custom-sensitive-headers: true
+    bms:
+      path: /bms/**
+      service-id: bms
+      custom-sensitive-headers: true
+    contract:
+      path: /contract/**
+      service-id: contract
+      custom-sensitive-headers: true
+    login:
+      path: /uua/**
+      service-id: auth-server
+  add-host-header: true
+  include-debug-header: true
+  ignore-security-headers: false
+  add-proxy-headers: true
+  host:
+      connect-timeout-millis: 10000
+      socket-timeout-millis: 20000
+      connection-request-timeout-millis: 10000
+      
+security:
+  oauth2:
+    sso:
+      loginPath: /login
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.netflix.discovery: 'OFF'
+    com.ijs: DEBUG
+
+---
+spring:
+  profiles: default
+  
+security:
+  oauth2:
+    client:
+      #accessTokenUri: http://wuliu-wechat.yidaqifu.com/uua/oauth/token
+      #userAuthorizationUri: http://wuliu-wechat.yidaqifu.com/uua/oauth/authorize
+      accessTokenUri: http://wuliu-wechat.isite8.com/uua/oauth/token
+      userAuthorizationUri: http://wuliu-wechat.isite8.com/uua/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
+     
+    resource:
+      #user-info-uri: http://127.0.0.1:8080/me
+      jwt:
+        keyValue: |
+         -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnGp/Q5lh0P8nPL21oMMrt2RrkT9AW5jgYwLfSUnJVc9G6uR3cXRRDCjHqWU5WYwivcF180A6CWp/ireQFFBNowgc5XaA0kPpzEtgsA5YsNX7iSnUibB004iBTfU9hZ2Rbsc8cWqynT0RyN4TP1RYVSeVKvMQk4GT1r7JCEC+TNu1ELmbNwMQyzKjsfBXyIOCFU/E94ktvsTZUHF4Oq44DBylCDsS1k7/sfZC2G5EU7Oz0mhG8+Uz6MSEQHtoIi6mc8u64Rwi3Z3tscuWG2ShtsUFuNSAFNkY7LkLn+/hxLCu2bNISMaESa8dG22CIMuIeRLVcAmEWEWH5EEforTg+QIDAQAB
+          -----END PUBLIC KEY-----
+      id: openid
+      serviceId: ${PREFIX:}resource
+
+server {
+        listen       8888;
+        server_name  default_server;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+        #The port of login project
+        location ^~ /uua/ {
+                proxy_pass   http://127.0.0.1:8079;
+        }
+        location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css|ejs|tff|woff|woff2|map|apk|mp3|mav|mp4|avi|wav|txt|json)$ {
+                root /application/webApp/wuliu-wechat;
+                index  index.html index.htm;
+        }
+        location / {
+            proxy_pass   http://127.0.0.1:8090;
+            index  index.html index.htm;
+
+        }
+}
+server {
+        listen       8889;
+        server_name  default_server;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+        #The port of login project
+        location ^~ /uua/ {
+                proxy_pass   http://127.0.0.1:8079;
+        }
+        location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css|ejs|tff|woff|woff2|map|apk|mp3|mav|mp4|avi|wav|txt|json)$ {
+                root /application/webApp/wuliu-wechat;
+                index  index.html index.htm;
+        }
+        location / {
+            proxy_pass   http://127.0.0.1:8090;
+            index  index.html index.htm;
+
+        }
+}

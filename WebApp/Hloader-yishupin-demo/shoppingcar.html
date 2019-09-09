@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>购物车</title>
+		<meta name="author" content="rustheme" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="js-libs" content="js-lib/modules/list.js" />
+		<meta name="is-login" content="yes">
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+		<!-- AppUI CSS stylesheets -->
+	</head>
+	<body>
+		<div class="am-list-news-bd"  data-event-finish="listFinished"  data-type="detail" data-act="shoppingCarList" data-id="null" data-querytype="form" data-resultkey="data">
+		 <ul class="am-list" name="list" id="sellItems">
+	     <!--缩略图在标题左边-->
+	      <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" data-tpl data-item>
+	      	 <div class="am-u-sm-1 am-list-thumb am-padding-top-lg">
+	      	 	 <input type="checkbox" data-if="obj.currentStock>0" name="cbItem" data-value="obj.id" data-tag>
+	      	 </div>
+	        <div class="am-u-sm-4 am-list-thumb">
+	        	<div style="width: 100%; height: 80px; overflow: hidden;">
+	            	<img src="img/你好人类.png" style="width: 100%;"  name="productPic"/>
+	            </div>
+	        </div>
+	        <div class=" am-u-sm-7 am-list-main">
+	            <h3 class="am-list-item-hd am-margin-bottom-sm">
+	            	<a data-tag data-href="product-detail.html?id=${obj.productId}" class="" name="productName">--</a>
+	            </h3>
+	            <div class="am-list-item-text">
+	            	<label class="col-lg-12" name="sp1" style="margin-bottom: 2px;color: #777777;" >--</label>
+	            	<label class="col-lg-12" name="sp2" style="margin-bottom: 2px;color: #777777;" >--</label><br />
+	            	<label style="border-left: 0px;color: red;" data-jstl="obj.price*obj.quantity">--</label>
+	            	<label style="border-left: 0px;">x&nbsp;<span  name="quantity"></span></label>
+	            	<label  style="float: right;font-size: 16px;" data-action="removeCarItem"><i class="am-icon-trash"></i></label>
+	            </div>
+	        </div>
+	      </li>
+	     </ul>
+	      <div class="am-topbar am-topbar-fixed-bottom options-bar" style="height: 60px;">
+	   		<div style="height: 100%;float: left;width: 30%;" class="am-padding">
+	   			 <label><input type="checkbox" class="checkAll" />全选</label>
+	   		</div>
+			<div style="height: 100%;float: right;width: 70%;">
+				<button type="button" id="btnToAddOrder" class="am-btn am-btn-danger buyNow" style="float: right;height: 100%;">结 算 (<span id="shoppingCarItemNum">0</span>)</button>
+				<div style="font-size: 15px;float: right;margin-right: 15px;padding: 5px;">
+					<span style="color: red;">合计:<span class="total-price">0</span></span><br />
+					<span style="color: #BBBBBB;font-size: 12px;">不含运费、装裱费</span>
+				</div>
+			</div>
+			</div >
+	   </div>
+	</body>
+</html>
+<script>
+	function removeCarItem(el,data){
+		var el=$(this);
+		var data=$(this).data("value");
+		$.Modal.confirm("再次确认", "确认执行删除操作？", function() {
+			$.post($.request.domain+"/cart/delete",{"ids":data.id},function(data){
+				$(el).parents("li").hide(300);
+			})
+		});
+	}
+	/**
+	 * jquery 初始化完成的调用
+	 */
+	function initFinished(){
+		$("#btnToAddOrder").click(function(){
+			if($("[name='cbItem']:checked").length>0){
+				var $items=$("input[name='cbItem']:checked");
+				var ids="";
+				$items.each(function(){
+					var car=$(this).parents("[data-item]").data("detailControl").data;
+					ids+=car.id+",";
+				});
+				if($items.length>0)
+					ids=ids.substr(0,ids.length-1);
+				window.location.href="add-order.html?ids="+ids;
+			}else{
+				alert('尚未选择任何商品');
+			}
+		})
+		$(".checkAll").change(function(){
+			$("#sellItems input[type='checkbox']").removeProp("checked");
+			if($(this).is(":checked")){
+				$("#sellItems input[type='checkbox']").prop("checked","checked");
+			}else{
+				$("#sellItems input[type='checkbox']").removeProp("checked");
+			}
+			computePrice();
+		})
+	}
+	//List初始化完成的动作
+	function listFinished(){
+		$("input[name='cbItem']").change(computePrice);
+		$("#sellItemsNum").html($(this).control().data.list.length);
+		$("#totalNumber").html($(this).control().data.list.length+$(this).control().data.rentList.length);
+	}
+	function computePrice(){
+		var totalPrice=.0;
+		var $items=$("input[name='cbItem']:checked");
+		$items.each(function(){
+			var car=$(this).parents("[data-item]").data("detailControl").data;
+			totalPrice+=car.price*car.quantity;
+		});
+		$("#shoppingCarItemNum").html($items.length);
+		$(".total-price").html("￥"+totalPrice.toFixed(2));
+	}
+</script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>
+

@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "app.ui-index-url",
+    "type": "java.lang.String",
+    "description": "The URL of UI-APP , system will redirect to it when a user logined "
+  },
+  {
+    "name": "app.auth-server-url",
+    "type": "java.lang.String",
+    "description": "A description for 'app.auth-server-url'"
+  }
+]}

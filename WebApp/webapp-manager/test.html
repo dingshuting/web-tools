@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div>
+			<canvas id="canvas" style="background-image: url(img/bgs.jpg);" width="1388px" height="420px"></canvas>
+		</div>
+	</body>
+	<script src="htmls/js/jquery-1.7.2.min.js"></script>
+	<script src="plugins/ocanvas-2.10.0.js"></script>
+	<script>
+		function randomNum(minNum, maxNum) {
+			switch(arguments.length) {
+				case 1:
+					return parseInt(Math.random() * minNum + 1, 10);
+					break;
+				case 2:
+					return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+					break;
+				default:
+					return 0;
+					break;
+			}
+		}
+		var canvas = oCanvas.create({
+			canvas: "#canvas",
+			fps: 25
+		});
+		var news = [{
+			time:'2017-10',
+			title: "2017-10\n成功入驻IFC大厦\n...",
+			pos: [0.15, 0.41],
+			href:"http://sa.html"
+		},
+		{
+			time:'2017-10',
+			title: "2017-10\n成功入驻IFC大厦\n...",
+			pos: [0.35, 0.3],
+			href:"http://sa.html"
+		},
+		{
+			time:'2017-10',
+			title: "2017-10\n成功入驻IFC大厦\n...",
+			pos: [0.5, 0.7],
+			href:"http://sa.html"
+		},
+		{
+			time:'2017-10',
+			title: "2017-10\n成功入驻IFC大厦\n...",
+			pos: [0.75, 0.38],
+			href:"http://sa.html"
+		},
+		{
+			time:'2017-10',
+			title: "2017-10\n成功入驻IFC大厦\n...",
+			pos: [0.9, 0.58],
+			href:"http://sa.html"
+		}]
+		var Config = {
+			min_radius: 50,
+			max_radius: 70,
+			float_len:50,
+			selected_shadow:"0 0 0 rgba(0,255,0, 0.8)",
+			unselected_shadow:"0 0 0 rgba(255,255,255, 0.8)"
+		}
+	</script>
+	<script>
+		for(i = 0; i < news.length; i++) {
+			obj={};
+			var bgArcR = randomNum(Config.min_radius, Config.max_radius);
+			var bgArcX = news[i].pos[0] * canvas.width;
+			var bgArcY = news[i].pos[1] * canvas.height;
+			obj.halo = canvas.display.arc({
+				x: bgArcX,
+				y: bgArcY,
+				radius: bgArcR,
+				start: 0,
+				end: 360,
+				fill:"#fff radial-gradient(center, center, 50% width, rgb(255,255,255,1), rgb(225,255,255,0))"
+			})
+			obj.pr = canvas.display.arc({
+				x: bgArcX,
+				y: bgArcY,
+				radius: bgArcR+bgArcR*0.2,
+				start: 0,
+				end: 360,
+				stroke: "2px #aaa"
+			})
+			obj.btn = canvas.display.arc({
+				x: bgArcX,
+				y: bgArcY,
+				radius: bgArcR,
+				fill: "rgba(255,255,255,"+randomNum(70,90)/100+")",
+				start: 0,
+				end: 360,
+				shadow: "0 0 20px rgba(0,0,0, 0.8)",
+				
+			});
+			obj.halo.animateSize=bgArcR*1.5;
+			obj.btn.orgR=bgArcR;
+			obj.btn.step=randomNum(0,Config.float_len);
+			obj.btn.orgY=bgArcY;
+			obj.btn.index=i;
+			obj.btn.orgX=bgArcX;
+			obj.title = canvas.display.text({
+				x:bgArcX,
+				y:bgArcY,
+				origin: {
+					x: "center",
+					y: "center"
+				},
+				lineHeight:"25px",
+				align:"center",
+				text:news[i].title,
+				fill: "#000",
+			});
+			obj.btn.bind("mouseenter",function(){
+				this.stop();
+				news[this.index].el.pr.stop();
+				news[this.index].el.halo.stop();
+				this.selected=true;
+				this.inFlash=true;
+				news[this.index].el.pr.stroke="2px #c00";
+				news[this.index].el.pr.animate({radius:this.orgR+this.orgR*0.2+((this.orgR+this.orgR*0.2)*0.1)},{duration:"short",	easing: "ease-in-out-cubic"});
+				news[this.index].el.halo.animate({radius:this.orgR+news[this.index].el.halo.animateSize},{duration:"short",easing: "ease-in-out-cubic"})
+				this.animate({radius:this.orgR+this.orgR*0.1},{duration:"short",easing: "ease-in-out-cubic",callback:function(){
+					this.inFlash=false;
+				}});
+			});
+			obj.btn.bind("mouseleave",function(){
+				this.stop();
+				news[this.index].el.pr.stop();
+				news[this.index].el.halo.stop();
+				this.selected=false;
+				this.outFlash=true;
+				news[this.index].el.pr.stroke="2px #aaa";
+				news[this.index].el.pr.animate({radius:this.orgR+this.orgR*0.2-((this.orgR+this.orgR*0.2)*0.1)},{duration:"short",	easing: "ease-in-out-cubic"});
+				news[this.index].el.halo.animate({radius:this.orgR},{duration:"short"})
+				this.animate({radius:this.orgR-this.orgR*0.1},{duration:"short",	easing: "ease-in-out-cubic",callback:function(){
+					this.outFlash=false;
+				}});
+			});
+			canvas.addChild(obj.halo);
+			canvas.addChild(obj.pr);
+			canvas.addChild(obj.btn);
+			canvas.addChild(obj.title);
+			news[i].el=obj;
+		}
+		canvas.setLoop(function() {
+			for(i in news){
+				if(news[i].el.btn.selected){
+					news[i].el.pr.shadow=Config.selected_shadow;
+					return;
+				}else{
+					news[i].el.pr.shadow=Config.unselected_shadow;
+				}
+				news[i].el.btn.step+=1;
+				if(news[i].el.btn.step==Config.float_len){
+					news[i].el.btn.step=0;
+					if(news[i].el.btn.dir){
+						news[i].el.btn.dir=false;
+					}else{
+						news[i].el.btn.dir=true;
+					}
+				}
+				if(news[i].el.btn.dir){
+					news[i].el.btn.y+=.5;
+					news[i].el.title.y+=.5;
+					news[i].el.pr.y+=.5;
+					news[i].el.halo.y+=.5;
+				}else{
+					news[i].el.btn.y-=.5;
+					news[i].el.title.y-=.5;
+					news[i].el.pr.y-=.5;
+					news[i].el.halo.y-=.5;
+				}
+				
+			}
+		}).start();
+		
+	</script>
+
+</html>

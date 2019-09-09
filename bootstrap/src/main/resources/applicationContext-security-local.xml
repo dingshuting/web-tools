@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:b="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd 
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                         http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	
+	<context:property-placeholder location="classpath:config.properties"/>
+	<http use-expressions="false">
+		<csrf disabled="true"/>
+		<headers>
+		    <frame-options policy="SAMEORIGIN"/>
+		</headers>
+		<intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/*.htm*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/static/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/company/save*" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<intercept-url pattern="/common/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<intercept-url pattern="/jsLibs/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<intercept-url pattern="/www/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<intercept-url pattern="/api/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/profile/resetpwd*" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<!--此处的配置会影响到后续系统的安全，需要改进和修改-->
+		<intercept-url pattern="/dyn/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<intercept-url pattern="/ver_img" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/user/info/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<custom-filter before="LOGOUT_FILTER" ref="requestSingleLogoutFilter" />
+		<intercept-url pattern="/**" access="ROLE_SA,ROLE_USER" />
+	 	<form-login login-page="/index.html" login-processing-url="/login_auth"/> 
+	 	
+		<http-basic />
+	</http>
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="loginServImpl">
+			<password-encoder ref="md5PasswordEncoder">
+				<!-- <salt-source user-property="accountNo"/> -->
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+	<b:bean id="md5PasswordEncoder"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder">
+		<b:property value="false" name="encodeHashAsBase64" />
+		
+	</b:bean>
+	<b:bean id="requestSingleLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<b:constructor-arg
+			value="/index.html" /><!-- ${service.logoutSuccess.url} -->
+		<b:constructor-arg>
+			<b:bean
+				class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+		</b:constructor-arg>
+		<b:property name="filterProcessesUrl" value="/boda_security_logout" />
+	</b:bean>
+	
+	
+</b:beans>

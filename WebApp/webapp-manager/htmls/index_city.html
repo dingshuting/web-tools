@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/jquery.kxbdMarquee.js"></script>
+	<style>
+		table th {
+			border-width: 1px;
+			padding: 3px;
+			color: #1ab394;
+			font-weight: 100;
+		}
+		
+		table {
+			padding: 3px;
+			color: #fff;
+		}
+		
+		table td {
+			padding:3px;
+			text-align: left;
+		}
+		
+		.content {
+			overflow: hidden;
+			height: 411px;
+		}
+		
+		.nav {
+			width: 150px;
+			height: 40px;
+			line-height: 40px;
+		}
+		
+		.arrow {
+			margin: 100px auto;
+			width: 300px;
+			height: 150px;
+		}
+		
+		.item {
+			float: left;
+			clear: both;
+		}
+		/* 向上的箭头 */
+		
+		.arrow-top {
+			font-size: 0;
+			line-height: 0;
+			border-width: 5px;
+			border-color: #ccc;
+			border-top-width: 0;
+			border-style: dashed;
+			border-bottom-style: solid;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			float: right;
+			height: 5px;
+			display: block;
+		}
+		/* 向右的箭头 */
+		
+		.arrow-right {
+			font-size: 0;
+			line-height: 0;
+			border-width: 10px;
+			border-color: red;
+			border-right-width: 0;
+			border-style: dashed;
+			border-left-style: solid;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+		}
+		/* 向下的箭头 */
+		
+		.arrow-bottom {
+			font-size: 0;
+			line-height: 0;
+			border-width: 5px;
+			border-color: #ccc;
+			border-bottom-width: 0;
+			border-style: dashed;
+			border-top-style: solid;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			float: right;
+			display: block;
+			height: 5px;
+			margin-top: 8px
+		}
+		
+		#aaa {
+			bottom: 6px;
+			right: 12px;
+			width: 12px;
+			height: 19px;
+			z-index: 999;
+			cursor: pointer;
+		}
+		
+		.arrow4 {
+			background-image: url(img/dobble_06.jpg);
+			display: block;
+			width: 12px;
+			height: 19px;
+		}
+		
+		.arrow2 {
+			background-image: url(img/up_05.jpg);
+			display: block;
+			width: 12px;
+			height: 19px;
+			float: right;
+		}
+		
+		.arrow3 {
+			background-image: url(img/bottom_07.jpg);
+			display: block;
+			width: 12px;
+			height: 19px;
+			float: right;
+		}
+		
+		.bj1 {
+			width: 100%;
+			background-color: #fff;
+			height: 20px;
+		}
+		
+		.bj2 {
+			background-color: #1ab394;
+			height: 20px;
+		}
+		
+		.xiaozi {
+			font-size: 12px;
+		}
+	</style>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			font-size: 12px;
+			font-family: "微软雅黑"
+		}
+		
+		a {
+			color: #333;
+			text-decoration: none;
+		}
+		
+		ul {
+			list-style: none;
+		}
+		
+		#marquee1 {
+			width: 310px;
+			height: 45px;
+			overflow: hidden;
+			background: #333;
+			border: 2px solid #333;
+			margin: 20px auto 0;
+		}
+		
+		#marquee1 ul li {
+			float: left;
+			padding: 0 1px;
+		}
+		
+		#marquee1 ul li img {
+			display: block;
+		}
+		
+		#marquee2 {
+			width: 300px;
+			height: 25px;
+			overflow: hidden;
+			background: #EFEFEF;
+			margin: 20px auto 0;
+		}
+		
+		#marquee2 ul li {
+			float: left;
+			padding: 0 10px;
+			line-height: 25px;
+		}
+		
+		#marquee3 {
+			width: 60px;
+			height: 235px;
+			overflow: hidden;
+			background: #333;
+			border: 2px solid #333;
+			margin: 20px auto 0;
+		}
+		
+		#marquee3 ul li {
+			float: left;
+			padding: 1px 0;
+		}
+		
+		#marquee3 ul li img {
+			display: block;
+		}
+		
+		#marquee4 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee4 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee5 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee5 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee6 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee6 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee7 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee7 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee8 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee8 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		#marquee9 {
+			width: 100%;
+			height: 200px;
+			overflow: hidden;
+		}
+		
+		#marquee9 ul li {
+			float: left;
+			width: 100%;
+			line-height: 26px;
+		}
+		
+		.shuoming {
+			text-align: center;
+			margin-top: 30px;
+		}
+		
+		.shuoming p {
+			height: 40px;
+			font-size: 18px;
+			line-height: 40px;
+		}
+
+		ul,
+		menu,
+		dir {
+			display: block;
+			list-style-type: none;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			margin-inline-start: 0px;
+			margin-inline-end: 0px;
+			padding-inline-start: 0;
+			-webkit-margin-before: 0;
+			-webkit-margin-after: 0;
+			-webkit-margin-start: 0px;
+			-webkit-margin-end: 0px;
+			-webkit-padding-start: 0;
+		}
+	</style>
+	<link rel="stylesheet" href="css/showloading.css" />
+</head>
+
+<body style="background:url(img/nybj.png) top center;background-attachment: fixed;min-width:1920px;">
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+	<div style="width:100%;height:50px;font-size:25px;color:#fff;text-align: center;">
+		城市级管理驾驶舱
+
+	</div>
+	<div style="width:100%;height:50px;font-size:25px;color:#fff;text-align: center;">
+
+		<select id="sc_citys" style="width: 10%;height:30px;background:none;color:#fff;border:1px solid #1ab394;background-color: #001837;">
+			<option value>--请选择服务中心--</option>
+		</select>
+
+	</div>
+	<div style="width:100%;height:400px;">
+		<div class="contain" style="width:30%;float:left;">
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+				工作饱和度分析
+			</div>
+			<div class="content" style="width:100%;float:left;height:300px;background-color:rgba(255,255,255,0.1)">
+				<div style="height:300px;width:100%;float:left">
+
+					<div id="the7" class="cont" style="width:100%;">
+						<div id="main" data-option="baoheduOption" data-extend-name="bhdfx" data-val=3 data-legend=0 data-xAxis=4 data-default-type=20 class="lineChart" data-url="renyuanbaohedu" style="height:290px;width:99%;float:left;"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div style="height:339px;width:30%;float:left;margin-left:30px" id="zonghe" data-type=20>
+			<div style="width:80%;padding:10px 10px;font-size:15px;color:#fff;margin:0 auto">
+				物流综合数据
+			</div>
+			<div style="width:90%;padding:10px 10px;height:280px;color:#1ab394;margin:0 auto;background-color:rgba(255,255,255,0.1)">
+				<div style="width:45%;float:left;height:120px;text-align: center;padding-top:40px">
+					累计收入<br>¥
+					<span style="font-size:20px;" name="amount">00,000</span>
+				</div>
+				<div style="width:45%;float:left;height:120px;text-align: center;padding-top:40px">
+					累计快件量<br>
+					<span style="font-size:20px;" name="total">00,000</span>
+				</div>
+				<div style="width:45%;float:left;height:120px;text-align: center;">
+					自提平均妥投<br>
+					<span style="font-size:20px;" name="zitiADT">0.00</span>天
+				</div>
+				<div style="width:45%;float:left;height:120px;text-align: center;">
+					派件平均妥投<br>
+					<span style="font-size:20px;" name="paijianADT">0.00</span>天
+				</div>
+			</div>
+		</div>
+		<div class="contain" style="width:30%;float:left;margin-left:30px;">
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+				收入增长率/目标达成率分析
+			</div>
+			<div class="content" style="width:100%;float:left;height:300px;background-color:rgba(255,255,255,0.1)">
+				<div style="height:300px;width:100%;float:left">
+
+					<div id="the7" class="cont" style="width:100%;">
+						<div id="main1syzzl" style="height:300px;width:100%;float:left;"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--中间列表第一个-->
+	<div style="width:100%">
+
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:60px">
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					服务中心收入排名
+				</div>
+
+				<div class="content" style="width:100%;float:left">
+					<div style="width:99%;float:left;border:1px solid #1ab394">
+
+						<div id="the1" class="cont" style="width:100%;">
+							<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border-bottom:0" width="100%">
+								<tr>
+									<th width="10%"></th>
+									<th width="30%">服务中心</th>
+									<th width="15%">本月<span name="aaa" id="mmmm" class="arrow2 arrow3"></span></th>
+									<th width="15%">本季度
+										<span name="aaa" class="arrow2" id="jjjj"></span>
+									</th>
+									<th width="15%">本年<span name="aaa" id="yyyy" class="arrow2"></span></th>
+									<th width="15%">累计<span name="aaa" id="sums" class="arrow2"></span></th>
+								</tr>
+							</table>
+							<div id="srphTableBycityDiv" style="overflow: hidden; height: 310px;width:100%">
+								<div id="demoe" style="overflow: hidden; height: 310px;width:100%">
+									<div id="marquee9" style="width:100%;height: 310px;">
+										<ul>
+											<li>
+												<table border="0" id="srphTableBycity" cellspacing="0" cellpadding="0" width="100%">
+
+												</table>
+											</li>
+										</ul>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--第二个列表-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:60px">
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					本月目标达成率
+				</div>
+
+				<div class="content" style="width:100%;float:left">
+					<div style="width:99%;float:left;border:1px solid #1ab394;overflow: hidden;height:345px">
+
+						<div id="the3" class="cont" style="width:100%;">
+							<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border-bottom:0" width="100%">
+								<tr>
+									<th width="10%"></th>
+									<th width="40%">本月目标达成率</th>
+									<th width="50%" id="dclavg">整体目标达成率<span id="ztmbdclavg"></span>%</th>
+
+								</tr>
+							</table>
+							<div id="democ" style="overflow: hidden; width:100%;height:345px;">
+								<div id="marquee11" style="width:100%;height:345px;">
+									<ul>
+										<li>
+											<table border="0" id="bymbdclvTable" cellspacing="0" cellpadding="0" style="border-color:#1ab394;overflow:hidden;text-align: left;height: 310px;" width="98%">
+												<tr id="nonemubiao" style="display: none">
+													<td width="100%" style="text-align: center">暂无本月目标!</td>
+												</tr>
+											</table>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--第三个列表-->
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-left:30px;margin-top:60px">
+
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					服务中心快件量排名
+				</div>
+
+				<div class="content" style="width:100%;float:left">
+					<div style="width:99%;float:left;border:1px solid #1ab394">
+
+						<div id="the1" class="cont" style="width:100%;">
+							<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border-bottom:0" width="100%">
+								<tr>
+									<th width="10%"></th>
+									<th width="30%">服务中心</th>
+									<th width="15%">本月<span name="bbb" id="mmmmkj" class="arrow2 arrow3"></span></th>
+									<th width="15%">本季度<span name="bbb" class="arrow2" id="jjjjkj"></span></th>
+									<th width="15%">本年<span name="bbb" id="yyyykj" class="arrow2"></span></th>
+									<th width="15%">累计<span name="bbb" id="sumskj" class="arrow2"></span></th>
+								</tr>
+							</table>
+							<div style="overflow: hidden; height: 310px;width:100%" id="kuaijiangliangpaimingTableDiv">
+								<div style="overflow: hidden; height: 310px;width:100%" id="demod">
+									<div id="marquee6" style="width:100%;height: 310px;">
+										<ul>
+											<li>
+												<table border="0" id="kuaijiangliangpaimingTable" ellspacing="0" cellpadding="0" style="border-color:#1ab394;text-align: left;" width="100%">
+													<tr></tr>
+												</table>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--最下面左侧折线图-->
+	<div style="height:450px;width:100%">
+
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:30px;">
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					未妥投/预警快件分析
+				</div>
+
+				<div class="content" style="width:100%;float:left;height:300px">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the9" class="cont" style="width:100%;">
+							<div id="main22" style="height:300px;width:100%;"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab">
+			<div style="width:60%">
+				<div class="contain" style="width:50%;float:left;margin-top:30px;height:330px;">
+
+					<div class="content" style="width:100%;float:left;height:330px;">
+						<div style="height:280px;width:100%;float:left;overflow: hidden;padding-top:70px">
+
+							<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" style="float:right;">
+								<tr>
+									<th width="40%">服务中心</th>
+									<th width="20%">未妥投快件数</th>
+									<th width="20%">预警快件数</th>
+									<th width="20%">未预警快件数
+									</th>
+
+								</tr>
+							</table>
+							<div id="demob" style="overflow: hidden; height: 226px;width:100%">
+								<div id="marquee17" style="width:100%;height: 226px;">
+									<ul>
+										<li>
+											<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" id="weituotouyujingfenxi">
+											</table>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div style="height:450px;width:100%">
+		<div class="tab">
+			<div class="contain" style="width:30%;margin-left:60px;margin-top:30px;float:left;">
+				<div style="width:100%;padding:10px 10px;font-size:15px;color:#fff">
+					本月派送件妥投率分析
+				</div>
+				<div class="content" style="width:100%;float:left;height:300px;background-color:rgba(255,255,255,0.1)">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the7" class="cont" style="width:100%;">
+							<div id="main3" data-option="benyuepaisongtuotoulvOption" data-extend-name="bypsjttlfx" style="height:300px;width:100%;" data-val=5 data-legend=2 data-xAxis=0 data-default-type=2 class="lineChart" data-url="benyuepaisongtuotoulv"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:30px;">
+
+				<div class="content" style="width:100%;float:left;height:300px">
+					<div style="height:300px;width:100%;float:left">
+
+						<div id="the14" class="cont" style="width:100%;">
+							<div id="main5" style="height:300px;width:100%;"></div>
+						</div>
+						<div id="the15" class="cont">
+							<div id="main11" style="height:300px;width:100%;"></div>
+						</div>
+						<div id="the16" class="cont">
+							<div id="main12" style="height:300px;width:100%;"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab">
+			<div class="contain" style="width:30%;float:left;margin-top:35px;height:366px;">
+
+				<div class="content" style="width:100%;float:left;height:366px;" id="benyuepaisongjishilvDiv">
+					<div style="height:330px;width:100%;float:left;overflow: hidden;padding-top:30px">
+
+						<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" style="float:right;">
+							<tr>
+								<th width="25%">名称</th>
+								<th width="15%">1小时内</th>
+								<th width="15%">2小时内</th>
+								<th width="15%">4小时内</th>
+								<th width="15%">1天内</th>
+								<th width="15%">>1天</th>
+
+							</tr>
+						</table>
+						<div id="demoa" style="overflow: hidden;height:300px;width:100%">
+							<div id="marquee8" style="width:100%;height:300px;">
+								<ul>
+									<li>
+										<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border:0" width="100%" id="benyuepaisongjishilv">
+									</li>
+									</table>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab">
+		<div class="contain" style="width:30%;float:left;margin-left:60px;margin-top:30px">
+
+			<div style="width:100%;padding:10px 10px;font-size:15px;color:#1ab394">
+				合作快递公司快件量排名
+			</div>
+
+			<div class="content" style="width:100%;float:left;height:317px;" id="hezuokuaidigongsikuaijianliangDiv">
+				<div style="width:99%;float:left;border:1px solid #1ab394;height:315px;">
+
+					<div id="the1" class="cont" style="width:100%;">
+						<table border="0" cellspacing="0" cellpadding="0" style="border-color:#1ab394;border-bottom:0" width="100%">
+							<tr>
+								<th width="10%"></th>
+								<th width="30%">快递公司</th>
+								<th width="15%">本月<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('yue',this)"></span></th>
+								<th width="15%">本季度
+									<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('ji',this)"></span>
+								</th>
+								<th width="15%">本年<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('nian',this)"></span></th>
+								<th width="15%">累计<span class="arrow2" onclick="hezuokuaidigongsikuaijianliang('leiji',this)"></span></th>
+							</tr>
+						</table>
+						<div id="demo2x" style="overflow: hidden; height: 276px;width:100%">
+							<div id="marquee4" style="width:100%; height: 276px;">
+								<ul>
+									<li>
+										<table border="0" cellspacing="0" cellpadding="0" width="100%" id="hezuokuaidigongsikuaijianliang">
+
+										</table>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<script src="js/echarts.min.js"></script>
+	<script src="../plugins/sonic.js"></script>
+	<script src="../plugins/jquery.showLoading.js"></script>
+	<script src="js/jquery.json.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/dingshuting.js"></script>
+	<script src="js/hx-city.js"></script>
+	<script src="js/hezuokuaidigongsikuaijianliang.js"></script>
+	<script src="js/benyuepaisongjishilv.js"></script>
+	<script src="js/weituotouyujingfenxi.js"></script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			// $("#aaa").click(function() {
+			// 	$(this).toggleClass("arrow3");
+			//
+			// });
+			//未妥投/预警快件分析
+			Getweituotouyujingfenxi(1);
+			//合作快递公司快件量排名
+			Gethezuokuaidigongsikuaijianliang(2, 1, 2);
+			//本月派送及时率分析
+			Getbenyuepaisongjishilv(2, 1);
+		});
+	</script>
+	<script>
+		(function() {
+			$("#marquee3").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+			$("#marquee4").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+			$("#marquee5").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+			$("#marquee6").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+			$("#marquee7").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+			$("#marquee8").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+			$("#marquee9").kxbdMarquee({
+				direction: "up",
+				isEqual: false
+			});
+
+		})();
+	</script>
+
+	<!--<script type="text/javascript">  
+var speed = 50;  
+demox2.innerHTML = demox1.innerHTML;  
+function Marquee() {  
+    if (demox2.offsetTop - demox.scrollTop <= 0) {  
+        demox.scrollTop -= demox1.offsetHeight;  
+    } else {  
+        demox.scrollTop++;  
+    }  
+}  
+var MyMar = setInterval(Marquee, speed);  
+  
+demox.onmouseover = function() {  
+    clearInterval(MyMar);  
+}  
+  
+demox.onmouseout = function() {  
+    MyMar = setInterval(Marquee, speed);  
+}  
+</script>  -->
+
+	<!--<script type="text/javascript">  
+var speed = 50;  
+demoa2.innerHTML = demoa1.innerHTML;  
+function Marquee() {  
+    if (demoa2.offsetTop - demoa.scrollTop <= 0) {  
+        demoa.scrollTop -= demoa1.offsetHeight;  
+    } else {  
+        demoa.scrollTop++;  
+    }  
+}  
+var MyMar = setInterval(Marquee, speed);  
+  
+demoa.onmouseover = function() {  
+    clearInterval(MyMar);  
+}  
+  
+demoa.onmouseout = function() {  
+    MyMar = setInterval(Marquee, speed);  
+}  
+</script>  
+<script type="text/javascript">  
+var speed = 50;  
+demob2.innerHTML = demob1.innerHTML;  
+function Marquee() {  
+    if (demob2.offsetTop - demob.scrollTop <= 0) {  
+        demob.scrollTop -= demob1.offsetHeight;  
+    } else {  
+        demob.scrollTop++;  
+    }  
+}  
+var MyMar = setInterval(Marquee, speed);  
+  
+demob.onmouseover = function() {  
+    clearInterval(MyMar);  
+}  
+  
+demob.onmouseout = function() {  
+    MyMar = setInterval(Marquee, speed);  
+}  
+</script>  
+<script type="text/javascript">  
+var speed = 50;  
+democ2.innerHTML = democ1.innerHTML;  
+function Marquee() {  
+    if (democ2.offsetTop - democ.scrollTop <= 0) {  
+        democ.scrollTop -= democ1.offsetHeight;  
+    } else {  
+        democ.scrollTop++;  
+    }  
+}  
+var MyMar = setInterval(Marquee, speed);  
+  
+democ.onmouseover = function() {  
+    clearInterval(MyMar);  
+}  
+  
+democ.onmouseout = function() {  
+    MyMar = setInterval(Marquee, speed);  
+}  
+</script>  
+<script type="text/javascript">  
+var speed = 50;  
+demod2.innerHTML = demod1.innerHTML;  
+function Marquee() {  
+    if (demod2.offsetTop - demod.scrollTop <= 0) {  
+        demod.scrollTop -= demod1.offsetHeight;  
+    } else {  
+        demod.scrollTop++;  
+    }  
+}  
+var MyMar = setInterval(Marquee, speed);  
+  
+demod.onmouseover = function() {  
+    clearInterval(MyMar);  
+}  
+  
+demod.onmouseout = function() {  
+    MyMar = setInterval(Marquee, speed);  
+}  
+</script>  
+<script type="text/javascript">  
+var speed = 50;  
+demoe2.innerHTML = demoe1.innerHTML;  
+function Marquee() {  
+    if (demoe2.offsetTop - demoe.scrollTop <= 0) {  
+        demoe.scrollTop -= demoe1.offsetHeight;  
+    } else {  
+        demoe.scrollTop++;  
+    }  
+}  
+var MyMar = setInterval(Marquee, speed);  
+  
+demoe.onmouseover = function() {  
+    clearInterval(MyMar);  
+}  
+  
+demoe.onmouseout = function() {  
+    MyMar = setInterval(Marquee, speed);  
+}  
+</script>-->
+</body>
+
+</html>
+</body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>艺术家列表</title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="http://libs.isite8.com/HLoader/1.0/css/hloader.css" rel="stylesheet">
+				<meta name="js-libs" content="js-lib/modules/list.js" />
+		<style>
+			.am-list-thumb img {
+				height: 100%;
+			}
+			.am-list-item-button {
+				font-size: 13px;
+				font-weight: 400px;
+				float: right;
+				padding-top: 2px;
+			}
+			.am-u-sm-4 {
+				height: 118px;
+				width: 118px;
+			}
+			.am-list-news-default .am-list-item-thumb-left .am-list-thumb, .am-list-news-default .am-list-item-thumb-right .am-list-thumb {
+				max-height: 118px;
+			}
+			.am-list-news-default .am-list .am-list-thumb img {
+				height: 100px;
+				width: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="allback box">
+			<div data-am-widget="list_news" class="am-list-news am-list-news-default" >
+                <div class="am-list-news-bd">
+                    <ul class="am-list"  data-query='{"pageSize":8}' data-type="list" data-act="artistList" data-querytype="get">
+                    <!--缩略图在标题左边-->
+                        <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" data-tpl data-item>
+                        	<a data-tag data-href="artist-item.html?id=${obj.id}">
+	                            <div class="am-u-sm-4 am-list-thumb">
+	                                <img class="am-circle" src="img/徐冰.png"  name="logo"/>
+	                            </div>
+	                            <div class="am-u-sm-8 am-list-main">
+	                                <h3 class="am-list-item-hd" name="name" >--</h3>
+	                                <div class="am-list-item-text">出生于<span name="borncity"></span></div>
+	                                <div class="am-list-item-text">毕业于<span name="school"></span>&nbsp;<span name="record"></span></div>
+	                                <div class="am-list-item-text">现居住于<span name="llivecity"></span></div>
+	                            </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+		</div>
+		<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " data-include="includes/footer-nav.html">
+			
+		</div>
+	</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="http://libs.isite8.com/HLoader/1.0/steal/steal.js?js/loader.js" ></script>

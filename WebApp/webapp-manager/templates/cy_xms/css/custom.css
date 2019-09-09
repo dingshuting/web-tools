@@ -1,0 +1,21 @@
+/*   首页      */
+
+#home-settings {
+	display: none;
+}
+
+#settings-tools {
+	display: none;
+}
+
+#settings i,
+#settings-tools i {
+	cursor: pointer;
+}
+
+.setting {
+	height: 80px;
+	background: #FFFFFF;
+	line-height: 80px;
+	text-align: center;
+}

@@ -1,0 +1,29 @@
+<form class="form-horizontal" onsubmit="return false" id="role_add_form">
+	<h2>角色编辑</h2>
+	<div class="form-group  col-md-6">
+		<div class="col-md-12">
+			<label class="col-lg-4 control-label" for="doc-ipt-1">角色名称:</label>
+			<div class="col-lg-7">
+				<input type="text" name="name" class="form-control" value="<%=this.name%>" />
+			</div>
+		</div>
+		<div class="col-md-12">
+			<label for="doc-ipt-1" class="col-lg-4 control-label">角色功能：</label>
+			<div class="col-lg-7">
+				<ul id="role_func_tree" class="ztree"></ul>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-md-6">
+		<label for="doc-ipt-1" class="col-lg-4 control-label">角色描述：</label>
+		<div class="col-lg-7">
+			<textarea  name="remark" style="width: 100%;" rows="5" class="form-control" style="resize: none;"><%=this.remark%></textarea>
+		</div>
+	</div>
+	<div class="col-sm-4 col-sm-offset-2">
+		<br />
+		<button class="btn btn-primary submit_button" style="display: none;" type="button">提交</button>
+	</div>
+	<!-- content end -->
+</form>
