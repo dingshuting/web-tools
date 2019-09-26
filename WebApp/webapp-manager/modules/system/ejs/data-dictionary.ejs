@@ -1,0 +1,30 @@
+<style>
+	.box{
+		background-color: #FFFFFF;
+		border-radius: 2px;
+		box-shadow: 0px 0px 10px #AAAAAA;
+	}
+	.box td{
+		text-align: center;
+	}
+	#table_container .active{
+		color: #FFFFFF;
+	}
+</style>
+<div class="col-lg-3">
+	<div id="dd_tree" class="box"  style="background-color: #FFFFFF;height: 550px;" >
+		<div class="list-group">
+			<div class="text-center" style="background-color: #E9E9E9;line-height: 50px;">数据类型</div>
+		<% list(this,function(obj){%>
+			<a href="javascript:void(0)" class="list-group-item" <%=(el)-> el.data('val',obj)%>><%=obj.name %></a>
+		<%})%>
+		</div>
+	</div>
+</div>
+<div class="col-lg-9 " style="background-color: #FFFFFF;padding:0px">
+	<div class="col-lg-12 box" style="height: 480px;overflow-y: auto;" id="table_container">
+		
+	</div>
+	<div class="col-lg-12 box" style="height: 70px;padding-top: 16px;" id="funcButtons">
+	</div>
+</div>

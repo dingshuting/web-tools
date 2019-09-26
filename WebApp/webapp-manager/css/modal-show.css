@@ -1,0 +1,31 @@
+.loading-indicator {
+	height: 80px;
+	width: 180px;
+	background: url( '../img/loading1.gif' );
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-align: center;
+}
+.loading-indicator lable{
+	
+}
+.loading-indicator-overlay {
+	background-color: #FFFFFF;
+	opacity: 0.6;
+	filter: alpha(opacity = 60);
+}
+.right-modal{
+	position: fixed !important;
+	right: 0px;
+	z-index: 99;
+	top: 0px;
+	background-color: rgba(255,255,255,0.95);
+	box-shadow: 0px 0px 10px #BBBBBB;
+	overflow-y: auto;
+}
+.rowAct{
+	cursor: pointer;
+}
+.rowAct :hover td{
+	background-color: #EEEEEE;
+}
