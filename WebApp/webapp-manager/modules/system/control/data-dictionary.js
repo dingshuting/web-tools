@@ -2,113 +2,96 @@ steal(
 	'can',
 	'../ejs/data-dictionary.ejs',
 	'../models/system.js',
-	'js/viewFactory.js', 'js/modal-show.js',
-	'plugins/zTree/js/jquery.ztree.core.js',
-	'plugins/zTree/css/zTreeStyle/zTreeStyle.css',
-	function(can, DDEjs, System, ViewFactory, Modal) {
-		steal('plugins/zTree/js/jquery.ztree.exedit.js');
+	'js-lib/table.js',
+	function(can, DDEjs, System, TablesControl) {
 		/**
-		 * @constructor cookbook/recipe/list
-		 * @alias RecipeList
-		 * @parent cookbook
-		 * @inherits can.Control
-		 * Lists recipes and lets you destroy them.
 		 */
 		return can.Control(
 			/** @Static */
 			{
-				/**
-				 * adding default options
-				 */
-				defaults: {
-
-				}
 			},
 			/** @Prototype */
 			{
 				/**
 				 * Create a recipe list, render it, and make a request for finding all recipes.
 				 */
-				init: function() {
-					var obj = this;
-					this.element.html(DDEjs());
+				init: function(el, para) {
+					var self = this;
 					System.ddl("0", function(dd) {
-							for(var i = 0; i < dd.length; i++) {
-									dd[i].open = false;
-									dd[i].isParent = true;
-									dd[i].icon=$.basePath+"/jsLibs/img/dd.png";
-								}
-						$.fn.zTree.init($("#dd_tree"), obj.getOrgSetting(), dd);
+						el.html(DDEjs(dd));
+						self.loadList(dd[0]);
+						el.find(".list-group-item:first").addClass("active");
+						el.find("#funcButtons").append($.MenuControl.funcButtons());
+						el.find("#fn-fc3fd105-7896-4de2-9ffc-f3c7f3c9abef").unbind("click");
+					});
+					
+				},
+				loadList: function(parentDD) {
+					var self=this;
+					System.ddl(parentDD.id, function(dd) {
+						self.tableControl=new TablesControl("#table_container", {
+							list: dd,
+							head:{
+								cols: [{
+									colCode: "id",
+									colName: "字典标识",
+									colValType: "s",
+									isEdit: 1,
+									status: 1,
+									isShowInList:1,
+									length:20
+								},{
+									colCode: "name",
+									colName: "字典值",
+									colValType: "s",
+									isEdit: 1,
+									status: 1,
+									isShowInList:1,
+									length:24
+								},{
+									colCode: "remark",
+									colName: "备注",
+									colValType: "s",
+									isEdit: 1,
+									status: 1,
+									isShowInList:0,
+									length:0
+								}]
+							},
+							listClasses: "table",
+							isEdit:true
+						});
 					})
 				},
-				/**
-				 * 获取组织架构的ztree的配置
-				 */
-				getOrgSetting: function() {
-					var obj = this;
-					var setting = {
-						async: {
-							enable: true,
-							type: "get",
-							url: $.contextPath + "/common/dd/list",
-							autoParam: ["id"],
-							dataFilter: function(treeId, parentNode, responseData) {
-								for(var i = 0; i < responseData.length; i++) {
-									responseData[i].open = false;
-									responseData[i].isParent = true;
-									responseData[i].icon=$.basePath+"/jsLibs/img/dd.png";
-								}
-								return responseData;
-							}
-						},
-						callback: {
-							//点击方法，当点击角色后将自动填充其详细信息，含相关的功能列表
-							onClick: function(event, treeId, treeNode) {
-								var rinfo = $(obj.element).find("#show_dd");
-								obj.currentRole = treeNode;
-								var ct = $("<h3></h3>");
-								ct.html(treeNode.id + "------>" + treeNode.name);
-								rinfo.html(ct);
-							}
-						},
-						view:{
-							addHoverDom: function(treeId, treeNode) {
-								var sObj = $("#" + treeNode.tId + "_span");
-								if(treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
-								var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
-									"' title='add node' onfocus='this.blur();'></span>";
-								sObj.after(addStr);
-								var btn = $("#addBtn_" + treeNode.tId);
-								if(btn) btn.bind("click", function() {
-									var dname=prompt("请输入字段名字，索引将自动生成");
-									if(dname.length<2){
-										alert("太短了");
-										return ;
-									}
-									var did;
-									if(!treeNode.children||treeNode.children.length<1){
-										did=treeNode.id+"_1";
-									}else{
-										var ndid=treeNode.children[treeNode.children.length-1].id;
-										var did=did.substring(0,ndid.lastIndexOf("_"))+(parseInt(ndid.substring(ndid.lastIndexOf("_")+1))+1)
-									}
-									
-									System.dds({id:did,name:dname,pId:treeNode.id},function(data){
-										data.data.icon=$.basePath+"/jsLibs/img/dd.png";
-										$.fn.zTree.getZTreeObj("dd_tree").addNodes(treeNode,data.data);
-									});
-									return false;
-								});
-							},
-							removeHoverDom: function(treeId, treeNode) {
-								$("#addBtn_" + treeNode.tId).unbind().remove();
-							},
-							selectedMulti: false
-						}
+				".list-group-item click":function(el,event){
+					//console.log(el.data("val"));
+					this.options.dd=el.data("val");
+					this.loadList(this.options.dd);
+					console.log(this.options.dd);
+					this.element.find(".list-group-item").removeClass("active");
+					el.addClass("active");
 					
-					}
-					return setting;
+				},
+				"#fn-fc3fd105-7896-4de2-9ffc-f3c7f3c9abef click":function(el,event){
+					var self=this;
+					this.tableControl.addNewData(function(result){
+						var inself=$(this);
+						var Model = $.Model($.session.currFun.extraData);
+	        			inself.showLoading();
+	        			result.pid=self.element.find(".list-group-item.active").data('val').id;
+	        			result.locked=0;
+	        			result.status=1;
+	        			Model.save(result,function(data){
+        					inself.hideLoading();
+	        				if(data.code == "200") {
+	        					inself.find(".btn-close").trigger("click");
+	        					self.element.find(".list-group-item.active").trigger("click");
+	        					$.Modal.alert("保存成功");
+	        				}else{
+	        					$.Modal.error("保存失败"+data.desc);
+	        				}
+        				});
+					});
 				}
-
 			});
 	});

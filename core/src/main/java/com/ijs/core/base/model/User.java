@@ -41,7 +41,7 @@ public class User extends AbstractUser implements UserDetails,
 	private UserFuncContainer funcs;
 
 	private Integer isAdmin;
-	
+	private boolean isSa;
 	private SysDep sysDep;
 	private String newPassword;
 	//存储身份信息的对象，如专家、企业等扩展信息
@@ -235,6 +235,16 @@ public class User extends AbstractUser implements UserDetails,
 		}
 		return false;
 	}
+	@Transient
+	public boolean isSa() {
+		return isSa;
+	}
+
+	public void setSa(boolean isSa) {
+		this.isSa = isSa;
+	}
+	
+
 	
 
 }

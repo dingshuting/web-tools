@@ -6,28 +6,29 @@
 		<title>管理系统</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="renderer" content="webkit">
-		
 	</head>
 
-	<body>
-		<div style="width: 100%;text-align: center;margin-top: 200px;"><img src="img/loading1.gif"/></div>
+	<body style="overflow-x: hidden;">
+		<div style="width: 100%;text-align: center;margin-top: 200px;"><img src="img/loading1.gif" /></div>
+		<script src="./js/jquery.min.js"></script>
+		<script src="./js/jquery.min.js"></script>
+		<script src="./app-conf/beitou.js"></script>
 		<script type='text/javascript' src='steal/steal.js?start-loader.js'></script>
-        <script src="./js/jquery.min.js"></script>
 	</body>
-    <script>
-        $(document).ready(function(e) {
-            var counter = 0;
-            if (window.history && window.history.pushState) {
-                $(window).on('popstate', function () {
-                    window.history.pushState('forward', null, '#');
-                    window.history.forward(1);
-                    alert("不可后退！");
-                });
-            }
+	<script>
+		$(document).ready(function(e) {
+			var counter = 0;
+			if(window.history && window.history.pushState) {
+				$(window).on('popstate', function() {
+					window.history.pushState('forward', null, '#');
+					window.history.forward(1);
+					alert("不可后退！");
+				});
+			}
 
-            window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
-            window.history.forward(1);
-        });
+			window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+			window.history.forward(1);
+		});
+	</script>
 
-    </script>
 </html>

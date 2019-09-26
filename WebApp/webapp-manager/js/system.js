@@ -1,10 +1,9 @@
 steal(
-	'can', 'js/model.js', 'js-lib/table.js', 'js-lib/lib-form.js',
-	'js/viewFactory.js', 'js-lib/lib-map.js','app-conf/beitou.js',
-	function(can) {
-		steal('js-lib/query-form.js', 'js-lib/lib-contentInfo.js');
-		steal('plugins/My97DatePicker/WdatePicker.js', 'plugins/My97DatePicker/skin/WdatePicker.css');
-		System = can.Construct.extend({
+	'can',"modules/system/models/system.js","js/jquery.own.js","js/util.js",'js-lib/table.js','js/model.js','js-lib/lib-form.js',
+	'js/viewFactory.js', 'js-lib/lib-map.js','js-lib/lib-contentInfo.js','app-conf/beitou.js',
+	function(can,SystemModel) {
+		steal("js-lib/query-form.js");
+		var System = can.Construct.extend({
 			/**
 			 * 在系统登录后的初始化动作，初始化动作完成了：
 			 * 1、$.request,$.session,$session.currentUser的创建
@@ -21,7 +20,6 @@ steal(
 				//初始化组件
 				if(!$.showdemo) {
 					this.checkUserStatus(obj);
-					this.initOwn$Extend();
 				}
 
 			},
@@ -69,123 +67,16 @@ steal(
 				};
 				
 			},
+			/**
+			 *注销当前登录的用户 
+			 * @param {Object} callback 注销成功后的回调地址
+			 */
 			logout:function(callback){
 				$.post($.request.domain+window['APP_CONFIG'].logoutUrl,callback);
 			},
-			//初始化系统所用的组件函数
-			initOwn$Extend: function() {
-				//数据字典的插件功能
-				$.SelectExtend = function(el, option) {
-					steal("modules/common/control/select-extend.js", function(SEControl) {
-						new SEControl(el, option);
-					});
-				};
-				$.DataDictionary = function(el, option) {
-					steal("modules/common/control/data-dictionary.js", function(DDControl) {
-						new DDControl(el, option);
-					});
-				};
-				//功能权限按钮的功能
-				$.funcButtons = function(fids, appendTo, data) {
-					for(var i in fids) {
-						var fun = $.session.currentUser.getFunc(fids[i]);
-						if(fun != null) {
-							var $btn = $("<button type='button' class='am-btn am-btn-primary am-btn-sm fbtn_" + fun.id + "'></button>");
-							$btn.data("func", fun);
-							$btn.html(fun.name);
-							$btn.click(function() {
-								$.session.currFun = fun;
-								var fun = $(this).data("func");
-								if(fun.togo) {
-									$.VF.build(fun.togo, undefined, data);
-								}
-							});
-							appendTo.append($btn);
-						}
-					}
-				};
-				//功能权限选项的功能
-				$.funcOptions = function(fids, appendTo) {
-					for(var i in fids) {
-						var fun = $.session.currentUser.getFunc(fids[i]);
-						if(fun != null) {
-							var $optHtml = $("<li><a href='##'></a></li>");
-							$optHtml.find("a").html(fun.name);
-							$optHtml.find("li").click(fun.togo);
-							appendTo.append($optHtml);
-						}
-					}
-				};
-				$.objToUrlPara=function(data){
-					var para="";
-					for(var k in data) {
-		                para +=  k + "=" + encodeURI(data[k])+"&";
-		            }
-            		return para;
-				}
-				$.urlToObject = function(url) {
-					var strToObj = function(obj, so, val) {
-						if(so.indexOf(".") > 0) {
-							var item = so.substr(0, so.indexOf("."));
-							if(!obj[item]) {
-								obj[item] = {};
-							};
-							strToObj(obj[item], so.substr(so.indexOf(".") + 1), val);
-						} else {
-							obj[so] = val;
-						}
-					}
-					var urlObject = {};
-					if(/\?/.test(url)) {
-						var urlString = decodeURIComponent(url.substring(url.indexOf("?") + 1));
-						var urlArray = urlString.split("&");
-						for(var i = 0, len = urlArray.length; i < len; i++) {
-							var urlItem = urlArray[i];
-							var item = urlItem.split("=");
-							strToObj(urlObject, item[0], item[1]);
-						}
-
-					}
-					return urlObject;
-				};
-				$.getUUID = function(len, radix) {
-					var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-					var uuid = [],
-						i;
-					radix = radix || chars.length;
-
-					if(len) {
-						for(i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
-					} else {
-						var r;
-						uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-						uuid[14] = '4';
-						for(i = 0; i < 36; i++) {
-							if(!uuid[i]) {
-								r = 0 | Math.random() * 16;
-								uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
-							}
-						}
-					}
-					return uuid.join('');
-				};
-				//时间格式化
-				Date.prototype.Format = function(fmt) { //author: meizz 
-					var o = {
-						"M+": this.getMonth() + 1, //月份 
-						"d+": this.getDate(), //日 
-						"h+": this.getHours(), //小时 
-						"m+": this.getMinutes(), //分 
-						"s+": this.getSeconds(), //秒 
-						"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-						"S": this.getMilliseconds() //毫秒 
-					};
-					if(/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-					for(var k in o)
-						if(new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-					return fmt;
-				};
-			},
+			/**
+			 *跳转至登录页面 
+			 */
 			toLogin:function(){
 				if(window.location.href.indexOf(window['APP_CONFIG'].authUrl)<1){
 					window.location.href = window['APP_CONFIG'].authUrl;
@@ -196,47 +87,44 @@ steal(
 			checkUserStatus: function(whenFinish) {
 				var obj = this;
 				if(!$.session.currentUser) {
-					steal("modules/system/models/system.js", function(System) {
-						System.currentUser(function(data) {
-							whenFinish(data);
-							if(data) {
-								$.session.currentUser = obj.userExtend(data);;
-							} else {
-								obj.toLogin();
-								//window.location.href = $.request.domain+"/index?redirectUrl="+window.location.href;
-							}
-						});
+					SystemModel.currentUser(function(data) {
+						whenFinish(data);
+						if(data) {
+							$.session.currentUser = obj.userExtend(data);;
+						} else {
+							obj.toLogin();
+							//window.location.href = $.request.domain+"/index?redirectUrl="+window.location.href;
+						}
 					});
 				}
 			},
 			//为用户增加获取功能及是否包含某个角色的相关功能
 			userExtend: function(user) {
-					if(user) {
-						user.getFunc = function(fid) {
-							for(var i in user.roles) {
-								for(var j in user.roles[i].funcs) {
-									if(user.roles[i].funcs[j].id == fid) {
-										return user.roles[i].funcs[j];
-									}
+				if(user) {
+					user.getFunc = function(fid) {
+						for(var i in user.roles) {
+							for(var j in user.roles[i].funcs) {
+								if(user.roles[i].funcs[j].id == fid) {
+									return user.roles[i].funcs[j];
 								}
 							}
-							return null;
 						}
-						user.containRole = function(roleCode) {
-							for(var i in user.roles) {
-								for(var j in user.roles[i].funcs) {
-									if(user.roles[i].code == roleCode) {
-										return true
-									}
-								}
-							}
-							return false;
-						}
-						return user;
+						return null;
 					}
+					user.containRole = function(roleCode) {
+						for(var i in user.roles) {
+							for(var j in user.roles[i].funcs) {
+								if(user.roles[i].code == roleCode) {
+									return true
+								}
+							}
+						}
+						return false;
+					}
+					return user;
 				}
-				//url参数转换为对象形式的方法
-				,
+			}
+			//url参数转换为对象形式的方法
 		}, {
 
 		})

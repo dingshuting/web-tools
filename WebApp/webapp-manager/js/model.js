@@ -10,7 +10,6 @@
  * 
  */
 steal('can', function(can) {
-	steal('js/jquery.json.js');
 	$.Model = function(extraData) {
 		//var server = "http://jsny.ijushang.com/";
 

@@ -1,11 +1,12 @@
 /**
+ * 由于整体框架采用异步刷新，因此不会有浏览器地址发生变更的操作，因此需要此模块来构建和管理所有模拟页面
  * version 0.1.0
  */
 steal(
 	'can',
 	function(can) {
-
-		ViewFactory = can.Construct.extend({
+		'use strict';
+		var ViewFactory = can.Construct.extend({
 			current: 'default',
 			uri: steal.URI(document.location.href),
 			d: document,
@@ -18,6 +19,7 @@ steal(
 				this.maxStrackSize = 0;
 				this.vfHistory = new Array();
 			},
+			//后退到上一次构建的主页面
 			back: function() {
 				var existCon = "";
 				for(var i in this.controlls) {
@@ -36,14 +38,15 @@ steal(
 					}
 					currControlEL = this.controlls[this.vfHistory[this.vfHistory.length - 1]];
 					currControlEL.show();
-					if(currControlEL.data("control").refresh) {
-						currControlEL.data("control").refresh();
+					if(currControlEL.control().refresh) {
+						currControlEL.control().refresh();
 					}
 				}
 			},
 			/**
 			 * 将页面保存在历史存储器中，用于返回等操作
 			 * @param {Object} el
+			 * @return {Number} 当前索引，-1代表已存在的页面
 			 */
 			pushPageIntoStack: function(el) {
 				if(this.vfHistory.length > 0 && this.vfHistory[this.vfHistory.length - 1] != 999)
@@ -51,7 +54,7 @@ steal(
 				for(var i in this.controlls) {
 					if(this.controlls[i].attr("id") == $.session.currFun.id) {
 						this.controlls[i].show();
-						this.contentControl=this.controlls[i].data("control");
+						this.contentControl=this.controlls[i].control();
 						this.vfHistory.push(i);
 						return -1;
 					}
@@ -62,18 +65,17 @@ steal(
 				}
 				var i = this.controlls.push(el);
 				this.vfHistory.push(--i);
+				return i;
 			},
 			/**
-			 * 通过调用此方法来构建指定的元素，
-			 * @param {Object} rid 可以是资源的路径，也可以是一个Control的js对象，均可以进行实例化
+			 * 通过调用此方法来构建指定的元素，构建完成后上一个页面自动进入历史栈中，如果isFlash为false时则当前构建的模块不会进入栈中,
+			 * 每次构建一个主页面（未指定contentId）时其容器的id将为以当前功能的id
+			 * @param {Object} rid 可以是资源的路径如：system.user将会寻找module下的system/control/user.js文件，也可以是一个Control的js对象，均可以进行实例化
 			 * @param {Object} contentId 当前容器的选择器或者其el元素.
 			 * @param {Object} pageData 传入即将实例化Control的options参数
 			 * @param {Boolean} isFlash 是否将此构建添加到内存历史中可供进行返回的操作
 			 */
 			build: function(rid, contentId, pageData, isFlash) {
-				if(isFlash == undefined) {
-					isFlash = true;
-				}
 				var contentId = contentId ? contentId : ViewFactory.contentId;
 				if(contentId == this.contentId) {
 					var self = this;
@@ -89,12 +91,11 @@ steal(
 							$(this).remove();
 						}
 					});
-
 					var pageContiner = $("<div class='content_page'></div>");
 					pageContiner.attr("id", $.session.currFun.id);
 					$(contentId).append(pageContiner);
 					contentId = pageContiner;
-					if(isFlash) {
+					if(!isFlash||isFlash==true) {
 						var cp = this.pushPageIntoStack(contentId);
 					} else {
 						this.controlls[this.vfHistory[this.vfHistory.length - 1]].hide();
@@ -105,7 +106,6 @@ steal(
 						pageContiner.remove();
 						return;
 					}
-
 				}
 				if($.isFunction(rid)) {
 					var contentControl = new rid(contentId, pageData);

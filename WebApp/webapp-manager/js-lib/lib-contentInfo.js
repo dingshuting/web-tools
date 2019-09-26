@@ -4,7 +4,7 @@
 steal(
     'can',
     function(can) {
-        var Control = $.FormControl.extend({
+        var Control = can.Control.extend({
             init: function(el, options) {
                 el.html("");
                 if(EL_OPTIONS.detailContainer){

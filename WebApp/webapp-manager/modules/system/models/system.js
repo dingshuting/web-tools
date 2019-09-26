@@ -26,7 +26,7 @@ steal('can', function(can) {
 				//return $.get($.contextPath+"/sys/funcs",callback);  
 			},
 			ddl: function(pid, callback) {
-				return $.get($.contextPath + "/common/dd/list?id=" + pid, callback);
+				return $.get($.contextPath + "/common/dd/list/" + pid, callback);
 			},
 			ddr: function(did, callback) {
 				return $.get($.contextPath + "/common/dd/rm/" + did, callback);

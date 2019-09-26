@@ -55,6 +55,7 @@ steal(
             /**
              *
              * @param {Object} el
+             * 当前初始化表格的容器
              * @param {Object} options
              * //表格的头部配置信息
              * options.head={cols：[{
@@ -67,6 +68,7 @@ steal(
 			 * 				},...],classes:<string>}
              * //表格显示的动态数据，其数据的列名，与参数head的code一一对应,其中数据扩展2个字段（canEdit，canDelete）用于标识数据是否可以被修改或者删除
              * options.list=[{canDelete:true,canEdit:true,...},...]
+          
              * options.value=[{data}];表格的当前值，用于多选或单选的回显操作
              * //加载数据的可操作项，默认包含了改和删的功能
              * options.dataActions=[{
@@ -77,6 +79,14 @@ steal(
              * //加载表格的行内样式
              * //是否显示操作列
              * options.isShowActs=true|false
+             * //表格是否可以进行其内容的编辑，true时点击行及弹出内容编辑框
+             * options.isEdit=true|false
+
+             * //ol设置，主要用于对象列表中的对象直接在编辑模式中进行数据库写操作，并关联主对象
+             * options.parentObj={id:'必带字段'}//在表格处于编辑状态时，对应的父对象数据，此项一般都是由表单中的ol类型触发，该参数代表object，l代表表格本身的列表数据
+             * options.olSetting={
+             * 	childrenField:'name',//对应列表对象关联的主对应字段
+             * }
              * //是否显示表格序号
              * options.isShowIndex=true|false
              * //当model不为空时，则为异步获取表格数据，此model为标准的Model对象，直接调用list等方法获取动态数据
@@ -115,6 +125,10 @@ steal(
 
 
             },
+            /**
+             * 刷新当前表格内容，刷新时将重新发起请求来获取最新的数据，同时刷新时的条件也为当前表格的查询条件。
+             * 刷新后自动重新加载表格。
+             */
             refresh: function() {
                 this._loadDataByAjax(self.options.currentPage);
             },
@@ -122,7 +136,6 @@ steal(
             init_view: function() {
                 self = this;
                 if(this.options.model) {
-                    //计算列的宽度
                     this.options.head = this.options.model.head;
                     if(this.options.head) {
                         this.init_td_width();
@@ -134,20 +147,27 @@ steal(
                     if(this.options.head) {
                         this.init_td_width();
                         $.TableControl._loadDataDict(this.options.head, function() {
-                            var table = self._getTable(self.options.head.cols, self.options.list);
-                            if(self.options.head.width >(parseInt($(document.body).width())-parseInt($(document.body).width())*0.12)) {
-                            	table.css("width", self.options.head.width + "px");
-                            }
-                            self.element.html(table);
-                            
+                        	if(self.options.list){
+	                            var table = self._getTable(self.options.head.cols, self.options.list);
+	                            if(self.options.head.width >(parseInt($(document.body).width())-parseInt($(document.body).width())*0.12)) {
+	                            	table.css("width", self.options.head.width + "px");
+	                            }
+	                            self.element.html(table);
+                           }else{
+                           		console.error("options.list must be specified when head was existed");
+                           }
                         });
-
+                    }else{
+                    	console.error("options.head must be specified,the head is ExtraData");
                     }
                 }
                 if(window["lodingCols"]) {
                     window["lodingCols"](self);
                 }
             },
+            /**
+             * 根据cols配置的length属性，来计算宽度百分比（当前列定义长度/总长度）
+             */
             init_td_width: function() {
                 //计算列的宽度
                 var count = 0;
@@ -155,7 +175,6 @@ steal(
                     if(this.options.head.cols[i].isShowInList == 1||(this.options.isEdit==true&&this.options.head.cols[i].isEdit==1)) {
                         count += this.options.head.cols[i].length;
                     }
-
                 }
                 for(var i in this.options.head.cols) {
                     if(this.options.head.cols[i].isShowInList == 1||(this.options.isEdit==true&&this.options.head.cols[i].isEdit==1)) {
@@ -166,13 +185,17 @@ steal(
                         this.options.head.cols[i].width = (tw * 90) + "%";
                     }
                 }
+                
                 this.options.head.width = count * 8;
             },
-            //初始化配置参数
+            /**
+             * 初始化配置参数，其中初始化的参数有：
+             * dataAdded：当前新增的数据项
+             * dataRemoved：当前删除的数据项
+             * dataChanged：当前修改后的数据项
+             * dataChecked：当前选中的数据项
+             */
             init_args: function() {
-                this.dataAdded = new Array();
-                this.dataRemoved = new Array();
-                this.dataChanged = new Array();
                 this.dataChecked = new Array();
                  if(this.options.isEdit == undefined) {
                  	this.options.isEdit=false;
@@ -192,7 +215,7 @@ steal(
                 if(!this.options.list) {
                     this.options.list = [];
                 }
-
+				this.dataList=this.options.list;
                 if(!this.options.checked) {
                     this.options.checked = {};
                     this.options.checked.display = false;
@@ -214,82 +237,17 @@ steal(
                 }
 
             },
-            //当数据改变时调用此方法来记录改变的数据
-            pushRowData: function(rowData) {
-                if(rowData._id) {
-                    for(var i in this.dataChanged) {
-                        if(this.dataChanged[i]._id == rowData._id) {
-                            this.dataChanged[i] = rowData;
-                            return;
-                        }
-                    }
-                    this.dataChanged.push(rowData);
-                    if(this.options.list) {
-                        for(var i in this.options.list) {
-                            if(this.options.list[i]._id == rowData._id) {
-                                this.options.list[i] = rowData;
-                            }
-                        }
-                    }
-                }
-            },
             //默认提供的操作项，在可编辑的情况下使用
-            defaultActions: [{
-                name: "编辑",
-                func: function() {
-                    var rowData = $(this).data("val");
-                    var self = $(this).data("self");
-                    self._getNewRow(self.options.head.cols, rowData, rowData.el, true);
-                },
-                beforActionLoad: function(rowdata) {
-                    if(rowdata.canEdit) {
-                        return rowdata.canEdit;
-                    } else {
-                        return true;
-                    }
-                }
-            }, {
-                name: "删除",
-                func: function() {
-                    var self = $(this).data("self");
-                    var rowdata = $(this).data("val");
-                    rowdata.el.remove();
-                    if(rowdata.id) {
-                        self.dataRemoved.push(rowdata);
-                        for(var i in self.dataChanged) {
-                            if(self.dataChanged[i].id == rowdata.id) {
-                                self.dataChanged[i] = undefined;
-                                self.dataChanged.splice(i, 1);
-                            }
-                        }
-                        if(self.options.list) {
-                            for(var i in self.options.list) {
-                                if(self.options.list[i].id == rowdata.id) {
-                                    self.options.list[i] = undefined;
-                                    self.options.list.splice(i, 1);
-                                }
-                            }
-                        }
-                    }
-
-                },
-                beforActionLoad: function(rowdata) {
-                    if(rowdata.canDelete) {
-                        return rowdata.canDelete;
-                    } else {
-                        return true;
-                    }
-                }
-            }],
+            defaultActions: [],
             /**
              * 根据传入的list配置参数获取table的head
              * @param {Object} head
              */
-            getThead: function(head) {
+            _getThead: function(head,table) {
                 $head = $("<tr></tr>");
                 var self = this;
                 if(this.options.isShowIndex) {
-                    $head.append("<th style='width:5%;text-align:center;'>序号</th>");
+                    $head.append("<th style='text-align:center;width:"+(70/table.width()*100)+"%'>序号</th>");
                 }
                 if(this.options.checked.display) {
                     var $headEl = $("<th style='width:10%;text-align:center;'></th>");
@@ -313,7 +271,7 @@ steal(
                 	}
                     var isShowInList=head[i].isShowInList;
                     var user = $.session.currentUser;
-                    if(isShowInList == 1||(self.options.isEdit==true&&head[i].isEdit==1)) {
+                    if(isShowInList == 1) {
                         var $th = $("<th style='text-align:center;'></th>");
                         $th.attr("style", head[i].style);
                         $th.attr("width", head[i].width);
@@ -322,61 +280,95 @@ steal(
                         }else{
                             $th.html(head[i].colName);
                         }
-
                         $head.append($th);
                     }
                     head[i].isShowInList=isShowInList;
                 }
-                if(this.options.isShowActs&&this.options.isShowActs==true) {
-                    $head.append("<th style='text-align:center;width:5%'>操作</th>");
+                if(this.options.isShowActs&&this.options.isEdit==false) {
+                    $head.append("<th style='text-align:center;width:70px'>操作</th>");
                 }
                 return $head;
 
             },
 
             //添加新数据的操作，调用自动提示出相关的输入项，保存后数据存入js缓存后续一并提交数据
-            addNewData: function() {
-                this.element.find("table").append(this._getNewRow(this.options.head.cols));
+            addNewData: function(saveFunc) {
+            	var self=this;
+            	var formContainer=$.Modal.getRightModal();
+        		var fcontrol=new $.FormControl(formContainer,{input:self.options.head,groupNum:1});
+        		formContainer.prepend("<h3>信息添加</h3>")
+        		formContainer.append('<div class="col-lg-12 text-center" style="padding:5px"><button type="button" class="btn btn-primary  btn-save">确认</button><button type="button" class="btn btn-warning btn-close">关闭</button></div>');
+        		formContainer.find(".btn-close").click(function(){
+        			formContainer.animate({right:formContainer.width()*-1.1},500);
+        		});
+        		var addNewElRow=function(result){
+        			var newRow=self._getNewRow(self.options.head.cols,result);
+					if(self.options.isShowIndex){
+						newRow.prepend("<td>"+self.element.find("table tr").length+"</td>")
+					}
+					self.element.find("table").append(newRow);
+        		}
+        		formContainer.find(".btn-save").click(function(){
+        			var result=fcontrol.getValue();
+        			//当有父对象时，则直接进行子对象新增，否则则直接添加到列表中，在父对象保存时统一保存
+        			if(result){
+	        			if(self.options.parentObj){
+		        			result[self.options.olSetting.childrenField]=self.options.parentObj.id;
+		        			if(saveFunc){
+		        				saveFunc.call(formContainer,result);
+		        				return;
+		        			}else{
+		        				var Model = $.Model(self.options.head);
+			        			formContainer.showLoading();
+			        			Model.save(result,function(data){
+		        				formContainer.hideLoading();
+			        				if(data.code == "200") {
+			        					formContainer.find(".btn-close").trigger("click");
+			        					$.Modal.alert("保存成功");
+			        					addNewElRow(result);
+			        				}
+		        				});
+		        			}
+	        			}else{
+	        				formContainer.find(".btn-close").trigger("click");
+	        				addNewElRow(result);
+	    					self.dataList.push(result);
+	        			}
+	        			
+        			}
+        		});
             },
+            /**
+             * 获取当前表格插件的数据对象列表，其有2种情况：
+             * 1、当options.checked.display为true的时候代表当前插件为选择行的状态，返回选中的行数据对象
+             * 2、正常状态下返回表格的整个数据对象列表，主要用于列表数据的新增
+             */
             getValue: function() {
-            	//$(".temp-opt .confirm").trigger("click");
                 if(this.options.checked.display) {
-                    return this.getDataList().checked;
+                    return this.dataChecked;
                 }
-                return this.getDataList().dataList;
+                return this.dataList;
             },
-            //获取当前table需要进行保存或者修改的动态数据
-            getDataList: function() {
-                var dataAdded = new Array();
-                var datalist = new Array();
-                var obj = this;
-                this.element.find("table tr:gt(0)").each(function() {
-                    if($(this).data("val")) {
-                        if(rowdata != undefined) {
-                            obj.options.list.push(rowdata);
-                        }
-
-                        var rowdata = obj._filterData(obj.options.head.cols, $(this).data("val"));
-                        dataAdded.push(rowdata);
-                        datalist.push(rowdata);
-                        $(this).data("val", undefined);
-                    }
-                });
-                for(var i in this.options.list) {
-                    datalist.push(obj._filterData(obj.options.head.cols, this.options.list[i]));
-                }
-                return {
-                    "changed": this.dataChanged,
-                    "added": dataAdded,
-                    "removed": this.dataRemoved,
-                    "dataList": datalist,
-                    "checked": this.dataChecked
-                }
-            },
+            /**
+             * table插件进行查询操作，查询后将会自动刷新table的内容
+             * @param {Object} query
+             */
             setQuery: function(query) {
                 this.options.query = query;
                 this._loadDataByAjax(1);
             },
+            //重新刷新行内容
+            refreshRow: function(row, rowData) {
+            	var firstTd;
+            	if(self.options.isShowIndex==true){
+            		firstTd=row.find("td:first").clone();
+            	}
+                this._getNewRow(self.options.head.cols, rowData, row);
+                if(firstTd)
+                	row.find("td:first").before(firstTd);
+            },
+            
+            
             //过滤对象，将对象中除去头部定义之外的字段清除
             _filterData: function(head, data) {
                 var data1 = {};
@@ -388,11 +380,6 @@ steal(
 					data1['id']=data['id'];
 				}
                 return data1;
-            },
-            //重新刷新行内容
-            _refreshRow: function(row, rowData) {
-                var self = row.data("self");
-                self._getNewRow(self.options.head.cols, rowData, row);
             },
             //加载行的操作
             _loadActions: function(row) {
@@ -424,46 +411,51 @@ steal(
                 return $optTd;
 
             },
-            //获取表格的实例
-            _getTable: function(head, dataList) {
-                var $table = $("<table width='100%'></table>");
+            /**
+             * 根据给定的列说明列表，并生成一个指定数据列表的表格实例
+             * @param {Array} headCols 数据描述列参考数据库extra_data_cols字段
+             * @param {Array} dataList 数据实例列表
+             */
+            _getTable: function(headCols, dataList) {
+            	var self=this;
+                var $table = $("<table></table>");
+                //当列宽度大于内容区域则开启横向滚动条
+                if(self.options.head.width > $(window).width()*0.88) {
+                    $table.css("width", self.options.head.width + "px");
+                }else{
+                	$table.css("width",self.element.parent().width()-20);
+                }
                 self = this;
                 if(self.options.listClasses){
                 	$table.addClass(self.options.listClasses);
                 }else{
                 	$table.addClass(TPL_TABLE_OPTION.listClasses);
                 }
-                $table.append(self.getThead(head));
+                $table.append(self._getThead(headCols,$table));
                 for(var i in dataList) {
-                    var row = this._getNewRow(head, dataList[i], undefined, undefined, true);
+                    var row = this._getNewRow(headCols, dataList[i]);
                     if(self.options.isShowIndex) {
                         if(self.options.pageSetting.isShow) {
                             i = (self.dataModel.currentPage - 1) * self.dataModel.perPageSize + parseInt(i) ;
                         }
                         //如果当前为选择插件，那么序号将由单选框代替
-
-                        row.find("td:first").before("<td>" + (i*1+1) + "</td>");
-
+                        row.find("td:first").before("<td style='text-align:center'>" + (i*1+1) + "</td>");
                     }
                     if(this.options.checked.display) {
                         var $checkbox;
                         if(this.options.checked.isSingle) {
                             $checkbox = $("<input type='radio' name='choseData' />");
-                            $checkbox.data("self",self);
                             $checkbox.click(function() {
-                            	self=$(this).data("self");
                                 self.dataChecked[0] = $(this).data('val');
                             });
                         } else {
                             $checkbox = $("<input type='checkbox' name='choseData' />");
-                            $checkbox.data("self",self);
                             for(var j in self.dataChecked) {
                             	if(dataList[i].id==self.dataChecked[j].id){
                             		$checkbox.prop("checked","checked");
                             	}
                             }
                             $checkbox.change(function() {
-                            	self=$(this).data("self");
                                 if($(this)[0].checked) {
                                 	for(var j in self.dataChecked) {
                                         if(self.dataChecked[j].id == $(this).data("val").id) {
@@ -495,138 +487,55 @@ steal(
 
                     }
                     $table.append(row);
-                    $table.data("self", self);
-
                 }
+               
                 self.table = $table;
                 return self.table;
             },
             /**
-             * 获取一条新行
-             * @param {Object} head 头的定义
-             * @param {Object} rowData 行数据
+             * 根据指定的头信息，生成一条新行数据，当options.isShowActs为true时则显示操作项，
+             * 该操作项来源于数据库功能配置，并非人为指定，需要受到权限控制
+             * @param {Array} headCols 头的定义参考数据表Extra_data_cols
+             * @param {Object} rowData 行对象信息，对应数据库的单条对象
+             * @param {jQuery} oldRow 在旧行的基础上进行渲染行,用于表格行的更新
              */
-            _getNewRow: function(head, rowData, oldRow, showEdit, isShow) {
+            _getNewRow: function(headCols, rowData, oldRow) {
                 var $row = oldRow ? oldRow : $("<tr></tr>");
                 $row.empty();
                 var self = this;
-                $row.data("self", self);
-                if(self.options.isEdit){
-                	$row.addClass("validationEngineContainer");
-                }
-                if(self.options.isShowIndex && !isShow) {
-                    $row.append("<td>--</td>");
-                }
-                $(head).each(function() {
-                	var newCol=self._getNewCol(this, rowData, rowData ? showEdit : true)
+                $row.data("val",rowData);
+                $(headCols).each(function() {
+                	var newCol=self._getNewCol(this, rowData, false)
                 	if(newCol)
                     	$row.append(newCol);
-                    
                 });
                 if(rowData) {
-                    if(this.options.isShowActs&&this.options.isShowActs==true) {
+                	//当前表格设置为可编辑状态时，isShowActs将不再生效
+                	if(self.options.isEdit) {
+                    	$row.addClass("rowAct");
+                    	$row.on("click",self._showEditDialog);
+                    }else if(this.options.isShowActs) {
                         var org_action = this._loadActions(rowData);
-                        if(showEdit) {
-                            org_action.find(".org-opt").hide();
-                            org_action.append(self._loadConfirmActionInRow($row, rowData));
-                        }
                         $row.append(org_action);
                     }
                     rowData.el = $row;
                 } else {
-                    var org_action = $("<td class='temp-opt'></td>")
-                    org_action.find(".org-opt").hide();
-                    org_action.append(self._loadConfirmActionInRow($row, rowData));
-                    $row.append(org_action);
+                	//表格本身将不做新增操作，由右侧表单来完成
+                	return $row;
                 }
-
                 return $row;
-            },
-            //加载对表格数据的修改和确认消息的动作，此时表格数据也成对应的可修改项
-            _loadConfirmActionInRow: function(row, rowData) {
-                var $temp_opt = $("<div class='temp-opt'></div>");
-                var $confirm = $("<a class='confirm' href='javascript:void(0)'>确认  </a>");
-                var $cancel = $("<a class='cancle' href='javascript:void(0)'>  取消</a>");
-                var self = $(row).data("self");
-                $cancel.click(function() {
-                    if(rowData) {
-                        self._getNewRow(self.options.head.cols, rowData, row, false);
-                    } else {
-                        row.remove();
-                    }
-                    $(row).find(".temp-opt").fadeOut();
-                    $(row).find(".org-opt").fadeIn();
-                });
-                $confirm.click(function() {
-                    var $tr = $(row);
-                    var isChanged = false;
-                    var isAdd = false;
-                     var isPass=true;
-                    if($tr.validationEngine('validate')==false){
-                    	return;
-                    }
-                    if(!rowData) {
-                        rowData = {};
-                        isAdd = true;
-                    }
-                    $tr.find("td").each(function(k1, v1) {
-                        if(!$(v1).hasClass("lt-opt")) {
-                           	var te = $(v1).find("[name]:not([name='file'])");
-                           	var tv;
-                            if(te.length>0){
-                                 if(te.is("div")){
-                                 	tv=te.data("control").getValue();
-                                 }else{
-                             		tv=te.val();
-                                 }
-                            }else{
-                            	return true;
-                            }
-                            var tk=te.attr("name");
-                            if(te.data("value")&&tk.lastIndexOf("Id")>-1){
-                            	rowData[tk.substr(0,tk.lastIndexOf("Id"))]=te.data("value");
-                            }
-                            if(rowData[tk] != tv) {
-                                rowData[tk] = tv;
-                                isChanged = true;
-                            } else if(!rowData[tk]) {
-                                rowData[tk] = tv;
-                                isChanged = true;
-                            }
-                        }
-                    });
-                    if(!isPass){
-                    	return;	
-                    }
-                    rowData.canEdit = true;
-                    rowData.canDelete = true;
-                    self._refreshRow($tr, rowData);
-                    //如果是新增数据，则将数据绑定在行之上，保存是直接取出
-                    if(isAdd) {
-                        $(row).data("val", rowData);
-                        return;
-                    }
-                    //如果是修改，则将修改的数据保存到待提交的保存列表中，提交时取出
-                    if(isChanged) {
-                        self.pushRowData(rowData);
-                    }
-                })
-                $temp_opt.append($confirm);
-                $temp_opt.append($cancel);
-                return $temp_opt;
-
             },
             /**
              *
              * @param {Object} headElement 根据头部配置获取列元素
              * @param {Object} rowdata 行数据
              */
-            _getNewCol: function(headElement, rowdata, showEdit) {
+            _getNewCol: function(headElement, rowdata) {
             	var self=this;
             	if(headElement.colType==2&&self.options.isEdit==true){
                 	return;
                 }
-                if(headElement.isShowInList == 1||(self.options.isEdit==true&&headElement.isEdit==1)) {
+                if(headElement.isShowInList == 1) {
                     var $col = $("<td style='word-wrap:break-word;word-break:break-all;'></td>");
                     if(rowdata) {
                         var $val = rowdata[headElement.colCode];
@@ -640,117 +549,16 @@ steal(
                         } else {
                             $val = this._defaultDataFilter(headElement, $val, $col,rowdata);
                         }
-                        if(showEdit) {
-                        	var inputel=this._loadInputForm(headElement, rowdata[headElement.colCode]);
-                        	if(inputel)
-                           		$col.html(inputel);
-                            else{
-                            	return;
-                            }
-                        } else {
-                        	//当为系统输入并且不是编辑状态时显示值
-                            if(headElement.colType!=2||self.options.isEdit==false) {
-                            	if($val)
-                                	$col.html($val);
-                            }else{
-                            	return;
-                            }
-
-                        }
-
-                    } else {
-                    	var inputel=this._loadInputForm(headElement);
-                    	if(inputel)
-                       		$col.html(inputel);
-                        else{
+                    	//当为系统输入并且不是编辑状态时显示值
+                        if(headElement.colType!=2||self.options.isEdit==false) {
+                        	if($val)
+                            	$col.html($val);
+                        }else{
                         	return;
                         }
                     }
                 }
                 return $col;
-            },
-            //根据表格头的定义加载相应的输入元素
-            _loadInputForm: function(headElement, val) {
-                var $in = undefined;
-                var valData={};
-                if(headElement.colType==2){
-                	return;
-                }
-                if(headElement.colValType == 's') {
-                    $in = $("<input type='text' name='" + headElement.colCode + "' />");
-                } else if(headElement.colValType == 'b') {
-                    $in = $("<select  name='" + headElement.colCode + "' />");
-                    var yes = $("<option value='0'>否</option>");
-                    var no = $("<option value='1'>是</option>");
-                    if(val == 1) {
-                        yes.attr("checked", "checked");
-                    }
-                    $in.append(yes);
-                    $in.append(no);
-                } else if(headElement.colValType == 't') {
-                    if("undefined" != typeof WdatePicker) {
-                        $in = $("<input type='text' readonly='readonly' name='" + headElement.colCode + "' onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd'})\"/>");
-
-                    } else {
-                        $in = $("<input type='datetime-local' name='" + headElement.colCode + "' />");
-                    }
-
-                } else if(headElement.colValType == 'd') {
-                    $in = $("<input type='text' name='" + headElement.colCode + "' />");
-
-                }else if(headElement.colValType == 'f'){
-                    var $input = $("<div name='" + headElement.colCode + "' class='ibox-content'></div>");
-                    if(valData) {
-                        var upload = undefined;
-                        if(headElement.options) {
-                            upload = new Upload($input, {
-                                value: valData[headElement.colCode],
-                                fileNumLimit: headElement.options
-                            });
-                        } else {
-                            upload = new Upload($input, {
-                                value: valData[headElement.colCode]
-                            });
-                        }
-                        $input.data("control", upload);
-                    } else {
-                        var upload = new Upload($input, {
-                            value: null
-                        });
-                        $input.data("control", upload);
-                    }
-                    $in=$input;
-
-                } else if(headElement.colValType == 'fv') {
-                    $in = $("<select name='" + headElement.colCode + "'/></select>");
-                    $in.append("<option value>--请选择--</option>");
-                    for(var i in headElement.DD) {
-                        var op = $("<option ></option>");
-                        op.attr("value", headElement.DD[i].id);
-                        op.text(headElement.DD[i].name);
-                        if(headElement.DD[i].id)
-                            $in.append(op);
-                    }
-                } else if(headElement.colValType == 'ref') {
-                    $in = $("<input type='text' readonly='readonly' name='" + headElement.colCode + "' />");
-                    if(val) {
-                        $in.val(val.name);
-                    }
-                    var self = this;
-                    $in.click(function() {
-                        $.FormControl.defaultRefHander($in, headElement);
-                    })
-                } else {
-                    $in = $("<input type='text' name='" + headElement.colCode + "' />")
-                }
-                if(val) {
-                    $in.val(val);
-                }
-                $in.addClass("validate"+headElement.validate);
-                if(headElement.colType == 2) {
-                    $in.attr("readonly", true);
-                }
-                return $in;
             },
             _getPageBar: function() {
                 var self = this;
@@ -797,6 +605,10 @@ steal(
                     return $pageBar;
                 }
             },
+            /**
+             * 异步加载表格内容
+             * @param {Object} pn 分页数据
+             */
             _loadDataByAjax: function(pn) {
                 var self = this;
                 var list = self.options.isAll ? "all" : "list";
@@ -815,9 +627,6 @@ steal(
                         self._loadDataByAjax(data);
                     });
                     var table = self._getTable(self.options.head.cols, self.options.list);
-                    if(self.options.head.width > (parseInt($(document.body).width())-parseInt($(document.body).width())*0.12)) {
-                        table.css("width", self.options.head.width + "px");
-                    }
                     self.element.html(table);
                     table.after(self._getPageBar());
                     if(window[self.options.finished]){
@@ -895,6 +704,55 @@ steal(
                     return "--";
                 }
             },
+            /**
+             * 带有“rowAct”类样式的则为可操作的行，点击显示右侧模态框，用于编辑当前点击行数据信息。
+             * 点击后将通过FormControl生成编辑改数据的form，同时可以对改数据进行修改和删除动作。
+             * 删除时自动提交到后台的删除
+             */
+            ".rowAct click":function(el){
+            	var self=this;
+            	var $row=el;
+        		$row.parent().find("tr").removeClass("active");
+        		$row.addClass("active")
+        		var formContainer=$.Modal.getRightModal();
+        		var fcontrol=new $.FormControl(formContainer,{input:self.options.head,data:$row.data('val'),groupNum:1});
+        		formContainer.prepend("<h3>信息编辑</h3>")
+        		formContainer.append('<div class="col-lg-12 text-center" style="padding:5px"><button type="button" class="btn btn-primary  btn-save">确认</button><button type="button" class="btn btn-danger  btn-remove">删除</button><button type="button" class="btn btn-warning btn-close">关闭</button></div>');
+        		formContainer.find(".btn-close").click(function(){
+        			formContainer.animate({right:formContainer.width()*-1.1},500);
+        		});
+        		formContainer.find(".btn-save").click(function(){
+        			var Model = $.Model(self.options.head);
+        			var result=fcontrol.getValue();
+        			self.dataList[$row[0].rowIndex]=result;
+        			if(result.id){
+        				formContainer.showLoading();
+	        			Model.save(result,function(data){
+	        				formContainer.hideLoading();
+	        				if(data.code == "200") {
+	        					formContainer.find(".btn-close").trigger("click");
+	        					self.refreshRow($row,result);
+	        					$.Modal.alert("保存成功");
+	        				}
+	        			});
+        			}
+        		});
+        		formContainer.find(".btn-remove").click(function(){
+        			var Model = $.Model($.session.currFun.extraData);
+        			var rowData=$row.data('val');
+        			self.dataList.slice($row[0].rowIndex,1);
+        			if(rowData.id){
+	        			Model.delete(rowData.id,function(data){
+	        				if(data.code=="200"){
+	        					$row.hide(500);
+	        				}
+	        			});
+        			}else{
+        				$row.hide(500);
+        			}
+        			
+        		});
+            }
         });
         $.TableControl = Control;
         return Control;

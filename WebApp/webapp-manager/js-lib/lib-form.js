@@ -4,7 +4,7 @@
 steal(
     'can',
     'js/modal-show.js',
-    'plugins/webuploader/upload.js',
+    'plugins/webuploader/upload.js','plugins/My97DatePicker/WdatePicker.js', 'plugins/My97DatePicker/skin/WdatePicker.css',
     function(can, ModelShow, Upload) {
         steal('plugins/summernote/css/summernote.css');
         steal('plugins/summernote/css/summernote-bs3.css');
@@ -162,8 +162,14 @@ steal(
              */
             init: function(el, options) {
                 var self = this;
-                options.extraData = options.model.head;
-                options.input = options.model.head.cols;
+                if(!options.input){
+                	options.extraData = options.model.head;
+                	options.input = options.model.head.cols;
+                }else{
+                	options.model=options.input;
+                	options.input=options.model.cols;
+                }
+                
                 self.cols={}
                 if(!options.form) {
                     options.form = {};
@@ -174,6 +180,9 @@ steal(
                 }
                 if(options.data && options.data.query) {
                     options.data = options.data.query;
+                }
+                if(!options.groupNum){
+                	options.groupNum=2;
                 }
                 if(options.id) {
                     Form.id["id"]=options.id;
@@ -201,9 +210,6 @@ steal(
              * @param {Object} num  分组数，默认为分组数+1，额外的+1代表宽度80%的,此参数需可以整除12
              */
             _getInputGroup: function(cols, num) {
-                if(!num) {
-                    num =$.UiSetting.inputGroupNum;
-                }
                 var group = new Array();
                 group[num] = new Array();
                 var length = 0;
@@ -248,7 +254,7 @@ steal(
             //获取一个表单
             _loadForm: function(form, input, valData, model) {
                 var $form = undefined;
-
+				var self=this;
                 //目前基本没有form支撑无法执行表单的序列化操作，所有此处代码判断无意义，默认执行表单即可。
                 if(form) {
                 	var container;
@@ -269,12 +275,12 @@ steal(
                         $form.addClass(form.classes);
                     }
                     //此处修改，将循环迁移，方便加载样式和整体字段的显示和控制
-                    var inputGroup = this._getInputGroup(input);
+                    var inputGroup = this._getInputGroup(input,self.options.groupNum);
                     for(var i in inputGroup) {
                         if(inputGroup[i].length < 1) {
                             continue;
                         }
-                        var DivGroup = this._getInputGroupContainer(i, $.UiSetting.inputGroupNum);
+                        var DivGroup = this._getInputGroupContainer(i, self.options.groupNum);
                         for(var j in inputGroup[i]) {
                             if(inputGroup[i][j].status == '1') {
                                 DivGroup.append(this._loadInput(inputGroup[i][j], valData, model));
@@ -309,7 +315,7 @@ steal(
                     $label.html(input.colName + "：");
 
                     var $input = this._getInput(input, valData, model);
-                    if(input.colType != 1) {
+                    if(input.colType == 2) {
                         $div.css("display", "none");
                         //$input.attr("readonly","readonly");
                     }
@@ -572,23 +578,28 @@ steal(
 					$.ajaxSettings.async=false;
                     $.Model().getHead(input.referenceExtralDataId, function(extraData) {
                         var tab = undefined;
-                        if( valData.cols==undefined){
-                            valData.cols=valData[input.colCode];
-                        }
-                        if(valData) {
-                            tab = new $.TableControl($div_show_table, {
-                                isShowActs: true,
-                                isEdit:true,
-                                head: extraData,
-                                list: valData[input.colCode]
-                            });
+                        //判定是否为修改操作
+                        if(valData&&valData.id) {
+                        	try{
+                        		var setting=$.parseJSON(input.options);
+	                            tab = new $.TableControl($div_show_table, {
+	                                isShowActs: true,
+	                                isEdit:true,
+	                                head: extraData,
+	                                list: valData[input.colCode],
+	                                parentObj:valData,
+	                                olSetting:setting
+	                            });
+                            }catch(e){
+                        		console.error(input.colName+"配置项的json格式有误")
+                        		return $input;
+                        	}
                         } else {
                             tab = new $.TableControl($div_show_table, {
                                 isShowActs: true,
                                 isEdit:true,
                                 head: extraData
                             });
-
                             tab.addNewData();
                         }
                         $input.data("control", tab);

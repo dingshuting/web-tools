@@ -30,6 +30,7 @@ steal(
 								$btn = $("<button type='button'></button>");
 								$btn.html($.session.currFun.children[i].name);
 								$btn.data("func", $.session.currFun.children[i]);
+								$btn.attr("id","fn-"+$.session.currFun.children[i].id);
 								$btn.addClass($.session.currFun.children[i].icon);
 								$btn.bind("click", function(){
 									var currFun=$(this).data("func");
@@ -171,19 +172,24 @@ steal(
 						}, false);
 
 					},
-					saveOrUpdate: function() {
+					saveOrUpdate: function(val,callback) {
 						var Model = $.Model($.Menu.currFun.extraData);
 						if($.session.currFun.extraData){
 							var Model = $.Model($.session.currFun.extraData);
 						}
-						var val = $.VF.getValue();
+						if(!val)
+							val = $.VF.getValue();
 						if(val) {
 							Modal.showLoading("body", "请稍后...");
 							Model.save(val, function(data) {
 								Modal.hideLoading("body");
 								if(data.code == "200") {
 									alert("保存成功");
-									$.MenuControl.togoActions.goBackToList();
+									if(!callback)
+										$.MenuControl.togoActions.goBackToList();
+									else{
+										callback.call();
+									}
 								} else {
 									alert("保存失败：" + data.desc);
 								}
@@ -267,11 +273,11 @@ steal(
 						},
 						beforActionLoad: function(rowdata, row) {
 							//判断是否显示审核按钮
-								if(rowdata.status == "2") { //审核通过
-									return false;
-								} else { //未审核、审核不通过
-									return true;
-								}
+							if(rowdata.status == "2") { //审核通过
+								return false;
+							} else { //未审核、审核不通过
+								return true;
+							}
 
 						},
 					},

@@ -16,7 +16,10 @@ import com.ijs.core.base.model.Role;
 import com.ijs.core.base.model.SysDep;
 import com.ijs.core.base.model.User;
 import com.ijs.core.base.service.SessionUserServ;
-
+/**
+ * 
+ * @author Dustin
+ */
 @Service("sessionUserServ")
 public class SessionUserServImpl extends GenericServImpl implements  SessionUserServ{
 	protected Logger log = org.apache.log4j.LogManager.getLogger(this.getClass());
@@ -51,21 +54,14 @@ public class SessionUserServImpl extends GenericServImpl implements  SessionUser
 			if(user.getSysDepId()!=null) {
 				user.setSysDep(dao.get(SysDep.class, user.getSysDepId()));
 			}
-			//load function
-			//if user is administraotr then load all func
-			//else load func list of user`s role
 			jpql = new StringBuffer();
 			Iterator<GrantedAuthority> it = user.getAuthorities().iterator();		
-			boolean isSA = false;
-			boolean isAdmin=false;
 			while(it.hasNext()){
 				GrantedAuthority ga=it.next();
-				
 				if(ga.getAuthority()!=null && ga.getAuthority().equals(Config.ROLE_SA)){
-					isSA = true;
+					user.setSa(true);
 					break;
 				}else if(ga.getAuthority()!=null && ga.getAuthority().equals(Config.ROLE_ADMIN)){
-					isAdmin=true;
 					user.setIsAdmin(1);
 					break;
 				}
@@ -77,9 +73,9 @@ public class SessionUserServImpl extends GenericServImpl implements  SessionUser
 				funcTypes=evn.getProperty("system.funcType");
 			}
 			
-			if(isSA){
+			if(user.isSa()){
 				jpql.append("from Func where types in("+funcTypes+") and status=1");
-			}else if(isAdmin){
+			}else if(user.getIsAdmin()==1){
 				jpql.append("select DISTINCT f from Func f, RoleFunc rf, UserRole ur")
 				.append(" where f.id=rf.id.funcId and rf.id.rolId=ur.id.roleId and f.types in("+funcTypes+") and f.status=1 and ur.id.userId='").append(user.getId()).append("'");
 			}else{
